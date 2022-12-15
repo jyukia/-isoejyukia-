@@ -1,0 +1,10 @@
+{
+  "MODEL": 
+  [
+    [ "AstroBot_Ice", "Data\/MODEL\/AstroBot_Ice.x" ],
+    [ "AstroBot_Wind", "Data\/MODEL\/AstroBot_Wind.x" ],
+    [ "Box", "Data\/MODEL\/Box.x" ],
+    [ "Ball", "Data\/MODEL\/Ball.x" ],
+    [ "Kedama", "Data\/MODEL\/kedama.x" ]
+  ]
+}
