@@ -62,7 +62,7 @@ public:
 	static CTexture *GetTexture() { return m_pTexture; }
 	static CObjectXGroup *GetObjectXGroup() { return m_pObjectXGroup; }
 	static CSound *GetSound() { return m_pSound; }
-
+	static CStageImgui *GetImgui() { return m_Imgui; }
 private:
 	//-------------------------------------------------------------------------
 	// ƒƒ“ƒo[•Ï”

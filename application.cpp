@@ -192,7 +192,6 @@ void CApplication::Update(void)
 	CDebugProc::Print("現在の画面遷移番号 : [%d] \n", m_mode);
 
 #endif // _DEBUG
-
 	//インプットの更新処理
 	if (m_pInput != nullptr)
 	{
@@ -227,7 +226,6 @@ void CApplication::Draw(void)
 	{
 		m_pRenderer->Draw();
 	}
-
 	//imguiの描画処理
 	if (m_Imgui != nullptr)
 	{
@@ -285,7 +283,6 @@ void CApplication::SetMode(MODE mode)
 	case MODE_TUTORIAL:
 		m_pMode = CTutorial::Create();
 		m_pCamera->Init();
-
 		break;
 	}
 }

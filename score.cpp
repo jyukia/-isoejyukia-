@@ -59,11 +59,11 @@ void CScore::Draw()
 
 }
 //‰ÁZˆ—
-void CScore::AddScore(int nscore)
+void CScore::AddScore(int nGain)
 {
 	int aPosTexU[8];	//ŠeŒ…‚Ì”š‚ğŠi”[
 
-	m_Score += nscore;
+	m_Score += nGain;
 
 	aPosTexU[0] = m_Score % 100000000 / 10000000;
 	aPosTexU[1] = m_Score % 10000000 / 1000000;

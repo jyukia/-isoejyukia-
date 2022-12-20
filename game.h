@@ -17,6 +17,7 @@ class CMeshfield;
 class CFade;
 class CLight;
 class CScore;
+class CMovelife;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -58,6 +59,10 @@ private:
 	//スコア
 	static CScore* GetScore() { return pScore; }
 	static CScore* pScore;
-};
 
+	//移動可能距離
+	static CMovelife* GetMovelife() { return pMovelife; }
+	static CMovelife* pMovelife;
+
+};
 #endif

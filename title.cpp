@@ -13,7 +13,6 @@
 #include "object3D.h"
 #include "object2D.h"
 
-
 #include "player.h"
 #include "light.h"
 #include "meshfield.h"
@@ -56,7 +55,13 @@ HRESULT CTitle::Init(void)
 	}
 
 	//タイトル配置
-	Title = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-20.0f,0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL0);
+	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-20.0f,0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL0);
+
+	//プレイヤー入力選択
+	m_pGame = CObject2D::Create("INIESUTA", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, 500.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL0);
+
+	m_pRanking = CObject2D::Create("INIESUTA", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, 500.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL0);
+
 
 	return S_OK;
 }
@@ -75,26 +80,30 @@ void CTitle::Uninit(void)
 //=============================================================================
 void CTitle::Update(void)
 {
-	{
+	{//デバック処理
 		CDebugProc::Print("遷移のための選択カウント : [%d]\n", m_modecount);
 	}
-	D3DXVECTOR3 pos = Title->GetPos();
-	if (pos.y >= SCREEN_HEIGHT_HALF)
+
+	//ゲームネームの情報取得
+	D3DXVECTOR3 Titlepos = m_pTitle->GetPos();
+
+	//タイトル止まる処理
+	if (Titlepos.y >= SCREEN_HEIGHT_HALF)
 	{
-		Title->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pTitle->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 	else
 	{
-		Title->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
+		m_pTitle->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
 	}
 
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::GetInput();
-	if (pInputKeyboard->Trigger(DIK_W))
+	if (pInputKeyboard->Trigger(DIK_A))
 	{// 上に移動
 		m_modecount++;
 	}
-	if (pInputKeyboard->Trigger(DIK_S))
+	if (pInputKeyboard->Trigger(DIK_D))
 	{// 下に移動
 		m_modecount--;
 	}
@@ -108,12 +117,24 @@ void CTitle::Update(void)
 		m_modecount = m_modeMax;
 	}
 
+	//選択際色の変更分かりやすく
+	if (m_modecount == 1)
+	{
+		m_pGame->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+
+	}
+	if (m_modecount == 2)
+	{
+		m_pGame->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::GetInput();
 	if (!m_bmodeflg)
 	{
-		if (pInput->Trigger(DIK_RETURN))
+		if (pInput->Trigger(DIK_RETURN))		//選択シーン実行
 		{
 			m_bmodeflg = true;
 		}
@@ -124,21 +145,21 @@ void CTitle::Update(void)
 		{
 			if (m_modecount == 1)
 			{
-				// 遷移
-				CFade::SetFade(CApplication::MODE_GAME);
+				//遷移
+				CFade::SetFade(CApplication::MODE_GAME);	//ゲーム遷移
 			}
 			if (m_modecount == 2)
 			{
-				// 遷移
-				CFade::SetFade(CApplication::MODE_RANKING);
+				//遷移
+				CFade::SetFade(CApplication::MODE_RANKING); //ランキング遷移
 			}
-
 		}
 	}
 
+	//降りきるまでにEnterを押した際移動を終了させる
 	if (m_bmodeflg)
 	{
-		Title->SetPos(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f));
+		m_pTitle->SetPos(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f));
 	}
 }
 

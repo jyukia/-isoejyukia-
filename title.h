@@ -53,8 +53,10 @@ private:
 	CObject2D *m_pObject2D;					// オブジェクト2Dのポインタ
 	static bool m_bTitleEnter;				// Enterを押したかのフラグ
 
-	CObject2D* Title;
+	CObject2D* m_pTitle;
 
+	CObject2D* m_pGame;
+	CObject2D* m_pRanking;
 
 	static CPlayer *m_pPlayer;				// プレイヤーのポインタ
 	static CLight *m_pLight;				// ライトのポインタ

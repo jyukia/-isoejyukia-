@@ -159,6 +159,9 @@
     <ClCompile Include="stage_imgui.cpp">
       <Filter>ソース ファイル\imgui\program</Filter>
     </ClCompile>
+    <ClCompile Include="movelife.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="stage_imgui.h">
       <Filter>ソース ファイル\imgui\program</Filter>
+    </ClInclude>
+    <ClInclude Include="movelife.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

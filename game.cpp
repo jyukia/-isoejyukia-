@@ -18,14 +18,17 @@
 #include "Meshline.h"
 #include"Number.h"
 #include"score.h"
+
+#include "movelife.h"
+
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
 CPlayer *CGame::m_pPlayer = nullptr;
 CMeshfield *CGame::m_pMeshField = nullptr;
 CLight *CGame::m_pLight = nullptr;
-CScore* CGame::pScore;
-
+CScore* CGame::pScore = nullptr;
+CMovelife* CGame::pMovelife = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -70,6 +73,8 @@ HRESULT CGame::Init(void)
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
+
+	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	return S_OK;
 }

@@ -8,7 +8,7 @@
 #include "application.h"
 #include"DebugProc.h"
 #include "camera.h"
-
+#include"stage_imgui.h"
 
 CCamera *CRenderer::m_pCamera = nullptr;
 
@@ -177,7 +177,6 @@ void CRenderer::Draw()
 {
 	for (int cnt = 0; cnt < 2; cnt++)
 	{
-
 		// バックバッファ＆Ｚバッファのクリア
 		m_pD3DDevice->Clear(0, NULL,
 			(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER),
@@ -189,6 +188,7 @@ void CRenderer::Draw()
 			//全てのオブジェクトの描画処理
 			CObject::DrawAll();
 
+			CApplication::GetImgui()->Draw();
 #ifdef _DEBUG
 			// FPS表示
 			DrawFPS();

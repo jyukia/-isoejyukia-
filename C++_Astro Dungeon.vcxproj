@@ -47,6 +47,7 @@
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="motion_model3D.cpp" />
+    <ClCompile Include="movelife.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2D.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="mode.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="motion_model3D.h" />
+    <ClInclude Include="movelife.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="object2D.h" />
