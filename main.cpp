@@ -7,6 +7,10 @@
 #include "object2D.h"
 #include "application.h"
 
+
+#include"imgui_property.h"
+#include"stage_imgui.h"
+
 //=============================================================================
 // ÉOÉçÅ[ÉoÉãïœêî
 //=============================================================================
@@ -163,6 +167,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+	{// imgui
+		return true;
+	}
+
 	switch (uMsg)
 	{
 	case WM_CREATE:

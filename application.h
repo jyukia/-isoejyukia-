@@ -19,6 +19,7 @@ class CTexture;
 class CObjectXGroup;
 class CSound;
 class CDebugProc;
+class CStageImgui;
 
 //=============================================================================
 // クラスの定義
@@ -76,6 +77,7 @@ private:
 	static CSound *m_pSound;
 	static CDebugProc *m_pDebugProc;			// デバック表示
 
+	static CStageImgui *m_Imgui;
 };
 
 #endif

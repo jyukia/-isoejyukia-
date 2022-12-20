@@ -16,6 +16,7 @@ class CCamera;
 class CMeshfield;
 class CFade;
 class CLight;
+class CScore;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -52,7 +53,11 @@ private:
 	CCamera *m_pCamera;
 
 	CObject2D* m_pCompass;
+	D3DXVECTOR3 m_rot;
 
+	//スコア
+	static CScore* GetScore() { return pScore; }
+	static CScore* pScore;
 };
 
 #endif

@@ -76,33 +76,7 @@ void CMeshLine::Uninit()
 
 void CMeshLine::Update()
 {
-	//頂点情報へのポインタ
-//	VERTEX_3D*pVtx;
-//
-//	//頂点バッファをロックし、頂点情報へのポインタを取得
-//	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-//
-//	for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
-//	{
-//		if (pVtx[m_pVtxMax -1].pos == pVtx[m_pVtxMax -3].pos)
-//		{
-//			pVtx[Cnt + 2].pos = pVtx[Cnt].pos;
-//		}
-//	}
-//	if (pVtx[m_pVtxMax - 1].pos == pVtx[m_pVtxMax - 3].pos)
-//	{
-//		D3DXVECTOR3 Pos(0.0f, 0.0f, 0.0f);	//原点
-//
-//		D3DXVec3TransformCoord(&OfSetPos, &OfSetPos, m_pMtxParent);
-//		D3DXVec3TransformCoord(&Pos, &Pos, m_pMtxParent);
-//		pVtx[1].pos = OfSetPos;	//高さ変更
-//		pVtx[0].pos = Pos;//原点
-//
-//	}
-//	//頂点バッファをアンロックする
-//	m_pVtxBuff->Unlock();
-
-	bUseflg = true;
+	bUseflg = false;
 
 	D3DXVECTOR3 axis = CObjectX::GetAxis();
 	//プレイヤー情報
@@ -115,25 +89,18 @@ void CMeshLine::Update()
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-
-	if (m_Vtxcount == 6)
-	{
-//		CollisionReturn(&pPlayerPos, &pPlayerPosOld, &D3DXVECTOR3(50.0f, 50.0f, 50.0f));
-		for (int CollisionCount = 0; CollisionCount < 2; CollisionCount++)
+		//戻った際の当たり判定 (巻き戻し)
+		bUseflg = CollisionReturn(&pPlayerPos,12);
+		if (m_Vtxcount >= 8)
 		{
 		}
-
-			//戻った際の当たり判定 (巻き戻し)
-			bUseflg = CollisionReturn(&pPlayerPos, &pPlayerPosOld, &D3DXVECTOR3(50.0f, 50.0f, 50.0f));
-
-	}
-	if (bUseflg)	//生成
+	if (!bUseflg)	//生成
 	{
 		if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
 		{
 			for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
 			{
-				pVtx[Cnt + 2].pos = pVtx[Cnt].pos;
+				pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
 			}
 			pVtx[1].pos = pPlayerPos + axis * 30.0f;			//高さ変更
 			pVtx[0].pos = pPlayerPos - axis * 30.0f;			//原点
@@ -143,8 +110,6 @@ void CMeshLine::Update()
 
 	//頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
-
-
 #ifdef _DEBUG
 	CDebugProc::Print("プレイヤーの進行方向       (axis)       | X : %.2f | Y : %.2f | Z : %.2f |\n", axis.x, axis.y, axis.z);
 
@@ -273,8 +238,6 @@ bool CMeshLine::Collision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerSize)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 
-
-
 	//頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
@@ -354,88 +317,104 @@ bool CMeshLine::ReturnCollision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPos
 //=============================================================================
 // 当たり判定 プレイヤーが戻った際毛糸の回収を行う
 //=============================================================================
-bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPosOld, D3DXVECTOR3 * PlayerSize)
+bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
 {
-	//プレイヤー情報
-	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-	D3DXVECTOR3 pPlayerPosOld = CGame::GetPlayer()->GetPosOld();
+	const int nPolygon = 100;
+	D3DXVECTOR3 VecA   [nPolygon * 3];				//VecA
+	D3DXVECTOR3 VecB   [nPolygon * 3];				//VecB
+	float Calculation2D[nPolygon * 3];			//2次元外積の計算結果
 
 	//頂点情報へのポインタ
 	VERTEX_3D * pVtx = nullptr;
-	WORD * pIdx;
-	D3DXVECTOR3 VecA[6];				//VecA
-	D3DXVECTOR3 VecB[6];				//VecB
-	float Calculation2D[6];				//2次元外積の計算結果
 	bool bIsLanding = false;
 
 	//頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	D3DXVECTOR3 SIZE = D3DXVECTOR3(1.0f,1.0f,1.0f);
+	for (int count = 0; count < nPolygon; count++)
+	{
+	//ベクトルの取得 VecA 2 3 4
+	VecA[count * 3] = pVtx[3 + count].pos - pVtx[2 + count].pos;
+	VecA[count * 3 + 1] = pVtx[4 + count].pos - pVtx[3 + count].pos;
+	VecA[count * 3 + 2] = pVtx[2 + count].pos - pVtx[4 + count].pos;
 
 	//ベクトルの取得 VecA 2 3 4
-	VecA[0] = pVtx[2].pos + SIZE - pVtx[4].pos + SIZE;
-	VecA[1] = pVtx[3].pos + SIZE - pVtx[4].pos + SIZE;
-	VecA[2] = pVtx[2].pos + SIZE - pVtx[3].pos + SIZE;
-
-	//ベクトルの取得 VecA 3 4 5
-	VecA[3] = pVtx[4].pos + SIZE - pVtx[3].pos + SIZE;
-	VecA[4] = pVtx[4].pos + SIZE - pVtx[5].pos + SIZE;
-	VecA[5] = pVtx[5].pos + SIZE - pVtx[3].pos + SIZE;
+	//VecA[0] = pVtx[3].pos - pVtx[2].pos;
+	//VecA[1] = pVtx[4].pos - pVtx[3].pos;
+	//VecA[2] = pVtx[2].pos - pVtx[4].pos;
+	//ベクトルの取得 VecA
+	//VecA[3] = pVtx[4].pos - pVtx[3].pos;
+	//VecA[4] = pVtx[5].pos - pVtx[4].pos;
+	//VecA[5] = pVtx[3].pos - pVtx[5].pos;
+	//VecA[6] = pVtx[5].pos - pVtx[4].pos;
+	//VecA[7] = pVtx[6].pos - pVtx[5].pos;
+	//VecA[8] = pVtx[4].pos - pVtx[6].pos;
+	//VecA[9] = pVtx[6].pos - pVtx[5].pos;
+	//VecA[10] = pVtx[7].pos - pVtx[6].pos;
+	//VecA[11] = pVtx[5].pos - pVtx[7].pos;
 
 	//プレイヤー	頂点を測る
-	VecB[0] = *PlayerPos - pVtx[2].pos;
-	VecB[1] = *PlayerPos - pVtx[3].pos;
-	VecB[2] = *PlayerPos - pVtx[4].pos;
+	VecB[count * 3] = *PlayerPos -	   pVtx[2+ count].pos;
+	VecB[count * 3 + 1] = *PlayerPos - pVtx[3+ count].pos;
+	VecB[count * 3 + 2] = *PlayerPos - pVtx[4+ count].pos;
 
-	VecB[3] = *PlayerPos - pVtx[3].pos;
-	VecB[4] = *PlayerPos - pVtx[4].pos;
-	VecB[5] = *PlayerPos - pVtx[5].pos;
+	//VecB[0] = *PlayerPos - pVtx[2].pos;
+	//VecB[1] = *PlayerPos - pVtx[3].pos;
+	//VecB[2] = *PlayerPos - pVtx[4].pos;
+	//VecB[3] = *PlayerPos - pVtx[3].pos;
+	//VecB[4] = *PlayerPos - pVtx[4].pos;
+	//VecB[5] = *PlayerPos - pVtx[5].pos;
+	//VecB[6] = *PlayerPos - pVtx[4].pos;
+	//VecB[7] = *PlayerPos - pVtx[5].pos;
+	//VecB[8] = *PlayerPos - pVtx[6].pos;
+	//VecB[9] = *PlayerPos - pVtx[5].pos;
+	//VecB[10] = *PlayerPos - pVtx[6].pos;
+	//VecB[11] = *PlayerPos - pVtx[7].pos;
 
-	//2次元外積の計算結果
-	Calculation2D[0] = Vec2Cross(&VecA[0], &VecB[0]);
-	Calculation2D[1] = Vec2Cross(&VecA[1], &VecB[1]);
-	Calculation2D[2] = Vec2Cross(&VecA[2], &VecB[2]);
+	Calculation2D[count * 3] =Vec2Cross(&VecA[count * 3],&VecB[count * 3]);
+	Calculation2D[count * 3 + 1] = Vec2Cross(&VecA[count * 3 + 1], &VecB[count * 3 + 1]);
+	Calculation2D[count * 3 + 2] = Vec2Cross(&VecA[count * 3 + 2], &VecB[count * 3 + 2]);
 
-	Calculation2D[3] = Vec2Cross(&VecA[3], &VecB[3]);
-	Calculation2D[4] = Vec2Cross(&VecA[4], &VecB[4]);
-	Calculation2D[5] = Vec2Cross(&VecA[5], &VecB[5]);
+		//2次元外積の計算結果
+	//Calculation2D[0] = Vec2Cross(&VecA[0], &VecB[0]);
+	//Calculation2D[1] = Vec2Cross(&VecA[1], &VecB[1]);
+	//Calculation2D[2] = Vec2Cross(&VecA[2], &VecB[2]);
+	//Calculation2D[3] = Vec2Cross(&VecA[3], &VecB[3]);
+	//Calculation2D[4] = Vec2Cross(&VecA[4], &VecB[4]);
+	//Calculation2D[5] = Vec2Cross(&VecA[5], &VecB[5]);
 
-	//プレイヤーの位置が全部-か+
-		if ((Calculation2D[0] >= 0 && Calculation2D[1] >= 0 && Calculation2D[2] >= 0) || (Calculation2D[0] <= 0 && Calculation2D[1] <= 0 && Calculation2D[2] <= 0) ||
-			(Calculation2D[3] >= 0 && Calculation2D[4] >= 0 && Calculation2D[5] >= 0) || (Calculation2D[3] <= 0 && Calculation2D[4] <= 0 && Calculation2D[5] <= 0))
+		//プレイヤーの位置が全部-か+
+		if ((Calculation2D[count * 3] > 0 && Calculation2D[count * 3 + 1] > 0 && Calculation2D[count * 3 + 2] > 0) || (Calculation2D[count * 3] < 0 && Calculation2D[count * 3 + 1] < 0 && Calculation2D[count * 3 + 2] < 0))
 		{//当たった時
 			if (MoveMaxFlg)	//動けなくなった時 (移動量すべて使い切った時)
 			{
 				//線を引いた場所だけ戻れるように
 			}
-			for (int Cnt = 0; Cnt < m_pVtxMax-3; Cnt++)
+			for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
 			{
-				m_Vtxcount = 0;
-
+				//配列を入れ替える事で消している
+				pVtx[Cnt] = pVtx[Cnt + 2];
 
 				// 頂点カラーの設定
 				pVtx[Cnt].col = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);				//判定　分かりやすく色を変える
 
 			}
+			m_Vtxcount = 0;
+
 			//false生成無し
 			bUseflg = false;
 			bIsLanding = true;
 		}
 		else
-		{
+		{//当たっていないとき
 			//判定　分かりやすく色を変える
-			for (int Cnt = 0; Cnt < m_pVtxMax -3; Cnt++)
+			for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
 			{
-
-				//配列を入れ替える事で消している
-				pVtx[Cnt] = pVtx[Cnt + 2];
-
-
 				// 頂点カラーの設定
 				pVtx[Cnt].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 			}
 		}
+	}
 
 	//頂点バッファをアンロック
 	m_pVtxBuff->Unlock();

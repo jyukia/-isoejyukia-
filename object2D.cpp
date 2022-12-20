@@ -309,7 +309,47 @@ void CObject2D::SetUV(float x_1, float x_2, float y_1, float y_2)
 	//頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
 }
+//---------------------------------------------------------------------------
+//スコア使用
+//---------------------------------------------------------------------------
+void CObject2D::ScoreVtx(float fstposX, float fstposY, float secdposX, float secdposY)
+{
+	//頂点情報へのポインタ
+	VERTEX_2D *pVtx;
 
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(fstposX, fstposY);
+	pVtx[1].tex = D3DXVECTOR2(secdposX, fstposY);
+	pVtx[2].tex = D3DXVECTOR2(fstposX, secdposY);
+	pVtx[3].tex = D3DXVECTOR2(secdposX, secdposY);
+
+	//頂点をアンロックする
+	m_pVtxBuff->Unlock();
+}
+
+//---------------------------------------------------------------------------
+// アニメーション頂点設定
+//---------------------------------------------------------------------------
+void CObject2D::AnimVtx(int nummax, int PtternAnim)
+{
+	//頂点情報へのポインタ
+	VERTEX_2D *pVtx;
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//表示座標を更新
+	pVtx[0].tex = D3DXVECTOR2((1.0f / nummax)*PtternAnim, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2((1.0f / nummax)*(PtternAnim + 1), 0.0f);
+	pVtx[2].tex = D3DXVECTOR2((1.0f / nummax)*PtternAnim, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2((1.0f / nummax)*(PtternAnim + 1), 1.0f);
+
+	//頂点をアンロックする
+	m_pVtxBuff->Unlock();
+}
 //=============================================================================
 // 生成処理
 //=============================================================================

@@ -17,6 +17,8 @@
 #include "sound.h"
 #include"DebugProc.h"
 
+#include"stage_imgui.h"
+
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
@@ -29,7 +31,7 @@ CObjectXGroup *CApplication::m_pObjectXGroup = nullptr;
 CSound *CApplication::m_pSound = nullptr;
 CApplication::MODE CApplication::m_mode = MODE_GAME;
 CDebugProc *CApplication::m_pDebugProc = nullptr;					// デバック表示
-
+CStageImgui *CApplication::m_Imgui = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -74,6 +76,12 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// 初期化
 	assert(m_pDebugProc != nullptr);
 	m_pDebugProc->Init();
+
+	LPDIRECT3DDEVICE9 pDevice = m_pRenderer->GetDevice();
+	m_Imgui = new CStageImgui;
+	// 初期化
+	assert(m_Imgui != nullptr);
+	m_Imgui->Init(hWnd, pDevice);
 
 
 	// カメラの初期化
@@ -161,6 +169,14 @@ void CApplication::Uninit(void)
 		delete m_pCamera;
 		m_pCamera = nullptr;
 	}
+	//imguiの解放
+	if (m_Imgui != nullptr)
+	{
+	//	m_Imgui->Uninit();
+		delete m_Imgui;
+		m_Imgui = nullptr;
+	}
+
 }
 
 //=============================================================================
@@ -194,6 +210,11 @@ void CApplication::Update(void)
 		m_pCamera->Update();
 	}
 
+	//imguiの更新処理
+	if (m_Imgui != nullptr)
+	{
+		m_Imgui->Update();
+	}
 }
 
 //=============================================================================
@@ -206,6 +227,13 @@ void CApplication::Draw(void)
 	{
 		m_pRenderer->Draw();
 	}
+
+	//imguiの描画処理
+	if (m_Imgui != nullptr)
+	{
+		m_Imgui->Draw();
+	}
+
 }
 
 //=============================================================================

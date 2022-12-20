@@ -15,8 +15,6 @@ class CMeshLine : public CObject
 public:
 	//¶¬ƒ‰ƒCƒ“‰ñ”
 	const int MaxLine = 1000;
-	//‰ñû”»’èŒJ‚è•Ô‚·‰ñ”
-	const int MaxHitBox = 13;
 
 
 public:
@@ -55,7 +53,7 @@ public:
 	bool Collision(D3DXVECTOR3 *PlayerPos, D3DXVECTOR3 *PlayerSize);	//“–‚½‚è”»’è
 	bool ReturnCollision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPosOld, D3DXVECTOR3 * PlayerSize);
 
-	bool CollisionReturn(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPosOld, D3DXVECTOR3 * PlayerSize);
+	bool CollisionReturn(D3DXVECTOR3 * PlayerPos,int line_collision);
 
 
 	float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2);

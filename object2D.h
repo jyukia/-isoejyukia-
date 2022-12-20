@@ -53,6 +53,7 @@ public:
 	void SetRot(D3DXVECTOR3 rot) override;						// 向き設定処理
 	void BindTexture(std::string inPath);						// 派生のテクスチャポインタを親のテクスチャポインタに代入する処理
 	void SetUV(float x_1, float x_2, float y_1, float y_2);		// テクスチャ座標更新処理
+	void AnimVtx(int nummax/*アニメーション枚数*/, int PtternAnim/*進むスピード*/);	//アニメーション頂点の設定
 	void SetRotate(bool set, int size) { m_bRotate = set, m_fSquareSize = (float)size; }
 	D3DXVECTOR3 GetPos(void) override { return m_pos; }			// 座標取得処理
 	D3DXVECTOR3 GetSize(void) override { return m_size; }		// サイズ取得処理
@@ -60,6 +61,7 @@ public:
 	D3DXVECTOR3 GetRot(void) override { return m_rot; }			// 向き取得処理
 	D3DXCOLOR GetCol(void) override { return m_col; }			// 色取得処理
 	static CObject2D *Create(const char *aFileName, D3DXVECTOR3 pos, D3DXVECTOR3 size, int nPriority);	// 生成処理
+	void CObject2D::ScoreVtx(float fstposX, float fstposY, float secdposX, float secdposY);
 
 private:
 	//-------------------------------------------------------------------------

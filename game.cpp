@@ -16,13 +16,15 @@
 #include "meshfield.h"
 #include "camera.h"
 #include "Meshline.h"
-
+#include"Number.h"
+#include"score.h"
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
 CPlayer *CGame::m_pPlayer = nullptr;
 CMeshfield *CGame::m_pMeshField = nullptr;
 CLight *CGame::m_pLight = nullptr;
+CScore* CGame::pScore;
 
 //=============================================================================
 // コンストラクタ
@@ -45,6 +47,9 @@ CGame::~CGame()
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+	{//初期化
+		m_rot = D3DXVECTOR3(0.0f,0.0f,0.0f);
+	}
 	//ライトの生成
 	m_pLight = CLight::Create();
 
@@ -61,8 +66,10 @@ HRESULT CGame::Init(void)
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 	m_pPlayer->LoadModel("Kedama");
 
+	//コンパス生成
+	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
-	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), 3);
+	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
 
 	return S_OK;
 }
@@ -100,6 +107,23 @@ void CGame::Update(void)
 			CFade::SetFade(CApplication::MODE_RANKING);
 		}
 	}
+
+	//コンパス処理
+	{
+		m_rot = CCamera::GetRot();
+		m_rot.z = m_rot.y;
+		if (pInput->Press(DIK_Q))
+		{
+			m_rot.z += 0.05f;
+		}
+		if (pInput->Press(DIK_E))
+		{
+			m_rot.z -= 0.05f;
+		}
+		m_rot.y *= -1;
+		m_pCompass->SetRot(m_rot);
+	}
+
 }
 
 //=============================================================================
