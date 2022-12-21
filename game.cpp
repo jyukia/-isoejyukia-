@@ -18,6 +18,7 @@
 #include "Meshline.h"
 #include"Number.h"
 #include"score.h"
+#include "file.h"
 
 #include "movelife.h"
 
@@ -53,6 +54,11 @@ HRESULT CGame::Init(void)
 	{//初期化
 		m_rot = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	}
+
+	//モデル読み込み一番上に配置
+	OutputStatus();
+
+
 	//ライトの生成
 	m_pLight = CLight::Create();
 
@@ -75,6 +81,8 @@ HRESULT CGame::Init(void)
 	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
 
 	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+	Load();
 
 	return S_OK;
 }

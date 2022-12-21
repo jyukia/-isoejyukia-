@@ -5,6 +5,8 @@
     [ "AstroBot_Wind", "Data\/MODEL\/AstroBot_Wind.x" ],
     [ "Box", "Data\/MODEL\/Box.x" ],
     [ "Ball", "Data\/MODEL\/Ball.x" ],
-    [ "Kedama", "Data\/MODEL\/kedama.x" ]
+    [ "Kedama", "Data\/MODEL\/kedama.x" ],
+    [ "BOTTLE", "Data\/MODEL\/bottle.x" ]
+
   ]
 }

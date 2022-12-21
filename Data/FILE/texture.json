@@ -7,7 +7,8 @@
     [ "TITLE", "Data\/TEXTURE\/title.png" ],
     [ "RANKING", "Data\/TEXTURE\/Ranking.png" ],
     [ "COMPASS", "Data\/TEXTURE\/compas.png" ],
-    [ "NUMBER", "Data\/TEXTURE\/number000.png" ]
+    [ "NUMBER", "Data\/TEXTURE\/number000.png" ],
+    [ "OMOIDE", "Data\/TEXTURE\/omoide.png" ]
 
   ]
 }

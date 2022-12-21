@@ -28,7 +28,7 @@ CTexture::~CTexture()
 void CTexture::LoadAll()
 {
 	nlohmann::json list = LoadJsonStage(L"Data/FILE/texture.json");
-	
+
 	for (int i = 0; i < (int)list["TEXTURE"].size(); ++i)
 	{
 		m_texturePath.insert(std::make_pair(list["TEXTURE"].at(i)[0], list["TEXTURE"].at(i)[1]));

@@ -6,7 +6,7 @@
 // Author  : Hamada Ryuga
 // Author  : Yuda Kaito
 //
-//**************************************************
+////**************************************************
 
 //-----------------------------------------------------------------------------
 // include
@@ -34,7 +34,8 @@
 #include "camera.h"
 #include "meshfield.h"
 
-
+#include"game.h"
+#include"Player.h"
 //-----------------------------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------------------------
@@ -88,7 +89,7 @@ bool CStageImgui::Update()
 	ImGui::Text("FPS  : %.2f", ImGui::GetIO().Framerate);
 	ImGui::Separator();
 
-	TaskBarUpdate();	// タスクバーの更新
+	//TaskBarUpdate();	// タスクバーの更新
 	//ImGui::SliderFloat3(u8"ロット", &sliderRot.x, -3.14f, 3.14f);
 	//ImGui::Separator();
 
@@ -98,7 +99,7 @@ bool CStageImgui::Update()
 
 	// メッシュのposス変更
 	ImGui::DragFloat3("pos", &m_fMeshPos[0], 10.0f, 10000.0f, 0.5f);
-	//CManager::GetMesh()->SetPos(D3DXVECTOR3(m_fMeshPos[0], m_fMeshPos[1], m_fMeshPos[2]));
+	//CGame::GetPlayer()->SetPos(D3DXVECTOR3(m_fMeshPos[0], m_fMeshPos[1], m_fMeshPos[2]));
 
 	ImGui::Separator();
 	ImGui::SliderInt(u8"キーフレーム数", &AnimationKeySet, 1, 1000);
@@ -134,54 +135,54 @@ void CStageImgui::SetMeshPos(float x, float y, float z)
 //--------------------------------------------------
 // タスクバーの更新
 //--------------------------------------------------
-void CStageImgui::TaskBarUpdate(void)
-{
-	//if (!ImGui::BeginMenuBar())
-	//{//タスクバー
-	//	return;
-	//}
-
-	//auto SaveLoad = [](const char* name,const char* path)
-	//{
-	//	if (ImGui::BeginMenu(name))
-	//	{
-	//		//HWND Wnd = GetWnd();
-	//		if (ImGui::MenuItem("Save"))
-	//		{
-	//			//MessageBox(Wnd, "セーブしますか？", "今消したら保存されてないよ！", MB_OK);
-	//			//CGame::GetStage()->SavefileMesh(path);
-	//		}
-	//		else if (ImGui::MenuItem("Load"))
-	//		{
-	//			//MessageBox(Wnd, "ロードしますか？", "今消したら保存されてないよ！", MB_OK);
-	//			//CGame::GetStage()->LoadfileMesh(path);
-	//		}
-
-	//		ImGui::EndMenu();
-	//	}
-	//};
-
-	//auto SaveLoadModel = [](const char* name, const char* path)
-	//{
-	//	if (ImGui::BeginMenu(name))
-	//	{
-	//		HWND Wnd = GetWnd();
-	//		if (ImGui::MenuItem("Save"))
-	//		{
-	//			MessageBox(Wnd, "セーブしますか？", "今消したら保存されてないよ！", MB_OK);
-	//			CGame::GetStage()->Savefile(path);
-	//		}
-	//		else if (ImGui::MenuItem("Load"))
-	//		{
-	//			MessageBox(Wnd, "ロードしますか？", "今消したら保存されてないよ！", MB_OK);
-	//			CGame::GetStage()->Loadfile(path);
-	//		}
-
-	//		ImGui::EndMenu();
-	//	}
-	//};
-	//SaveLoad(u8"メッシュ", "data\\testmesh.json");
-	//SaveLoadModel(u8"モデル", "data\\testBil.json");
-
-	//ImGui::EndMenuBar();
-}
+//void CStageImgui::TaskBarUpdate(void)
+//{
+//	//if (!ImGui::BeginMenuBar())
+//	//{//タスクバー
+//	//	return;
+//	//}
+//
+//	//auto SaveLoad = [](const char* name,const char* path)
+//	//{
+//	//	if (ImGui::BeginMenu(name))
+//	//	{
+//	//		//HWND Wnd = GetWnd();
+//	//		if (ImGui::MenuItem("Save"))
+//	//		{
+//	//			//MessageBox(Wnd, "セーブしますか？", "今消したら保存されてないよ！", MB_OK);
+//	//			//CGame::GetStage()->SavefileMesh(path);
+//	//		}
+//	//		else if (ImGui::MenuItem("Load"))
+//	//		{
+//	//			//MessageBox(Wnd, "ロードしますか？", "今消したら保存されてないよ！", MB_OK);
+//	//			//CGame::GetStage()->LoadfileMesh(path);
+//	//		}
+//
+//	//		ImGui::EndMenu();
+//	//	}
+//	//};
+//
+//	//auto SaveLoadModel = [](const char* name, const char* path)
+//	//{
+//	//	if (ImGui::BeginMenu(name))
+//	//	{
+//	//		HWND Wnd = GetWnd();
+//	//		if (ImGui::MenuItem("Save"))
+//	//		{
+//	//			MessageBox(Wnd, "セーブしますか？", "今消したら保存されてないよ！", MB_OK);
+//	//			CGame::GetStage()->Savefile(path);
+//	//		}
+//	//		else if (ImGui::MenuItem("Load"))
+//	//		{
+//	//			MessageBox(Wnd, "ロードしますか？", "今消したら保存されてないよ！", MB_OK);
+//	//			CGame::GetStage()->Loadfile(path);
+//	//		}
+//
+//	//		ImGui::EndMenu();
+//	//	}
+//	//};
+//	//SaveLoad(u8"メッシュ", "data\\testmesh.json");
+//	//SaveLoadModel(u8"モデル", "data\\testBil.json");
+//
+//	//ImGui::EndMenuBar();
+//}
