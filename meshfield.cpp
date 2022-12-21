@@ -476,6 +476,12 @@ bool CMeshfield::Collision(D3DXVECTOR3 *PlayerPos, D3DXVECTOR3 *PlayerSize, bool
 			//³‹K‰»
 			D3DXVec3Normalize(&Answer, &Answer);
 
+			//if (PlayerPos->y <= posLineVec[0].y - (Normal.x*(PlayerPos->x - posLineVec[0].x) + Normal.z*(PlayerPos->z - posLineVec[0].z)) / Normal.y)
+			//{
+			//	//CGame::GetStage()->GetPlayer()->SetMove(D3DXVECTOR3(CGame::GetStage()->GetPlayer()->GetMove().x, 0.0f, CGame::GetStage()->GetPlayer()->GetMove().z));
+			//	PlayerPos->y = (posLineVec[0].y - (Normal.x*(PlayerPos->x - posLineVec[0].x) + Normal.z*(PlayerPos->z - posLineVec[0].z)) / Normal.y) - 0.001f;
+			//}
+
 			if (bQuaternion)
 			{
 				//“àÏ‚ÌŒvZ

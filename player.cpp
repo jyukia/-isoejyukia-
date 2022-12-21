@@ -144,25 +144,25 @@ void CPlayer::Update()
 	{// デバック表示
 #ifdef _DEBUG
 
-	//プレイヤー 座標
-	CDebugProc::Print("プレイヤーの位置       (pos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pos.x, pos.y, pos.z);
-	//回転
-	CDebugProc::Print("プレイヤーの回転       (rot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", rot.x, rot.y, rot.z);
-	//移動
-	CDebugProc::Print("プレイヤーの移動       (move)      | X : %.2f | Y : %.2f | Z : %.2f |\n", move.x, move.y, move.z);
-	//目的の角度
-	CDebugProc::Print("プレイヤーの目的の角度 (m_rotDest) | X : %.2f | Y : %.2f | Z : %.2f |\n", m_rotDest.x, m_rotDest.y, m_rotDest.z);
-	//クォータニオン
-	CDebugProc::Print("プレイヤー[クォータニオン] (fst) | %f |\n", fst);
-	//プレイヤージャンプ判定
-	if (m_bJumpFlag)
-	{//ジャンプ
-		CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) ジャンプ \n", m_bJumpFlag);
-	}
-	else
-	{//着地
-		CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) 着地 \n", m_bJumpFlag);
-	}
+	 //プレイヤー 座標
+		CDebugProc::Print("プレイヤーの位置       (pos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pos.x, pos.y, pos.z);
+		//回転
+		CDebugProc::Print("プレイヤーの回転       (rot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", rot.x, rot.y, rot.z);
+		//移動
+		CDebugProc::Print("プレイヤーの移動       (move)      | X : %.2f | Y : %.2f | Z : %.2f |\n", move.x, move.y, move.z);
+		//目的の角度
+		CDebugProc::Print("プレイヤーの目的の角度 (m_rotDest) | X : %.2f | Y : %.2f | Z : %.2f |\n", m_rotDest.x, m_rotDest.y, m_rotDest.z);
+		//クォータニオン
+		CDebugProc::Print("プレイヤー[クォータニオン] (fst) | %f |\n", fst);
+		//プレイヤージャンプ判定
+		if (m_bJumpFlag)
+		{//ジャンプ
+			CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) ジャンプ \n", m_bJumpFlag);
+		}
+		else
+		{//着地
+			CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) 着地 \n", m_bJumpFlag);
+		}
 #endif // _DEBUG
 	}
 
@@ -174,7 +174,7 @@ void CPlayer::Update()
 	CDebugProc::Print("カメラの情報       (pCameraRot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pCameraRot.x, pCameraRot.y, pCameraRot.z);
 
 	bool flg = CMeshLine::GetMoveFlg();	//移動制限のフラグ
-	//一定サイズまで行くと変更しないよう
+										//一定サイズまで行くと変更しないよう
 	if (Scale.x <= 0.2f || Scale.y <= 0.2f || Scale.z <= 0.2f)
 	{
 		flg = true;	//移動しないようフラグで設定
@@ -183,89 +183,87 @@ void CPlayer::Update()
 		Scale.z = 0.2f;
 		CMeshLine::SetMoveFlg(flg);
 	}
+	//サイズの変更
+	if (pInputKeyboard->Press(DIK_W) || pInputKeyboard->Press(DIK_A) || pInputKeyboard->Press(DIK_S) || pInputKeyboard->Press(DIK_D))
+	{
+		Scale.x -= 0.001f;
+		Scale.y -= 0.001f;
+		Scale.z -= 0.001f;
+	}
 
-		if (pInputKeyboard->Press(DIK_W))
-		{// 上に移動
-			if (pInputKeyboard->Press(DIK_A))
-			{
-				keyCnt++;
-
-				move.x += sinf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
-				move.z += cosf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
-				//m_rotDest.y = pCameraRot.y + D3DX_PI * 0.75f;
-			}
-			else if (pInputKeyboard->Press(DIK_D))
-			{
-				keyCnt++;
-
-				move.x += sinf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
-				move.z += cosf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
-				//m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.75f;
-			}
-			else
-			{
-				keyCnt++;
-
-				move.x += sinf(pCameraRot.y) * m_nSpeed;
-				move.z += cosf(pCameraRot.y) * m_nSpeed;
-				//m_rotDest.y = pCameraRot.y + D3DX_PI;
-			}
-		}
-		if (pInputKeyboard->Press(DIK_S))
-		{// 下に移動
-			if (pInputKeyboard->Press(DIK_A))
-			{
-				keyCnt++;
-
-				move.x += sinf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
-				move.z += cosf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
-
-				//m_rotDest.y = pCameraRot.y + D3DX_PI * 0.25f;
-			}
-			else if (pInputKeyboard->Press(DIK_D))
-			{
-				keyCnt++;
-
-				move.x += sinf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
-				move.z += cosf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
-
-				//	m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.25f;
-			}
-			else
-			{
-				keyCnt++;
-
-				move.x -= sinf(pCameraRot.y) * m_nSpeed;
-				move.z -= cosf(pCameraRot.y) * m_nSpeed;
-				//	m_rotDest.y = pCameraRot.y + 0.0f;
-			}
-		}
-		else if (pInputKeyboard->Press(DIK_A))
-		{// 左に移動
+	if (pInputKeyboard->Press(DIK_W))
+	{// 上に移動
+		if (pInputKeyboard->Press(DIK_A))
+		{
 			keyCnt++;
 
-			move.x -= sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-			move.z -= cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-			//m_rotDest.y = pCameraRot.y + D3DX_PI * 0.5f;
+			move.x += sinf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
+			move.z += cosf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
+			//m_rotDest.y = pCameraRot.y + D3DX_PI * 0.75f;
 		}
 		else if (pInputKeyboard->Press(DIK_D))
-		{// 右に移動
+		{
 			keyCnt++;
 
-			move.x += sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-			move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-			//	m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
+			move.x += sinf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
+			move.z += cosf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
+			//m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.75f;
 		}
-
-		//サイズの変更
-		if (pInputKeyboard->Press(DIK_W) || pInputKeyboard->Press(DIK_A) || pInputKeyboard->Press(DIK_S) || pInputKeyboard->Press(DIK_D))
+		else
 		{
-			Scale.x -= 0.001f;
-			Scale.y -= 0.001f;
-			Scale.z -= 0.001f;
+			keyCnt++;
+
+			move.x += sinf(pCameraRot.y) * m_nSpeed;
+			move.z += cosf(pCameraRot.y) * m_nSpeed;
+			//m_rotDest.y = pCameraRot.y + D3DX_PI;
 		}
-	if (!flg)	//動ける時
-	{}
+	}
+	if (pInputKeyboard->Press(DIK_S))
+	{// 下に移動
+		if (pInputKeyboard->Press(DIK_A))
+		{
+			keyCnt++;
+
+			move.x += sinf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
+			move.z += cosf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
+
+			//m_rotDest.y = pCameraRot.y + D3DX_PI * 0.25f;
+		}
+		else if (pInputKeyboard->Press(DIK_D))
+		{
+			keyCnt++;
+
+			move.x += sinf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
+			move.z += cosf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
+
+			//	m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.25f;
+		}
+		else
+		{
+			keyCnt++;
+
+			move.x -= sinf(pCameraRot.y) * m_nSpeed;
+			move.z -= cosf(pCameraRot.y) * m_nSpeed;
+			//	m_rotDest.y = pCameraRot.y + 0.0f;
+		}
+	}
+	else if (pInputKeyboard->Press(DIK_A))
+	{// 左に移動
+		keyCnt++;
+
+		move.x -= sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+		move.z -= cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+		//m_rotDest.y = pCameraRot.y + D3DX_PI * 0.5f;
+	}
+	else if (pInputKeyboard->Press(DIK_D))
+	{// 右に移動
+		keyCnt++;
+
+		move.x += sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+		move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+		//	m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
+	}
+
 
 	//角度の正規化(目的の角度)
 	if (m_rotDest.y - rot.y > D3DX_PI)
@@ -280,6 +278,9 @@ void CPlayer::Update()
 	// 目的の値に近づける
 	rot.y += (m_rotDest.y - rot.y) * PurposeRot;
 
+	// 重力設定
+	move.y -= GRAVITY_POWER;
+
 	// ジャンプ処理
 	if (pInputKeyboard->Trigger(DIK_SPACE))
 	{
@@ -288,8 +289,6 @@ void CPlayer::Update()
 		move.y += 14.0f;
 	}
 
-	// 重力設定
-	move.y -= GRAVITY_POWER;
 
 	// 角度の正規化(現在の角度)
 	if (rot.y > D3DX_PI)
@@ -310,7 +309,7 @@ void CPlayer::Update()
 	move.x += (0.0f - move.x)* m_inertia;
 	move.y += (0.0f - move.y)* m_inertia;
 	move.z += (0.0f - move.z)* m_inertia;
-	QuaternionCalculation(25.0f, &move, &fst);
+	QuaternionCalculation(*Size, &move, &fst);
 	SetQuaternion(fst);
 
 	// ポインタ宣言
@@ -344,18 +343,19 @@ void CPlayer::Update()
 		pObject = pObject->GetNext();
 	}
 
+
 	// メッシュフィールドのポインタを取得
-	CMeshfield *pMeshField = CGame::GetMeshfield();
-	// プレイヤーのposとrotの設定
-	if (pos.y < pMeshField->GetAnswer())
-	{
-		m_bJumpFlag = false;
-	}
-	// メッシュフィールドとの当たり判定
-	if (m_bJumpFlag == false)
-	{
-		m_bIsLandingMesh = pMeshField->Collision(&pos, &Size, true);
-	}
+	//CMeshfield *pMeshField = CGame::GetMeshfield();
+	//// プレイヤーのposとrotの設定
+	//if (pos.y < pMeshField->GetAnswer())
+	//{
+	//	m_bJumpFlag = false;
+	//}
+	//// メッシュフィールドとの当たり判定
+	//if (m_bJumpFlag == false)
+	//{
+	//	m_bIsLandingMesh = pMeshField->Collision(&pos, &Size, true);
+	//}
 	// y軸が移動してなかった場合
 	if (pos.y == m_posOld.y)
 	{
@@ -364,12 +364,13 @@ void CPlayer::Update()
 
 
 
-	CObjectX::SetScale(Scale);
 
 	//for (int nCnt = 0; nCnt < 12; nCnt++)
 	//{
 	//	m_Line[nCnt]->SetPos(GetPos());
 	//}
+
+	CObjectX::SetScale(Scale);
 	// プレイヤーのposとrotとmoveの設定
 	CObjectX::SetPos(pos);
 	CObjectX::SetRot(rot);

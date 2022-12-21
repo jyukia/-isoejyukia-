@@ -121,11 +121,11 @@ void CMovelife::Setlife(int nLife)
 
 }
 
-CMovelife * CMovelife::Create(D3DXVECTOR3 pos)
+CMovelife * CMovelife::Create(D3DXVECTOR3 pos,int nPriority)
 {
 	CMovelife* pLife = nullptr;
 	//“®“IŠm•Û
-	pLife = new CMovelife(3);
+	pLife = new CMovelife(nPriority);
 
 	if (pLife != nullptr)
 	{

@@ -58,13 +58,11 @@ HRESULT CGame::Init(void)
 	//モデル読み込み一番上に配置
 	OutputStatus();
 
-
 	//ライトの生成
 	m_pLight = CLight::Create();
 
 	//メッシュフィールドの生成
-	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL2);
-
+	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 	//モデルの生成
 	CObjectX* test = CObjectX::Create(D3DXVECTOR3(100.0f, 0.0f, -100.0f), CObject::PRIORITY_LEVEL3);
 	test->LoadModel("Box");
@@ -72,7 +70,7 @@ HRESULT CGame::Init(void)
 	test2->LoadModel("Box");
 
 	//プレイヤーの生成
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pPlayer->LoadModel("Kedama");
 
 	//コンパス生成
@@ -80,7 +78,7 @@ HRESULT CGame::Init(void)
 
 	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
 
-	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	Load();
 

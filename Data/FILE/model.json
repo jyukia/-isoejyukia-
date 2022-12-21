@@ -6,7 +6,10 @@
     [ "Box", "Data\/MODEL\/Box.x" ],
     [ "Ball", "Data\/MODEL\/Ball.x" ],
     [ "Kedama", "Data\/MODEL\/kedama.x" ],
-    [ "BOTTLE", "Data\/MODEL\/bottle.x" ]
+    [ "BOTTLE", "Data\/MODEL\/bottle.x" ],
+    [ "TABLE", "Data\/MODEL\/table.x" ],
+    [ "GROUND", "Data\/MODEL\/Ground.x" ],
+    [ "CHAIR", "Data\/MODEL\/Chair.x" ]
 
   ]
 }

@@ -111,7 +111,8 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("Terminal"), &m_pFont);
 #endif
 
-	SetFog(true, D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.3f));
+	//フォグの設定
+	//SetFog(true, D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.3f));
 
 	//カメラの生成
 	m_pCamera = CCamera::Create(CCamera::CAMERA_MAP);	//プレイヤーカメラ

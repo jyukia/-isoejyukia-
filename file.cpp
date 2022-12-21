@@ -9,6 +9,7 @@
 #include "letter.h"
 #include "object3D.h"
 #include "objectX.h"
+#include "player.h"
 
 #include <fstream>
 
@@ -16,7 +17,6 @@
 //===============================
 //ゲーム内ヘッター
 //===============================
-
 Set DataSet;
 namespace nl = nlohmann;
 nl::json j;//リストの生成
@@ -44,11 +44,39 @@ void OutputStatus()
 
 	{//	ボトル(小瓶)
 		std::string a = "BOTTLE";
-		std::string b = std::to_string(1);
+		std::string b = std::to_string(0);
 		a += b;
 
 		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(500.0f, 600.0f, -1200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+	{//テ―ブル
+		
+		std::string a = "TABLE";
+		std::string b = std::to_string(0);
+		a += b;
+
+		//情報
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1000.0f, 0.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+	for (int Cnt = 0; Cnt < 2; Cnt++)
+	{//椅子 横
+
+	std::string a = "CHAIRX";
+	std::string b = std::to_string(Cnt);
+	a += b;
+
+	//情報
+	JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(-500.0f +2800 * Cnt, 0.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+	for (int Cnt = 0; Cnt < 2; Cnt++)
+	{//椅子 奥
+		std::string a = "CHAIRZ";
+		std::string b = std::to_string(Cnt);
+		a += b;
+
+		//情報
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1000.0f, 0.0f, -3000.0f + 2800 * Cnt), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 
 	auto jobj = j.dump();
@@ -73,7 +101,7 @@ void Load()
 
 		{//小瓶
 			std::string a = "BOTTLE";
-			std::string b = std::to_string(1);
+			std::string b = std::to_string(0);
 			a += b;
 
 			//右
@@ -81,7 +109,38 @@ void Load()
 			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
 			CObjectX* bottle = CObjectX::Create("BOTTLE", pos,3);
 		}
+		{//テーブル
+			std::string a = "TABLE";
+			std::string b = std::to_string(0);
+			a += b;
 
+			//右
+			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+			CObjectX* table = CObjectX::Create("TABLE", pos, 3);
+		}
+		for (int Cnt = 0; Cnt < 2; Cnt++)
+		{//椅子
+		std::string a = "CHAIRX";
+		std::string b = std::to_string(Cnt);
+		a += b;
+
+		//右
+		D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		CObjectX* chair = CObjectX::Create("CHAIR", pos, 3);
+		}
+		for (int Cnt = 0; Cnt < 2; Cnt++)
+		{//椅子
+		std::string a = "CHAIRZ";
+		std::string b = std::to_string(Cnt);
+		a += b;
+
+		//右
+		D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		CObjectX* chair = CObjectX::Create("CHAIR", pos, 3);
+		}
 	}
 }
 //============================

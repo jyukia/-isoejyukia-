@@ -34,7 +34,7 @@ public:
 
 	void Setlife(int nLife);
 
-	static CMovelife* Create(D3DXVECTOR3 pos);
+	static CMovelife* Create(D3DXVECTOR3 pos,int nPriority);
 
 private:
 

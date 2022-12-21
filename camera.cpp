@@ -34,7 +34,7 @@ CCamera::~CCamera()
 //=============================================================================
 HRESULT CCamera::Init(void)
 {
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);									//向き
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//向き
 
 	{//画面分割	プレイヤー
 	 //視点・注視点・上方向を設定する（構造体の初期化）
@@ -52,10 +52,7 @@ HRESULT CCamera::Init(void)
 		m_game_viewport[NumCameraZero].Height = 720;
 		m_game_viewport[NumCameraZero].MaxZ = 1.0f;
 		m_game_viewport[NumCameraZero].MinZ = 0.0f;
-
-
 	}
-
 
 	{//画面分割 マップ
 		m_posV[NumCameraOne] = D3DXVECTOR3(0.0f, 1000.0f, -400.0f);						//視点
@@ -166,11 +163,11 @@ void CCamera::Update(void)
 			//ワールドマトリックスの初期化
 			D3DXMatrixIdentity(&m_mtxView[cameranum]);		//行列初期化関数(第一引数の行列を単位行列に初期化)
 
-															//向きを反映
+			//向きを反映
 			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
 			D3DXMatrixMultiply(&m_mtxView[cameranum], &m_mtxView[cameranum], &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
 
-																									//位置を反映
+			//位置を反映
 			D3DXMatrixTranslation(&mtxTrans, pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
 			D3DXMatrixMultiply(&m_mtxView[cameranum], &m_mtxView[cameranum], &mtxTrans);
 
@@ -178,8 +175,6 @@ void CCamera::Update(void)
 			D3DXVec3TransformCoord(&m_CamPosR[cameranum], &m_posR[cameranum], &m_mtxView[cameranum]);	//ワールド変換行列
 		}
 	}
-
-
 }
 
 //=============================================================================
@@ -220,26 +215,26 @@ void CCamera::SetCamera(bool bfixed, bool btypecom, int numCamera)
 		{
 			//プロジェクションマトリックスの作成
 			D3DXMatrixPerspectiveFovLH(&m_mtxProjection[NumCameraZero],
-				D3DXToRadian(45.0f),							//視野角
+				D3DXToRadian(90.0f),							//視野角
 				(float)m_game_viewport[NumCameraZero].Width / (float)m_game_viewport[NumCameraZero].Height,		//アスペクト比
 				10.0f,											//ニア（どこからどこまでカメラで表示するか設定）
-				3000.0f);										//ファー
+				1000.0f);										//ファー
 		}
 		else
 		{
 			// プロジェクションマトリックスの作成(平行投影)
-			D3DXMatrixOrthoLH(&m_mtxProjection[NumCameraZero],									// プロジェクションマトリックス
-				(float)m_game_viewport[NumCameraZero].Width,									// 幅
-				(float)m_game_viewport[NumCameraZero].Height,									// 高さ
+			D3DXMatrixOrthoLH(&m_mtxProjection[NumCameraZero],				// プロジェクションマトリックス
+				(float)m_game_viewport[NumCameraZero].Width,				// 幅
+				(float)m_game_viewport[NumCameraZero].Height,				// 高さ
 				10.0f,													// ニア
-				3000.0f);												// ファー
+				1000.0f);												// ファー
 		}
 		//プロジェクションマトリックスの設定
 		pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProjection[NumCameraZero]);
 		break;
 	case CCamera::CAMERA_MAP:		//それ以外の処理
 
-									//ビューポートの設定
+		//ビューポートの設定
 		pDevice->SetViewport(&m_game_viewport[numCamera]);
 
 		//ビューマトリックスの初期化
@@ -262,9 +257,9 @@ void CCamera::SetCamera(bool bfixed, bool btypecom, int numCamera)
 			D3DXToRadian(45.0f),																//視野角
 			(float)m_game_viewport[numCamera].Width / (float)m_game_viewport[numCamera].Height,			//アスペクト比
 			10.0f,																				//どこから(ニア)どこまで(ファー)をカメラで
-			3000.0f);																			//表示するか設定
+			50000.0f);																			//表示するか設定
 
-																								//プロジェクションマトリックスの設定
+		//プロジェクションマトリックスの設定
 		pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProjection[numCamera]);
 		break;
 	case CCamera::CAMERA_INVALID:

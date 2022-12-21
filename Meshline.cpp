@@ -8,7 +8,6 @@
 
 bool CMeshLine::MoveMaxFlg = false;
 
-
 CMeshLine::CMeshLine(int nPriority) :m_pVtxMax(0), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_Vtxcount(0), bUseflg(false)
 {
 
@@ -44,13 +43,13 @@ HRESULT CMeshLine::Init()
 	for (int Cnt = 0; Cnt < m_pVtxMax; Cnt++)
 	{
 		// 頂点情報を設定
-		pVtx[Cnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		pVtx[Cnt].pos = D3DXVECTOR3(110.0f, 610.0f, -600.0f);
 
 		//各頂点の法線の設定（※ベクトルの大きさは1にする必要がある）
 		pVtx[Cnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 		// 頂点カラーの設定
-		pVtx[Cnt].col = D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f);
+		pVtx[Cnt].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
 		//テクスチャの座標設定
 		pVtx[Cnt].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -89,11 +88,11 @@ void CMeshLine::Update()
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-		//戻った際の当たり判定 (巻き戻し)
-		bUseflg = CollisionReturn(&pPlayerPos,12);
-		if (m_Vtxcount >= 8)
-		{
-		}
+	//戻った際の当たり判定 (巻き戻し)
+	bUseflg = CollisionReturn(&pPlayerPos, 12);
+	if (m_Vtxcount >= 8)
+	{
+	}
 	if (!bUseflg)	//生成
 	{
 		if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
@@ -132,18 +131,18 @@ void CMeshLine::Draw()
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);				//行列初期化関数(第一引数の行列を単位行列に初期化)
 
-	//向きを反映
+													//向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
 
-	//位置を反映
+																		//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	//ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);		//ワールド座標行列の設定
 
-	//頂点バッファをデータストリームに設定
+															//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
 
 	//頂点フォーマットの設定
@@ -320,11 +319,11 @@ bool CMeshLine::ReturnCollision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPos
 bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
 {
 	const int nPolygon = 100;
-	D3DXVECTOR3 VecA   [nPolygon * 3];				//VecA
-	D3DXVECTOR3 VecB   [nPolygon * 3];				//VecB
+	D3DXVECTOR3 VecA[nPolygon * 3];				//VecA
+	D3DXVECTOR3 VecB[nPolygon * 3];				//VecB
 	float Calculation2D[nPolygon * 3];			//2次元外積の計算結果
 
-	//頂点情報へのポインタ
+												//頂点情報へのポインタ
 	VERTEX_3D * pVtx = nullptr;
 	bool bIsLanding = false;
 
@@ -333,55 +332,55 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
 
 	for (int count = 0; count < nPolygon; count++)
 	{
-	//ベクトルの取得 VecA 2 3 4
-	VecA[count * 3] = pVtx[3 + count].pos - pVtx[2 + count].pos;
-	VecA[count * 3 + 1] = pVtx[4 + count].pos - pVtx[3 + count].pos;
-	VecA[count * 3 + 2] = pVtx[2 + count].pos - pVtx[4 + count].pos;
+		//ベクトルの取得 VecA 2 3 4
+		VecA[count * 3] = pVtx[3 + count].pos - pVtx[2 + count].pos;
+		VecA[count * 3 + 1] = pVtx[4 + count].pos - pVtx[3 + count].pos;
+		VecA[count * 3 + 2] = pVtx[2 + count].pos - pVtx[4 + count].pos;
 
-	//ベクトルの取得 VecA 2 3 4
-	//VecA[0] = pVtx[3].pos - pVtx[2].pos;
-	//VecA[1] = pVtx[4].pos - pVtx[3].pos;
-	//VecA[2] = pVtx[2].pos - pVtx[4].pos;
-	//ベクトルの取得 VecA
-	//VecA[3] = pVtx[4].pos - pVtx[3].pos;
-	//VecA[4] = pVtx[5].pos - pVtx[4].pos;
-	//VecA[5] = pVtx[3].pos - pVtx[5].pos;
-	//VecA[6] = pVtx[5].pos - pVtx[4].pos;
-	//VecA[7] = pVtx[6].pos - pVtx[5].pos;
-	//VecA[8] = pVtx[4].pos - pVtx[6].pos;
-	//VecA[9] = pVtx[6].pos - pVtx[5].pos;
-	//VecA[10] = pVtx[7].pos - pVtx[6].pos;
-	//VecA[11] = pVtx[5].pos - pVtx[7].pos;
+		//ベクトルの取得 VecA 2 3 4
+		//VecA[0] = pVtx[3].pos - pVtx[2].pos;
+		//VecA[1] = pVtx[4].pos - pVtx[3].pos;
+		//VecA[2] = pVtx[2].pos - pVtx[4].pos;
+		//ベクトルの取得 VecA
+		//VecA[3] = pVtx[4].pos - pVtx[3].pos;
+		//VecA[4] = pVtx[5].pos - pVtx[4].pos;
+		//VecA[5] = pVtx[3].pos - pVtx[5].pos;
+		//VecA[6] = pVtx[5].pos - pVtx[4].pos;
+		//VecA[7] = pVtx[6].pos - pVtx[5].pos;
+		//VecA[8] = pVtx[4].pos - pVtx[6].pos;
+		//VecA[9] = pVtx[6].pos - pVtx[5].pos;
+		//VecA[10] = pVtx[7].pos - pVtx[6].pos;
+		//VecA[11] = pVtx[5].pos - pVtx[7].pos;
 
-	//プレイヤー	頂点を測る
-	VecB[count * 3] = *PlayerPos -	   pVtx[2+ count].pos;
-	VecB[count * 3 + 1] = *PlayerPos - pVtx[3+ count].pos;
-	VecB[count * 3 + 2] = *PlayerPos - pVtx[4+ count].pos;
+		//プレイヤー	頂点を測る
+		VecB[count * 3] = *PlayerPos - pVtx[2 + count].pos;
+		VecB[count * 3 + 1] = *PlayerPos - pVtx[3 + count].pos;
+		VecB[count * 3 + 2] = *PlayerPos - pVtx[4 + count].pos;
 
-	//VecB[0] = *PlayerPos - pVtx[2].pos;
-	//VecB[1] = *PlayerPos - pVtx[3].pos;
-	//VecB[2] = *PlayerPos - pVtx[4].pos;
-	//VecB[3] = *PlayerPos - pVtx[3].pos;
-	//VecB[4] = *PlayerPos - pVtx[4].pos;
-	//VecB[5] = *PlayerPos - pVtx[5].pos;
-	//VecB[6] = *PlayerPos - pVtx[4].pos;
-	//VecB[7] = *PlayerPos - pVtx[5].pos;
-	//VecB[8] = *PlayerPos - pVtx[6].pos;
-	//VecB[9] = *PlayerPos - pVtx[5].pos;
-	//VecB[10] = *PlayerPos - pVtx[6].pos;
-	//VecB[11] = *PlayerPos - pVtx[7].pos;
+		//VecB[0] = *PlayerPos - pVtx[2].pos;
+		//VecB[1] = *PlayerPos - pVtx[3].pos;
+		//VecB[2] = *PlayerPos - pVtx[4].pos;
+		//VecB[3] = *PlayerPos - pVtx[3].pos;
+		//VecB[4] = *PlayerPos - pVtx[4].pos;
+		//VecB[5] = *PlayerPos - pVtx[5].pos;
+		//VecB[6] = *PlayerPos - pVtx[4].pos;
+		//VecB[7] = *PlayerPos - pVtx[5].pos;
+		//VecB[8] = *PlayerPos - pVtx[6].pos;
+		//VecB[9] = *PlayerPos - pVtx[5].pos;
+		//VecB[10] = *PlayerPos - pVtx[6].pos;
+		//VecB[11] = *PlayerPos - pVtx[7].pos;
 
-	Calculation2D[count * 3] =Vec2Cross(&VecA[count * 3],&VecB[count * 3]);
-	Calculation2D[count * 3 + 1] = Vec2Cross(&VecA[count * 3 + 1], &VecB[count * 3 + 1]);
-	Calculation2D[count * 3 + 2] = Vec2Cross(&VecA[count * 3 + 2], &VecB[count * 3 + 2]);
+		Calculation2D[count * 3] = Vec2Cross(&VecA[count * 3], &VecB[count * 3]);
+		Calculation2D[count * 3 + 1] = Vec2Cross(&VecA[count * 3 + 1], &VecB[count * 3 + 1]);
+		Calculation2D[count * 3 + 2] = Vec2Cross(&VecA[count * 3 + 2], &VecB[count * 3 + 2]);
 
 		//2次元外積の計算結果
-	//Calculation2D[0] = Vec2Cross(&VecA[0], &VecB[0]);
-	//Calculation2D[1] = Vec2Cross(&VecA[1], &VecB[1]);
-	//Calculation2D[2] = Vec2Cross(&VecA[2], &VecB[2]);
-	//Calculation2D[3] = Vec2Cross(&VecA[3], &VecB[3]);
-	//Calculation2D[4] = Vec2Cross(&VecA[4], &VecB[4]);
-	//Calculation2D[5] = Vec2Cross(&VecA[5], &VecB[5]);
+		//Calculation2D[0] = Vec2Cross(&VecA[0], &VecB[0]);
+		//Calculation2D[1] = Vec2Cross(&VecA[1], &VecB[1]);
+		//Calculation2D[2] = Vec2Cross(&VecA[2], &VecB[2]);
+		//Calculation2D[3] = Vec2Cross(&VecA[3], &VecB[3]);
+		//Calculation2D[4] = Vec2Cross(&VecA[4], &VecB[4]);
+		//Calculation2D[5] = Vec2Cross(&VecA[5], &VecB[5]);
 
 		//プレイヤーの位置が全部-か+
 		if ((Calculation2D[count * 3] > 0 && Calculation2D[count * 3 + 1] > 0 && Calculation2D[count * 3 + 2] > 0) || (Calculation2D[count * 3] < 0 && Calculation2D[count * 3 + 1] < 0 && Calculation2D[count * 3 + 2] < 0))
@@ -407,7 +406,7 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
 		}
 		else
 		{//当たっていないとき
-			//判定　分かりやすく色を変える
+		 //判定　分かりやすく色を変える
 			for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
 			{
 				// 頂点カラーの設定

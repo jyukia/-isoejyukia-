@@ -18,6 +18,8 @@ class CFade;
 class CLight;
 class CScore;
 class CMovelife;
+class CMeshLine;
+
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -63,6 +65,9 @@ private:
 	//移動可能距離
 	static CMovelife* GetMovelife() { return pMovelife; }
 	static CMovelife* pMovelife;
+
+	//メッシュライン
+	CMeshLine *m_pMeshLine;
 
 };
 #endif
