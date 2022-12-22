@@ -174,7 +174,7 @@ void CPlayer::Update()
 	CDebugProc::Print("カメラの情報       (pCameraRot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pCameraRot.x, pCameraRot.y, pCameraRot.z);
 
 	bool flg = CMeshLine::GetMoveFlg();	//移動制限のフラグ
-										//一定サイズまで行くと変更しないよう
+	//一定サイズまで行くと変更しないよう
 	if (Scale.x <= 0.2f || Scale.y <= 0.2f || Scale.z <= 0.2f)
 	{
 		flg = true;	//移動しないようフラグで設定
@@ -343,7 +343,6 @@ void CPlayer::Update()
 		pObject = pObject->GetNext();
 	}
 
-
 	// メッシュフィールドのポインタを取得
 	//CMeshfield *pMeshField = CGame::GetMeshfield();
 	//// プレイヤーのposとrotの設定
@@ -362,8 +361,7 @@ void CPlayer::Update()
 		move.y = 0.0f;
 	}
 
-
-
+	OutSide(pos);
 
 	//for (int nCnt = 0; nCnt < 12; nCnt++)
 	//{
@@ -378,6 +376,28 @@ void CPlayer::Update()
 
 	// CObjectXの更新処理
 	CObjectX::Update();
+}
+
+void CPlayer::OutSide(D3DXVECTOR3 &Playerpos)
+{
+
+	//場外に行かないため処理
+	if (Playerpos.z >= -505.0f)
+	{
+		Playerpos.z = -505.0f;
+	}
+	if (Playerpos.z <= -2480.0f)
+	{
+		Playerpos.z = -2480.0f;
+	}
+	if (Playerpos.x >= 1930.0f)
+	{
+		Playerpos.x = 1930.0f;
+	}
+	if (Playerpos.x <= 1.0f)
+	{
+		Playerpos.x = 1.0f;
+	}
 }
 
 

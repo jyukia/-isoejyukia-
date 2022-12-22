@@ -3,12 +3,16 @@
   [
     [ "SOCCER", "Data\/TEXTURE\/soccer.png" ],
     [ "ENDO", "Data\/TEXTURE\/EAJt0K7UIAA9ioT.jpg" ],
-    [ "INIESUTA", "Data\/TEXTURE\/2443e216c122767fd911b67e0a4db335_600.jpg" ],
+    [ "INIESUTA", "Data\/TEXTURE\/2443e216c122767fd911b67e0a4db335_600.jpg"],
     [ "TITLE", "Data\/TEXTURE\/title.png" ],
     [ "RANKING", "Data\/TEXTURE\/Ranking.png" ],
     [ "COMPASS", "Data\/TEXTURE\/compas.png" ],
     [ "NUMBER", "Data\/TEXTURE\/number000.png" ],
-    [ "OMOIDE", "Data\/TEXTURE\/omoide.png" ]
+    [ "OMOIDE", "Data\/TEXTURE\/omoide.png" ],
+    [ "ME", "Data\/TEXTURE\/01.png" ],
+    [ "REDY", "Data\/TEXTURE\/1.png" ]
 
-  ]
+
+
+]
 }

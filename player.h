@@ -40,7 +40,7 @@ public:
 	HRESULT Init() override;			// ‰Šú‰»ˆ—
 	void Update() override;				// XVˆ—
 
-	D3DXVECTOR3 PlayerMove();
+	void OutSide(D3DXVECTOR3 &Playerpos);
 
 	static CPlayer *Create(const D3DXVECTOR3 pos, int nPriority);    // ¶¬ˆ—
 

@@ -19,8 +19,10 @@
 #include"Number.h"
 #include"score.h"
 #include "file.h"
+#include "goal.h"
 
 #include "movelife.h"
+#include "Preparation.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -30,6 +32,8 @@ CMeshfield *CGame::m_pMeshField = nullptr;
 CLight *CGame::m_pLight = nullptr;
 CScore* CGame::pScore = nullptr;
 CMovelife* CGame::pMovelife = nullptr;
+CGoal* CGame::m_pGoal = nullptr;
+Cpreparation *CGame::m_pPreparation = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -61,6 +65,8 @@ HRESULT CGame::Init(void)
 	//ライトの生成
 	m_pLight = CLight::Create();
 
+	m_pPreparation = Cpreparation::Create("REDY",D3DXVECTOR3(720.0f,360.0f,0.0f), D3DXVECTOR3(720.0f, 360.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
 	//メッシュフィールドの生成
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 	//モデルの生成
@@ -72,6 +78,10 @@ HRESULT CGame::Init(void)
 	//プレイヤーの生成
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pPlayer->LoadModel("Kedama");
+
+	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
+	m_pGoal->LoadModel("Kedama");
+
 
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);

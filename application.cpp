@@ -29,7 +29,7 @@ CCamera *CApplication::m_pCamera = nullptr;
 CTexture *CApplication::m_pTexture = nullptr;
 CObjectXGroup *CApplication::m_pObjectXGroup = nullptr;
 CSound *CApplication::m_pSound = nullptr;
-CApplication::MODE CApplication::m_mode = MODE_GAME;
+CApplication::MODE CApplication::m_mode = MODE_TITLE;
 CDebugProc *CApplication::m_pDebugProc = nullptr;					// デバック表示
 CStageImgui *CApplication::m_Imgui = nullptr;
 //=============================================================================

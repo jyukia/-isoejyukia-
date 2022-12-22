@@ -84,6 +84,8 @@ public:
 
 	static CObjectX *Create(const char *aFileName, D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	static CObjectX *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
+	static CObjectX *Create(const char *aFileName, D3DXVECTOR3 rot,D3DXVECTOR3 pos, int nPriority);	// 生成処理
+
 	void LoadModel(const char *aFileName);						// モデルの読み込み処理
 	void BindTexture(std::string inPath);						// 派生のテクスチャポインタを親のテクスチャポインタに代入する処理
 	void Projection(void);										// 平行投影処理

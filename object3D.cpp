@@ -284,6 +284,31 @@ CObject3D * CObject3D::Create(D3DXVECTOR3 pos, int nPriority)
 	return pObject3D;
 }
 
+CObject3D * CObject3D::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, int nPriority)
+{
+	//ポインタ宣言
+	CObject3D *pObject3D = nullptr;
+
+	//インスタンス生成
+	pObject3D = new CObject3D(nPriority);
+
+	if (pObject3D != nullptr)
+	{//ポインタが存在したら実行
+		pObject3D->SetPos(pos);
+		pObject3D->SetRot(rot);
+		pObject3D->SetSize(size);
+		pObject3D->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		pObject3D->Init();
+	}
+	else
+	{//ポインタが虚無だったら実行
+		assert(false);
+	}
+
+	//ポインタを返す
+	return pObject3D;
+}
+
 //=============================================================================
 // テクスチャの読み込み
 //=============================================================================

@@ -63,7 +63,7 @@ public:
 	virtual void Draw() = 0;							// 描画処理
 	virtual void VtxUpdate() {}							// 頂点座標更新処理
 
-														// Setter
+	// Setter
 	virtual void SetPos(D3DXVECTOR3 pos) {};			// 座標設定処理
 	virtual void SetSize(D3DXVECTOR3 size) {};			// サイズ設定処理
 	virtual void SetMove(D3DXVECTOR3 move) {};			// 移動量設定処理

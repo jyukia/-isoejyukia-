@@ -26,6 +26,7 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="file.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="goal.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="Precompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Preparation.cpp" />
     <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="score.cpp" />
@@ -78,6 +80,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="file.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="goal.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx9.h" />
@@ -111,6 +114,7 @@
     <ClInclude Include="parts.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="Precompile.h" />
+    <ClInclude Include="Preparation.h" />
     <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="score.h" />

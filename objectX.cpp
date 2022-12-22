@@ -12,9 +12,9 @@
 D3DXVECTOR3 CObjectX::m_axis;    // 回転軸
 
 
-								 //=============================================================================
-								 // コンストラクタ
-								 //=============================================================================
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CObjectX::CObjectX(int nPriority) :
 	CObject(nPriority),
 	m_pos(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
@@ -326,6 +326,32 @@ CObjectX * CObjectX::Create(D3DXVECTOR3 pos, int nPriority)
 		pObjectX->Init();
 		pObjectX->SetPos(pos);
 		pObjectX->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+	else
+	{//ポインタが虚無だったら実行
+		assert(false);
+	}
+
+	//ポインタを返す
+	return pObjectX;
+}
+
+CObjectX * CObjectX::Create(const char * aFileName, D3DXVECTOR3 rot, D3DXVECTOR3 pos, int nPriority)
+{
+	//ポインタ宣言
+	CObjectX *pObjectX = nullptr;
+
+	//インスタンス生成
+	pObjectX = new CObjectX(nPriority);
+
+	if (pObjectX != nullptr)
+	{//ポインタが存在したら実行
+		pObjectX->Init();
+		pObjectX->LoadModel(aFileName);
+		pObjectX->SetPos(pos);
+		pObjectX->SetRot(rot);
+		pObjectX->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		pObjectX->CalculationVtx();
 	}
 	else
 	{//ポインタが虚無だったら実行

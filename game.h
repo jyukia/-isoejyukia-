@@ -19,7 +19,8 @@ class CLight;
 class CScore;
 class CMovelife;
 class CMeshLine;
-
+class CGoal;
+class Cpreparation;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -52,6 +53,10 @@ private:
 	static CPlayer *m_pPlayer;				// プレイヤーのポインタ
 	static CLight *m_pLight;				// ライトのポインタ
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
+	static CGoal *m_pGoal;				//ゴールポインタ
+
+	static Cpreparation *m_pPreparation;	//ゲーム開始の合図ポインタ
+
 	CFade *m_pFade;
 	CCamera *m_pCamera;
 
