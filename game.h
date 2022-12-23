@@ -55,7 +55,7 @@ private:
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
 	static CGoal *m_pGoal;				//ゴールポインタ
 
-	static Cpreparation *m_pPreparation;	//ゲーム開始の合図ポインタ
+	Cpreparation *m_pPreparation;	//ゲーム開始の合図ポインタ
 
 	CFade *m_pFade;
 	CCamera *m_pCamera;

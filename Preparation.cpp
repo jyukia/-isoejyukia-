@@ -42,15 +42,6 @@ void Cpreparation::Update()
 
 	ChangeCount++;	//テクスチャ変更カウント
 
-	size = D3DXVECTOR3(200.0f,200.0f,0.0f);
-
-
-
-
-	CObject2D::SetPos(pos);
-	CObject2D::SetSize(size);
-	CObject2D::SetRot(rot);
-
 	CObject2D::Update();
 }
 
@@ -58,19 +49,18 @@ Cpreparation * Cpreparation::Create(const char *aFileName,D3DXVECTOR3 pos, D3DXV
 {
 	Cpreparation* pPreparation = nullptr;
 	//動的確保
-	pPreparation = new Cpreparation(3);
+	pPreparation = new Cpreparation(CObject::PRIORITY_LEVEL3);
 
 	if (pPreparation != nullptr)
 	{
-		pPreparation->Init();
-
-		pPreparation->BindTexture(aFileName);
-
-		pPreparation->SetSize(size);
 		//位置情報
 		pPreparation->SetPos(pos);
-
+		pPreparation->SetSize(size);
 		pPreparation->SetRot(rot);
+		pPreparation->SetCol(D3DXCOLOR(1.f,1.f,1.f,1.f));
+		pPreparation->BindTexture(aFileName);
+		pPreparation->Init();
+
 	}
 	else
 	{//処理を止める

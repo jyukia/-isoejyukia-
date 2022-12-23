@@ -33,7 +33,7 @@ CLight *CGame::m_pLight = nullptr;
 CScore* CGame::pScore = nullptr;
 CMovelife* CGame::pMovelife = nullptr;
 CGoal* CGame::m_pGoal = nullptr;
-Cpreparation *CGame::m_pPreparation = nullptr;
+//Cpreparation *CGame::m_pPreparation = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -65,8 +65,6 @@ HRESULT CGame::Init(void)
 	//ライトの生成
 	m_pLight = CLight::Create();
 
-	m_pPreparation = Cpreparation::Create("REDY",D3DXVECTOR3(720.0f,360.0f,0.0f), D3DXVECTOR3(720.0f, 360.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
 	//メッシュフィールドの生成
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 	//モデルの生成
@@ -89,6 +87,9 @@ HRESULT CGame::Init(void)
 	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
 
 	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+
+	//ゲーム開始の合図
+	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	Load();
 
