@@ -44,12 +44,17 @@ void CScore::Uninit()
 //-----------------------------------------
 void CScore::Update()
 {
+	D3DXVECTOR3 pos = CObject2D::GetPos();
+
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::GetInput();
 	if (pInputKeyboard->Trigger(DIK_F))
 	{
 		AddScore(1);
 	}
+
+	CObject2D::SetPos(pos);
+
 }
 //-----------------------------------------
 //描画

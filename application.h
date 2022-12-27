@@ -20,7 +20,7 @@ class CObjectXGroup;
 class CSound;
 class CDebugProc;
 class CStageImgui;
-
+class CMode;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -35,6 +35,8 @@ public:
 	{
 		MODE_TITLE = 0,
 		MODE_GAME,
+		MODE_GAME1,
+		MODE_SELECT_STAGE,
 		MODE_RESULT,
 		MODE_RANKING,
 		MODE_TUTORIAL,
@@ -63,6 +65,7 @@ public:
 	static CObjectXGroup *GetObjectXGroup() { return m_pObjectXGroup; }
 	static CSound *GetSound() { return m_pSound; }
 	static CStageImgui *GetImgui() { return m_Imgui; }
+	static CMode *GetpMode() { return m_pMode; }
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -70,7 +73,7 @@ private:
 	static CRenderer *m_pRenderer;
 	static CInput *m_pInput;
 	static MODE m_mode;
-	static CObject *m_pMode;
+	static CMode *m_pMode;
 	static CCamera *m_pCamera;
 	static CTexture *m_pTexture;
 	static CObjectXGroup *m_pObjectXGroup;

@@ -13,6 +13,7 @@
 class CTitle;
 class CGame;
 class CResult;
+class CPlayer;
 
 //=============================================================================
 // クラスの定義
@@ -45,13 +46,14 @@ public:
 	D3DXVECTOR3 GetRot(void) override { return D3DXVECTOR3(); }			// 向き取得処理
 	D3DXCOLOR GetCol(void) override { return D3DXCOLOR(); }			// 色取得処理
 
+	static CPlayer *GetPlayer() { return m_pPlayer; }
+	static void SetPlayer(CPlayer* player) { m_pPlayer = player; }
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
-	CTitle *m_pTitle;
-	CGame *m_pGame;
-	CResult *m_pResult;
+
+	static CPlayer *m_pPlayer;				// プレイヤーのポインタ
 };
 
 #endif

@@ -146,7 +146,7 @@ void CTitle::Update(void)
 			if (m_modecount == 1)
 			{
 				//‘JˆÚ
-				CFade::SetFade(CApplication::MODE_GAME);	//ƒQ[ƒ€‘JˆÚ
+				CFade::SetFade(CApplication::MODE_SELECT_STAGE);	//ƒQ[ƒ€‘JˆÚ
 			}
 			if (m_modecount == 2)
 			{

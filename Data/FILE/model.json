@@ -1,8 +1,6 @@
 {
   "MODEL": 
   [
-    [ "AstroBot_Ice", "Data\/MODEL\/AstroBot_Ice.x" ],
-    [ "AstroBot_Wind", "Data\/MODEL\/AstroBot_Wind.x" ],
     [ "Box", "Data\/MODEL\/Box.x" ],
     [ "Ball", "Data\/MODEL\/Ball.x" ],
     [ "Kedama", "Data\/MODEL\/kedama.x" ],
@@ -15,7 +13,13 @@
     [ "DOOR", "Data\/MODEL\/door.x" ],
     [ "PICTURE", "Data\/MODEL\/Picture.x" ],
     [ "BOOKSHELF", "Data\/MODEL\/bookshelf.x" ],
-    [ "CHEST", "Data\/MODEL\/Chest.x" ]
+    [ "CHEST", "Data\/MODEL\/Chest.x" ],
+    [ "SPOON", "Data\/MODEL\/spoon.x" ],
+    [ "PLATE", "Data\/MODEL\/plate.x" ],
+    [ "MAP1", "Data\/MODEL\/map1.x" ],
+    [ "MAP2", "Data\/MODEL\/map2.x" ]
+
+    
 
   ]
 }

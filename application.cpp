@@ -9,13 +9,17 @@
 #include "light.h"
 #include "texture.h"
 #include "title.h"
+
 #include "game.h"
+#include "game1.h"
+
 #include "ranking.h"
 #include "tutorial.h"
 #include "fade.h"
 #include "objectX_group.h"
 #include "sound.h"
 #include"DebugProc.h"
+#include"SelectStage.h"
 
 #include"stage_imgui.h"
 
@@ -24,12 +28,12 @@
 //=============================================================================
 CRenderer *CApplication::m_pRenderer = nullptr;
 CInput *CApplication::m_pInput = nullptr;
-CObject *CApplication::m_pMode = nullptr;
+CMode *CApplication::m_pMode = nullptr;
 CCamera *CApplication::m_pCamera = nullptr;
 CTexture *CApplication::m_pTexture = nullptr;
 CObjectXGroup *CApplication::m_pObjectXGroup = nullptr;
 CSound *CApplication::m_pSound = nullptr;
-CApplication::MODE CApplication::m_mode = MODE_TITLE;
+CApplication::MODE CApplication::m_mode = MODE_GAME1;
 CDebugProc *CApplication::m_pDebugProc = nullptr;					// デバック表示
 CStageImgui *CApplication::m_Imgui = nullptr;
 //=============================================================================
@@ -265,24 +269,28 @@ void CApplication::SetMode(MODE mode)
 
 	m_mode = mode;
 
+	m_pCamera->Init();
+
 	switch (m_mode)
 	{
 	case MODE_TITLE:
-		m_pMode = CTitle::Create();
-		m_pCamera->Init();
+		m_pMode = CTitle::Create();			//
 		break;
 	case MODE_GAME:
-		m_pMode = CGame::Create();
-		m_pCamera->Init();
+		m_pMode = CGame::Create();			//
+		break;
+	case MODE_GAME1:
+		m_pMode = CGame1::Create();			//
+		break;
+	case MODE_SELECT_STAGE:			//ステージ選択
+		m_pMode = CSelectStage::Create();
 		break;
 	case MODE_RANKING:
-		m_pMode = CRanking::Create();
-		m_pCamera->Init();
+		m_pMode = CRanking::Create();			//
 		CRanking::SetRankingScore();
 		break;
-	case MODE_TUTORIAL:
+	case MODE_TUTORIAL:			//
 		m_pMode = CTutorial::Create();
-		m_pCamera->Init();
 		break;
 	}
 }

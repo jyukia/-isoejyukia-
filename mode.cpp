@@ -4,6 +4,10 @@
 #include "mode.h"
 #include "renderer.h"
 #include "application.h"
+#include "player.h"
+
+CPlayer *CMode::m_pPlayer = nullptr;
+
 
 //=============================================================================
 // コンストラクタ

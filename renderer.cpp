@@ -176,6 +176,8 @@ void CRenderer::Update()
 //=============================================================================
 void CRenderer::Draw()
 {
+
+
 	for (int cnt = 0; cnt < 2; cnt++)
 	{
 		// バックバッファ＆Ｚバッファのクリア
@@ -201,14 +203,16 @@ void CRenderer::Draw()
 			//カメラのセット処理
 			if (m_pCamera != nullptr)		//プレイヤーカメラ
 			{
-				m_pCamera->SetCamera(true, true, cnt);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)引数3 画面複数生成(true 画面複数生成 false 無効)
+				if (CApplication::MODE_GAME)
+				{
+					m_pCamera->SetCamera(true, true, cnt);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)引数3 画面複数生成(true 画面複数生成 false 無効)
+				}
+
 			}
 			// Direct3Dによる描画の終了
 			m_pD3DDevice->EndScene();
 		}
-
 	}
-
 	// バックバッファとフロントバッファの入れ替え
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }

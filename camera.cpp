@@ -8,6 +8,7 @@
 #include "player.h"
 #include "game.h"
 #include"DebugProc.h"
+#include"SelectStage.h"
 
 #include <math.h>
 
@@ -150,10 +151,10 @@ void CCamera::Update(void)
 	}
 
 	int mode = CApplication::GetMode();
-	if (mode == CApplication::MODE_GAME)
+	if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1)
 	{
 		//プレイヤー情報
-		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+		D3DXVECTOR3 pPlayerPos = CApplication::GetpMode()->GetPlayer()->GetPos();
 
 		//計算用マトリックス
 		D3DXMATRIX mtxRot, mtxTrans;
@@ -175,6 +176,48 @@ void CCamera::Update(void)
 			D3DXVec3TransformCoord(&m_CamPosR[cameranum], &m_posR[cameranum], &m_mtxView[cameranum]);	//ワールド変換行列
 		}
 	}
+	if (mode == CApplication::MODE_SELECT_STAGE)
+	{
+		SetCameraType(ONE_CAMERA);
+
+		//プレイヤー情報
+		D3DXVECTOR3 pos1 = D3DXVECTOR3(700.0f, 10.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
+
+		int modecount = CSelectStage::GetModeCount();
+		//計算用マトリックス
+		D3DXMATRIX mtxRot, mtxTrans;
+
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&m_mtxView[1]);		//行列初期化関数(第一引数の行列を単位行列に初期化)
+
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
+		D3DXMatrixMultiply(&m_mtxView[1], &m_mtxView[1], &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
+
+		if (modecount ==1)
+		{
+			//位置を反映
+			D3DXMatrixTranslation(&mtxTrans, pos1.x, pos1.y, pos1.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
+		}
+		if (modecount == 2)
+		{
+			//位置を反映
+			D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
+		}
+		D3DXMatrixMultiply(&m_mtxView[1], &m_mtxView[1], &mtxTrans);
+
+
+		D3DXVec3TransformCoord(&m_CamPosV[1], &m_posV[1], &m_mtxView[1]);	//ワールド変換行列
+		D3DXVec3TransformCoord(&m_CamPosR[1], &m_posR[1], &m_mtxView[1]);	//ワールド変換行列
+	}
+	else
+	{
+		SetCameraType(CAMERA_MAP);
+
+	}
+
+
 }
 
 //=============================================================================
@@ -215,7 +258,7 @@ void CCamera::SetCamera(bool bfixed, bool btypecom, int numCamera)
 		{
 			//プロジェクションマトリックスの作成
 			D3DXMatrixPerspectiveFovLH(&m_mtxProjection[NumCameraZero],
-				D3DXToRadian(90.0f),							//視野角
+				D3DXToRadian(45.0f),							//視野角
 				(float)m_game_viewport[NumCameraZero].Width / (float)m_game_viewport[NumCameraZero].Height,		//アスペクト比
 				10.0f,											//ニア（どこからどこまでカメラで表示するか設定）
 				1000.0f);										//ファー

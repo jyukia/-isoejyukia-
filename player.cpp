@@ -144,25 +144,25 @@ void CPlayer::Update()
 	{// デバック表示
 #ifdef _DEBUG
 
-	 //プレイヤー 座標
-		CDebugProc::Print("プレイヤーの位置       (pos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pos.x, pos.y, pos.z);
-		//回転
-		CDebugProc::Print("プレイヤーの回転       (rot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", rot.x, rot.y, rot.z);
-		//移動
-		CDebugProc::Print("プレイヤーの移動       (move)      | X : %.2f | Y : %.2f | Z : %.2f |\n", move.x, move.y, move.z);
-		//目的の角度
-		CDebugProc::Print("プレイヤーの目的の角度 (m_rotDest) | X : %.2f | Y : %.2f | Z : %.2f |\n", m_rotDest.x, m_rotDest.y, m_rotDest.z);
-		//クォータニオン
-		CDebugProc::Print("プレイヤー[クォータニオン] (fst) | %f |\n", fst);
-		//プレイヤージャンプ判定
-		if (m_bJumpFlag)
-		{//ジャンプ
-			CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) ジャンプ \n", m_bJumpFlag);
-		}
-		else
-		{//着地
-			CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) 着地 \n", m_bJumpFlag);
-		}
+	// //プレイヤー 座標
+	//	CDebugProc::Print("プレイヤーの位置       (pos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pos.x, pos.y, pos.z);
+	//	//回転
+	//	CDebugProc::Print("プレイヤーの回転       (rot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", rot.x, rot.y, rot.z);
+	//	//移動
+	//	CDebugProc::Print("プレイヤーの移動       (move)      | X : %.2f | Y : %.2f | Z : %.2f |\n", move.x, move.y, move.z);
+	//	//目的の角度
+	//	CDebugProc::Print("プレイヤーの目的の角度 (m_rotDest) | X : %.2f | Y : %.2f | Z : %.2f |\n", m_rotDest.x, m_rotDest.y, m_rotDest.z);
+	//	//クォータニオン
+	//	CDebugProc::Print("プレイヤー[クォータニオン] (fst) | %f |\n", fst);
+	//	//プレイヤージャンプ判定
+	//	if (m_bJumpFlag)
+	//	{//ジャンプ
+	//		CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) ジャンプ \n", m_bJumpFlag);
+	//	}
+	//	else
+	//	{//着地
+	//		CDebugProc::Print("プレイヤーのジャンプ判定 (m_bJumpFlag) 着地 \n", m_bJumpFlag);
+	//	}
 #endif // _DEBUG
 	}
 
@@ -171,7 +171,7 @@ void CPlayer::Update()
 
 	// カメラの情報取得
 	D3DXVECTOR3 pCameraRot = CCamera::GetRot();
-	CDebugProc::Print("カメラの情報       (pCameraRot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pCameraRot.x, pCameraRot.y, pCameraRot.z);
+//	CDebugProc::Print("カメラの情報       (pCameraRot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pCameraRot.x, pCameraRot.y, pCameraRot.z);
 
 	bool flg = CMeshLine::GetMoveFlg();	//移動制限のフラグ
 	//一定サイズまで行くと変更しないよう

@@ -9,7 +9,7 @@
 #include "object.h"
 #include "input.h"
 #include "title.h"
-#include "game.h"
+#include "game1.h"
 #include "fade.h"
 #include "player.h"
 #include "light.h"
@@ -23,20 +23,20 @@
 
 #include "movelife.h"
 #include "Preparation.h"
-#include "mode.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-CMeshfield *CGame::m_pMeshField = nullptr;
-CLight *CGame::m_pLight = nullptr;
-CScore* CGame::pScore = nullptr;
-CMovelife* CGame::pMovelife = nullptr;
-CGoal* CGame::m_pGoal = nullptr;
+CPlayer *CGame1::m_pPlayer = nullptr;
+CMeshfield *CGame1::m_pMeshField = nullptr;
+CLight *CGame1::m_pLight = nullptr;
+CScore* CGame1::pScore = nullptr;
+CMovelife* CGame1::pMovelife = nullptr;
+CGoal* CGame1::m_pGoal = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CGame::CGame()
+CGame1::CGame1()
 {
 
 }
@@ -44,7 +44,7 @@ CGame::CGame()
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CGame::~CGame()
+CGame1::~CGame1()
 {
 
 }
@@ -52,10 +52,10 @@ CGame::~CGame()
 //=============================================================================
 // 初期化処理
 //=============================================================================
-HRESULT CGame::Init(void)
+HRESULT CGame1::Init(void)
 {
 	{//初期化
-		m_rot = D3DXVECTOR3(0.0f,0.0f,0.0f);
+		m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 
 	//モデル読み込み一番上に配置
@@ -77,12 +77,12 @@ HRESULT CGame::Init(void)
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
-	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
+	pScore = CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	//ゲーム開始の合図
-	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
+	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	Load();
 
@@ -92,7 +92,7 @@ HRESULT CGame::Init(void)
 //=============================================================================
 // 終了処理
 //=============================================================================
-void CGame::Uninit(void)
+void CGame1::Uninit(void)
 {
 	//ライトの解放・削除
 	if (m_pLight != nullptr)
@@ -109,7 +109,7 @@ void CGame::Uninit(void)
 //=============================================================================
 // 更新処理
 //=============================================================================
-void CGame::Update(void)
+void CGame1::Update(void)
 {
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::GetInput();
@@ -144,7 +144,7 @@ void CGame::Update(void)
 //=============================================================================
 // 描画処理
 //=============================================================================
-void CGame::Draw(void)
+void CGame1::Draw(void)
 {
 
 }
@@ -152,13 +152,13 @@ void CGame::Draw(void)
 //=============================================================================
 // 生成処理
 //=============================================================================
-CGame * CGame::Create()
+CGame1 * CGame1::Create()
 {
 	//ポインタ宣言
-	CGame *pGame = nullptr;
+	CGame1 *pGame = nullptr;
 
 	//インスタンス生成
-	pGame = new CGame;
+	pGame = new CGame1;
 
 	if (pGame != nullptr)
 	{//ポインタが存在したら実行

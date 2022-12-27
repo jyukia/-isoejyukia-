@@ -35,7 +35,7 @@ HRESULT CLight::Init(void)
 	D3DXVECTOR3 vecDir4;		//ライトの方向ベクトル
 	D3DXVECTOR3 vecDir5;		//ライトの方向ベクトル
 
-	//ライトをクリアする(1個でいい)
+	//ライトをクリアする
 	ZeroMemory(&m_aLight[0], sizeof(m_aLight));		//←構造体変数をゼロクリアできる便利関数(memsetと同じ)
 
 	//ライトの種類を設定
@@ -55,9 +55,9 @@ HRESULT CLight::Init(void)
 	//ライトの方向を設定
 	vecDir1 = D3DXVECTOR3(-1.0f, 0.5f, -0.5f);
 	vecDir2 = D3DXVECTOR3(-0.3f, 0.8f, 0.4f);
-	vecDir3 = D3DXVECTOR3(0.8f, -0.4f, -0.2f);
+	vecDir3 = D3DXVECTOR3(0.6f, -0.4f, -0.2f);
 	vecDir4 = D3DXVECTOR3(-0.8f, 0.4f, 0.2f);
-	vecDir5 = D3DXVECTOR3(0.0f, 0.1f, 0.4f);
+	vecDir5 = D3DXVECTOR3(0.0f, 0.4f, 0.4f);
 
 	//正規化する（大きさ1のベクトルにする）
 	D3DXVec3Normalize(&vecDir1, &vecDir1);		//←ベクトルを大きさ1のする便利関数

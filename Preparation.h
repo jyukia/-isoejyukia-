@@ -15,7 +15,7 @@ class Cpreparation : public CObject2D
 {
 public:
 	//コンストラクタ
-	explicit Cpreparation(int nPriority);
+	Cpreparation(int nPriority);
 	//デストラクタ
 	~Cpreparation() override;
 
@@ -24,7 +24,7 @@ public:
 	//更新
 	void Update() override;
 
-	static Cpreparation* Create(const char *aFileName,D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot);
+	static Cpreparation* Create(const char *aFileName, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, int nPriority);
 
 private:
 

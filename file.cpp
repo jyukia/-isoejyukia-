@@ -11,6 +11,8 @@
 #include "objectX.h"
 #include "player.h"
 
+#include"SelectStage.h"
+
 #include <fstream>
 
 
@@ -87,7 +89,26 @@ void OutputStatus()
 		a += b;
 
 		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(100.0f + 1500.0f * Cnt, 600.0f, -1700.0f + 200.0f * Cnt), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(100.0f + 1500.0f * Cnt, 620.0f, -1700.0f + 200.0f * Cnt), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+	for (int Cnt = 0; Cnt < 2; Cnt++)
+	{//皿
+		std::string a = "PLATE";
+		std::string b = std::to_string(Cnt);
+		a += b;
+
+		//情報
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(100.0f + 1500.0f * Cnt, 610.0f, -1700.0f + 200.0f * Cnt), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+
+	for (int Cnt = 0; Cnt < 2; Cnt++)
+	{//スプーン
+		std::string a = "SPOON";
+		std::string b = std::to_string(Cnt);
+		a += b;
+
+		//情報
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(0.0f + 1700.0f * Cnt, 600.0f, -1700.0f + 300.0f * Cnt), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 	{//写真
 		std::string a = "PICTURE";
@@ -183,6 +204,9 @@ void Load()
 
 		{//ロード統括
 		}
+		
+		//選択されたカウントによってモデル配置を変える
+		int SelectCount = CSelectStage::GetModeCount();
 
 		{//小瓶
 			std::string a = "BOTTLE";
@@ -227,7 +251,7 @@ void Load()
 		CObjectX* chair = CObjectX::Create("CHAIR", pos, 3);
 		}
 		for (int Cnt = 0; Cnt < 2; Cnt++)
-		{//椅子
+		{//
 			std::string a = "CUPX";
 			std::string b = std::to_string(Cnt);
 			a += b;
@@ -236,6 +260,28 @@ void Load()
 			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
 			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
 			CObjectX* chair = CObjectX::Create("CUP", pos, 3);
+		}
+		for (int Cnt = 0; Cnt < 2; Cnt++)
+		{//
+			std::string a = "PLATE";
+			std::string b = std::to_string(Cnt);
+			a += b;
+
+			//
+			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+			CObjectX* chair = CObjectX::Create("PLATE", pos, 3);
+		}
+		for (int Cnt = 0; Cnt < 2; Cnt++)
+		{//
+			std::string a = "SPOON";
+			std::string b = std::to_string(Cnt);
+			a += b;
+
+			//
+			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+			CObjectX* pSpoon = CObjectX::Create("SPOON", pos, 3);
 		}
 		{//写真
 			std::string a = "PICTURE";

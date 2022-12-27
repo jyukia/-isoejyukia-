@@ -309,6 +309,26 @@ void CObject2D::SetUV(float x_1, float x_2, float y_1, float y_2)
 	//頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
 }
+//=============================================================================
+// 座標更新処理
+//=============================================================================
+void CObject2D::SetPosUV(float x_1, float x_2, float y_1, float y_2, float x_width1, float x_width2)
+{
+	//頂点情報へのポインタ
+	VERTEX_2D*pVtx;
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//テクスチャ座標の更新
+	pVtx[0].pos = D3DXVECTOR3(x_1, y_1,0.f);
+	pVtx[1].pos = D3DXVECTOR3(x_2, y_1,0.f);
+	pVtx[2].pos = D3DXVECTOR3(x_width1, y_2,0.f);
+	pVtx[3].pos = D3DXVECTOR3(x_width2, y_2,0.f);
+
+	//頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
+}
 //---------------------------------------------------------------------------
 //スコア使用
 //---------------------------------------------------------------------------

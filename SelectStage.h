@@ -1,5 +1,5 @@
-#ifndef _GAME_H_
-#define _GAME_H_
+#ifndef _SELECT_STAGE_H_
+#define _SELECT_STAGE_H_
 
 //=============================================================================
 // インクルードファイル
@@ -7,31 +7,40 @@
 #include "main.h"
 #include "object2D.h"
 #include "mode.h"
+#include "objectX.h"
 
 //=============================================================================
 // 前方定義
 //=============================================================================
-class CPlayer;
-class CCamera;
-class CMeshfield;
 class CFade;
+
+class CCamera;
 class CLight;
-class CScore;
-class CMovelife;
-class CMeshLine;
-class CGoal;
-class Cpreparation;
 //=============================================================================
 // クラスの定義
 //=============================================================================
-class CGame : public CMode
+class CSelectStage : public CMode
 {
+public:
+
+	enum SELECTMODE
+	{
+		MODE_NONE = 0,
+		MODE_MAP,
+		MODE_MAP1,
+		SELECTMODEMAX
+	};
+
+	float m_Angle = 10.0f;
+
+	const int m_modeMax = 2;	//画面遷移の最大数	//モード数によって変更
+	const int m_modeMin = 1;	//画面遷移の最小数	//変更不要
 public:
 	//-------------------------------------------------------------------------
 	// コンストラクタとデストラクタ
 	//-------------------------------------------------------------------------
-	CGame();
-	~CGame() override;
+	CSelectStage();
+	~CSelectStage() override;
 
 	//-------------------------------------------------------------------------
 	// メンバー関数
@@ -40,37 +49,33 @@ public:
 	void Uninit(void) override;		// 終了処理
 	void Update(void) override;		// 更新処理
 	void Draw(void) override;		// 描画処理
-	static CGame *Create();			// 生成処理
+	static CSelectStage *Create();		// 生成処理
 
-	static CMeshfield *GetMeshfield() { return m_pMeshField; }
+	static int GetModeCount(void) {return m_modeSelectcount;}
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
-	CObject2D *m_pObject2D;					// オブジェクト2Dのポインタ
 	static LPDIRECT3DTEXTURE9 m_pTexture;	// テクスチャのポインタ
+	CObject2D *m_pObject2D;					// オブジェクト2Dのポインタ
+	static bool m_bSelectEnter;				// Enterを押したかのフラグ
+
+	CObject2D* m_pTex;
+	CObjectX* pStage;
+	CObjectX* pStage1;
+
+
 	static CLight *m_pLight;				// ライトのポインタ
-	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
-	static CGoal *m_pGoal;				//ゴールポインタ
+	CFade *m_pFade;							// フェードのポインタ
 
-	Cpreparation *m_pPreparation;	//ゲーム開始の合図ポインタ
+	bool m_bmodeflg;
 
-	CFade *m_pFade;
-	CCamera *m_pCamera;
+	static int m_modeSelectcount;			//画面遷移のためのカウント
 
-	CObject2D* m_pCompass;
-	D3DXVECTOR3 m_rot;
-
-	//スコア
-	static CScore* GetScore() { return pScore; }
-	static CScore* pScore;
-
-	//移動可能距離
-	static CMovelife* GetMovelife() { return pMovelife; }
-	static CMovelife* pMovelife;
-
-	//メッシュライン
-	CMeshLine *m_pMeshLine;
-
+	float radius;
+	float add_x;
+	float add_z;
 };
+
 #endif

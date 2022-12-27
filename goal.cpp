@@ -38,52 +38,49 @@ HRESULT CGoal::Init()
 
 void CGoal::Update()
 {
-	// 座標取得
-	D3DXVECTOR3 pos = GetPos();
-	// ポインタ宣言
-	CObject *pObject = CObject::GetTop(PRIORITY_LEVEL3);
-
-	//プレイヤー情報
-	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-	D3DXVECTOR3 pPlayerOld = CGame::GetPlayer()->GetPosOld();
-	D3DXVECTOR3 pPlayerSiz = CGame::GetPlayer()->GetSize();
-	// プレイヤーとモデルの当たり判定
-	while (pObject != nullptr)
+	if (CApplication::GetpMode()->GetPlayer() != nullptr)
 	{
-		if (pObject == this)
+		D3DXVECTOR3 pPlayerPos = CApplication::GetpMode()->GetPlayer()->GetPos();
+		D3DXVECTOR3 pPlayerPosOld = CApplication::GetpMode()->GetPlayer()->GetPosOld();
+		D3DXVECTOR3 pSize = CApplication::GetpMode()->GetPlayer()->GetSize();
+		// 座標取得
+		D3DXVECTOR3 pos = GetPos();
+		// ポインタ宣言
+		CObject *pObject = CObject::GetTop(PRIORITY_LEVEL3);
+		// プレイヤーとモデルの当たり判定
+		while (pObject != nullptr)
 		{
+			if (pObject == this)
+			{
+				pObject = pObject->GetNext();
+				continue;
+			}
+			//変数宣言
+			CObject::EObjType objType;
+
+			//オブジェクトのタイプを取得
+			objType = pObject->GetObjType();
+
+			if (objType == OBJTYPE_PLAYER)	//接触がプレイヤーの時
+			{
+				CObjectX *pObjectX = (CObjectX*)pObject;
+
+				GoalFlg = Collision(&pPlayerPos, &pPlayerPosOld, &pSize, true);
+			}
+
+			//ポインタを次に進める
 			pObject = pObject->GetNext();
-			continue;
-		}
-		//変数宣言
-		CObject::EObjType objType;
-
-		//オブジェクトのタイプを取得
-		objType = pObject->GetObjType();
-
-		if (objType == OBJTYPE_PLAYER)	//接触がプレイヤーの時
-		{
-			CObjectX *pObjectX = (CObjectX*)pObject;
-
-			GoalFlg = Collision(&pPlayerPos,&pPlayerOld,&pPlayerSiz,true);
 		}
 
-		//ポインタを次に進める
-		pObject = pObject->GetNext();
-	}
-
-	if (GoalFlg)	//ゴールとプレイヤーが触れたら
-	{
-
-
-
-		if (m_pFade->GetFade() == CFade::FADE_NONE)
+		if (GoalFlg)	//ゴールとプレイヤーが触れたら
 		{
+			if (m_pFade->GetFade() == CFade::FADE_NONE)
+			{
 				// 遷移
 				CFade::SetFade(CApplication::MODE_RANKING);
+			}
 		}
 	}
-
 }
 
 //=============================================================================

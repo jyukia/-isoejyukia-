@@ -35,7 +35,7 @@ public:
 	//-------------------------------------------------------------------------
 	// コンストラクタとデストラクタ
 	//-------------------------------------------------------------------------
-	explicit CObject2D(int nPriority = PRIORITY_LEVEL3);
+	explicit CObject2D(int nPriority = PRIORITY_LEVEL4);
 	~CObject2D() override;
 
 	//-------------------------------------------------------------------------
@@ -53,6 +53,9 @@ public:
 	void SetRot(D3DXVECTOR3 rot) override;						// 向き設定処理
 	void BindTexture(std::string inPath);						// 派生のテクスチャポインタを親のテクスチャポインタに代入する処理
 	void SetUV(float x_1, float x_2, float y_1, float y_2);		// テクスチャ座標更新処理
+	void SetPosUV(float x_1, float x_2, float y_1, float y_2, float x_width1, float x_width2);	// 座標更新処理
+
+	
 	void AnimVtx(int nummax/*アニメーション枚数*/, int PtternAnim/*進むスピード*/);	//アニメーション頂点の設定
 	void SetRotate(bool set, int size) { m_bRotate = set, m_fSquareSize = (float)size; }
 	D3DXVECTOR3 GetPos(void) override { return m_pos; }			// 座標取得処理

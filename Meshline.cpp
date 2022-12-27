@@ -4,6 +4,8 @@
 #include "object3D.h"
 #include "player.h"
 #include "game.h"
+#include "game1.h"
+
 #include"DebugProc.h"
 
 bool CMeshLine::MoveMaxFlg = false;
@@ -79,41 +81,43 @@ void CMeshLine::Update()
 
 	D3DXVECTOR3 axis = CObjectX::GetAxis();
 	//プレイヤー情報
-	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-	D3DXVECTOR3 pPlayerPosOld = CGame::GetPlayer()->GetPosOld();
 
-	//頂点情報へのポインタ
-	VERTEX_3D*pVtx;
-
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	//戻った際の当たり判定 (巻き戻し)
-	bUseflg = CollisionReturn(&pPlayerPos, 12);
-	if (m_Vtxcount >= 8)
+	if (CApplication::GetpMode()->GetPlayer() != nullptr)
 	{
-	}
-	if (!bUseflg)	//生成
-	{
-		if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
+		D3DXVECTOR3 pPlayerPos = CApplication::GetpMode()->GetPlayer()->GetPos();
+		D3DXVECTOR3 pPlayerPosOld = CApplication::GetpMode()->GetPlayer()->GetPosOld();
+
+		//頂点情報へのポインタ
+		VERTEX_3D*pVtx;
+
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+		//戻った際の当たり判定 (巻き戻し)
+		bUseflg = CollisionReturn(&pPlayerPos, 12);
+
+		if (!bUseflg)	//生成
 		{
-			for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
+			if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
 			{
-				pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
+				for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
+				{
+					pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
+				}
+				pVtx[1].pos = pPlayerPos + axis * 30.0f;			//高さ変更
+				pVtx[0].pos = pPlayerPos - axis * 30.0f;			//原点
+				m_Vtxcount += 2;
 			}
-			pVtx[1].pos = pPlayerPos + axis * 30.0f;			//高さ変更
-			pVtx[0].pos = pPlayerPos - axis * 30.0f;			//原点
-			m_Vtxcount += 2;
 		}
-	}
 
-	//頂点バッファをアンロックする
-	m_pVtxBuff->Unlock();
+		//頂点バッファをアンロックする
+		m_pVtxBuff->Unlock();
 #ifdef _DEBUG
-	CDebugProc::Print("プレイヤーの進行方向       (axis)       | X : %.2f | Y : %.2f | Z : %.2f |\n", axis.x, axis.y, axis.z);
+		CDebugProc::Print("プレイヤーの進行方向       (axis)       | X : %.2f | Y : %.2f | Z : %.2f |\n", axis.x, axis.y, axis.z);
 
-	CDebugProc::Print("プレイヤーの座標       (pPlayerPos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);
+		CDebugProc::Print("プレイヤーの座標       (pPlayerPos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);
 #endif // _DEBUG
+	}
 }
 
 void CMeshLine::Draw()
@@ -142,7 +146,7 @@ void CMeshLine::Draw()
 	//ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);		//ワールド座標行列の設定
 
-															//頂点バッファをデータストリームに設定
+	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
 
 	//頂点フォーマットの設定
@@ -242,77 +246,6 @@ bool CMeshLine::Collision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerSize)
 
 	return bIsLanding;
 }
-//プレイヤーが戻った際毛糸の回収を行う
-bool CMeshLine::ReturnCollision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPosOld, D3DXVECTOR3 * PlayerSize)
-{
-	//頂点情報へのポインタ
-	VERTEX_3D * pVtx = nullptr;
-
-	D3DXVECTOR3 Answer;					//外積の計算結果
-	bool bIsLanding = false;
-
-	//頂点バッファをロック
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	D3DXVECTOR3 MoveVec = pVtx[22].pos - pVtx[20].pos;
-	D3DXVECTOR3 VecLine = *PlayerPos - *PlayerPosOld + (MoveVec);			//ベクトル現在のPOSと始点までの距離
-	D3DXVECTOR3 VecPos = pVtx[22].pos - *PlayerPosOld;
-
-	//外積計算
-	float vecCalculation = Vec2Cross(&VecPos, &VecLine);
-
-	if (vecCalculation <= 0.0f)	//2点の中にいるか外にいるか
-	{
-		//ベクトルv
-		D3DXVECTOR3 vecOld = *PlayerPosOld - pVtx[20].pos;
-
-		//計算用の箱
-		float vecCalculation[2];
-		//T1求める
-		vecCalculation[0] = Vec2Cross(&vecOld, &VecLine);
-		vecCalculation[1] = Vec2Cross(&MoveVec, &VecLine);
-
-		//posOldから交点までの距離
-		float t1 = vecCalculation[0] / vecCalculation[1];
-		//T2求める
-		vecCalculation[0] = Vec2Cross(&vecOld, &MoveVec);
-		vecCalculation[1] = Vec2Cross(&MoveVec, &VecLine);
-
-		//壁の視点から交点までの距離
-		float t2 = vecCalculation[0] / vecCalculation[1];
-		//差
-		float eps = 0.00001f;
-
-		//プレイヤー情報
-		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-		D3DXVECTOR3 pPlayerPosOld = CGame::GetPlayer()->GetPosOld();
-
-		if (MoveMaxFlg)
-		{
-			if (t1 + eps < 0 || t1 - eps > 1 || t2 + eps < 0 || t2 - eps > 1)
-			{	//交差してないときの判別
-
-				pPlayerPos = pPlayerPosOld;
-
-				SetPos(pPlayerPos);
-			}
-			else
-			{	//交差してるときの判別
-				for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
-				{
-					pVtx[21].pos - pVtx[19].pos;
-				}
-				bIsLanding = true;
-			}
-		}
-	}
-
-	//頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
-
-	return bIsLanding;
-}
-
 //=============================================================================
 // 当たり判定 プレイヤーが戻った際毛糸の回収を行う
 //=============================================================================
