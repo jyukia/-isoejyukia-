@@ -4,7 +4,6 @@
 // Author:磯江寿希亜 
 //
 //============================
-
 #include "file.h"
 #include "letter.h"
 #include "object3D.h"
@@ -41,7 +40,6 @@ void OutputStatus()
 		jsonf[a] = {
 			{ "POS" ,{ { "X",inPos.x },{ "Y",inPos.y },{ "Z",inPos.z } } },
 			{ "ROT" ,{ { "X",inRot.x },{ "Y",inRot.y },{ "Z",inRot.z } } },
-
 		};
 	};
 

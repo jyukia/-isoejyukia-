@@ -47,7 +47,7 @@ void CObjectXGroup::Load(std::string inKey, std::string inFileName)
 	std::string fileName = inFileName;
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//Xファイルの読み込み
 	D3DXLoadMeshFromX(&fileName.front(),
@@ -140,7 +140,7 @@ void CObjectXGroup::Load(std::vector<std::string> inModel)
 	std::string fileName = inModel[1];
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//Xファイルの読み込み
 	D3DXLoadMeshFromX(&fileName.front(),

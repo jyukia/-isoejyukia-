@@ -18,8 +18,16 @@ class CMeshLine;
 class CPlayer : public CObjectX
 {
 public:
-	const D3DXVECTOR3 m_PlayerPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	enum ScaleType
+	{
+	TypeScaleNone = 0,
+	TypeScaleUp,
+	TypeScaleDown,
 
+	TypeScaleMax
+	};
+
+	const D3DXVECTOR3 m_PlayerPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	static const float SPEED_POWER;
 	static const float JUMP_POWER;
@@ -48,11 +56,17 @@ public:
 
 	void SetJumpFlag(bool fFlag) { m_bJumpFlag = fFlag; }
 
+	void SetScaleType(ScaleType scaletype) { eScaleType = scaletype; }
+	ScaleType GetscaleType() { return eScaleType; }
+
+	void SetbMoveFlg(bool bmoveflg) { bMoveFlg = bmoveflg; }
 
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
+	ScaleType eScaleType;
+	
 	CShadow *m_shadow;					// 影のポインタ
 	CMeshOrbit *m_MeshEffect;	//メッシュエフェクト
 
@@ -64,6 +78,8 @@ private:
 	bool m_bIsLanding;					// 当たり判定フラグ
 	bool m_bJumpFlag;					// ジャンプしたかどうかのフラグ
 	bool m_bIsLandingMesh;				// メッシュ当たり判定フラグ
+	bool bScale;
+	bool bMoveFlg;
 
 	CMeshLine *m_pMeshLine;
 

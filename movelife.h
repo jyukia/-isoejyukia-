@@ -7,7 +7,7 @@
 #include"Number.h"
 #include "renderer.h"
 #include"application.h"
-
+#include"mode.h"
 //‘O•ûéŒ¾
 class CNumber;
 

@@ -98,7 +98,7 @@ void CTitle::Update(void)
 	}
 
 	// キーボードの情報取得
-	CInput *pInputKeyboard = CApplication::GetInput();
+	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 	if (pInputKeyboard->Trigger(DIK_A))
 	{// 上に移動
 		m_modecount++;
@@ -131,7 +131,7 @@ void CTitle::Update(void)
 	}
 
 	// 入力処理用のポインタ宣言
-	CInput *pInput = CApplication::GetInput();
+	CInput *pInput = CApplication::Getinstnce()->GetInput();
 	if (!m_bmodeflg)
 	{
 		if (pInput->Trigger(DIK_RETURN))		//選択シーン実行

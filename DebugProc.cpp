@@ -42,7 +42,7 @@ CDebugProc::~CDebugProc()
 
 void CDebugProc::Init()
 {// デバイスへのポインタの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	// デバッグ情報表示用フォントの生成
 	D3DXCreateFont(pDevice, 18, 0, 0, 0, FALSE, SHIFTJIS_CHARSET,

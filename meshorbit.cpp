@@ -17,7 +17,7 @@ HRESULT CMeshOrbit::Init()
 	}
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer((sizeof(VERTEX_3D) * m_pVtxMax),
@@ -92,7 +92,7 @@ void CMeshOrbit::Update()
 void CMeshOrbit::Draw()
 {
 	//GetDeviveの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	//ライト設定falseにするとライトと食らわない

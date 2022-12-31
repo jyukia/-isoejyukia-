@@ -72,7 +72,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 	CApplication *pApplication;
 
 	//マネージャクラスの生成
-	pApplication = new CApplication;
+	pApplication = CApplication::Getinstnce();
 
 	// 初期化処理
 	if (FAILED(pApplication->Init(hInstance, hWnd, TRUE)))

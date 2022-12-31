@@ -42,7 +42,7 @@ HRESULT CRanking::Init(void)
 
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//タイトル配置
 	m_pObject2D[0] = CObject2D::Create("RANKING", D3DXVECTOR3(1280.0f / 2, -20.0f, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL0);
@@ -92,7 +92,7 @@ void CRanking::Uninit(void)
 void CRanking::Update(void)
 {
 	//入力処理用のポインタ宣言
-	CInput *pInput = CApplication::GetInput();
+	CInput *pInput = CApplication::Getinstnce()->GetInput();
 
 	if (!m_bmodeflg)
 	{

@@ -10,7 +10,9 @@
 
 #include "movelife.h"
 #include"input.h"
-
+#include "mode.h"
+#include"Meshline.h"
+#include"player.h"
 //コンストラクタ
 CMovelife::CMovelife(int nPriority)
 {
@@ -29,7 +31,7 @@ HRESULT CMovelife::Init()
 		pNumber[numberCnt] = CNumber::Create("NUMBER", D3DXVECTOR3(50.0f + numberCnt *45.0f, 360.0f, 0.0f), D3DXVECTOR3(35.0f, 40.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3);
 	}
 
-	Setlife(5);
+	Setlife(999);
 
 	return S_OK;
 }
@@ -46,14 +48,25 @@ void CMovelife::Update()
 {
 	D3DXVECTOR3 pos = CObject2D::GetPos();
 
-	// キーボードの情報取得
-	CInput *pInputKeyboard = CApplication::GetInput();
-	if (pInputKeyboard->Trigger(DIK_F))
+	//プレイヤー情報
+	D3DXVECTOR3 Playerpos = CMode::GetPlayer()->GetPos();
+	D3DXVECTOR3 PlayerposOld = CMode::GetPlayer()->GetPosOld();
+	if (Playerpos != PlayerposOld)	//動いている時
 	{
+		//減る処理
+		Sublife(2);
+	}
+
+	// キーボードの情報取得
+	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
+	if (pInputKeyboard->Trigger(DIK_B))
+	{
+		//増える処理
 		Addlife(1);
 	}
-	if (pInputKeyboard->Trigger(DIK_G))
+	if (pInputKeyboard->Trigger(DIK_N))
 	{
+		//減る処理
 		Sublife(1);
 	}
 
@@ -124,6 +137,15 @@ void CMovelife::Setlife(int nLife)
 	aPosTexU[1] = m_Life % 100 / 10;
 	aPosTexU[2] = m_Life % 10 / 1;
 
+	for (int nCount = 0; nCount < 3; nCount++)
+	{
+		//テクスチャ設定
+		pNumber[nCount]->ScoreVtx
+		(0.1f * aPosTexU[nCount],
+			0.0f,
+			0.1f * aPosTexU[nCount] + 0.1f,
+			1.0f);
+	}
 }
 
 CMovelife * CMovelife::Create(D3DXVECTOR3 pos,int nPriority)

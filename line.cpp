@@ -50,7 +50,7 @@ void CLine::Update()
 void CLine::Draw()
 {
 	//デバイスを取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	// 計算用マトリックス
 	D3DXMATRIX	mtxRot, mtxTrans, mtxView;		
@@ -142,7 +142,7 @@ CLine * CLine::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 start, D3DXV
 void CLine::SetLine()
 {
 	//デバイスを取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 2,

@@ -76,7 +76,7 @@ void CObjectX::Update()
 void CObjectX::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	D3DXMATRIX mtxRot, mtxTrans, mtxParent;		//計算用マトリックス
 	D3DMATERIAL9 matDef;				//現在のマテリアル保存用
@@ -167,7 +167,7 @@ void CObjectX::Draw(D3DXMATRIX mtxParent)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	// ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
@@ -176,7 +176,7 @@ void CObjectX::Draw(D3DXMATRIX mtxParent)
 	pDevice->GetMaterial(&matDef);
 
 	// テクスチャポインタの取得
-	CTexture *pTexture = CApplication::GetTexture();
+	CTexture *pTexture = CApplication::Getinstnce()->GetTexture();
 
 	// マテリアルデータへのポインタ
 	D3DXMATERIAL *pMat;
@@ -367,7 +367,7 @@ CObjectX * CObjectX::Create(const char * aFileName, D3DXVECTOR3 rot, D3DXVECTOR3
 //=============================================================================
 void CObjectX::LoadModel(const char *aFileName)
 {
-	CObjectXGroup *xGroup = CApplication::GetObjectXGroup();
+	CObjectXGroup *xGroup = CApplication::Getinstnce()->GetObjectXGroup();
 	m_pBuffMat = xGroup->GetBuffMat(aFileName);
 	m_MaxVtx = xGroup->GetMaxVtx(aFileName);
 	m_pMesh = xGroup->GetMesh(aFileName);
@@ -382,7 +382,7 @@ void CObjectX::LoadModel(const char *aFileName)
 void CObjectX::Projection(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	D3DXMATRIX mtxRot, mtxTrans;		//計算用マトリックス
 	D3DMATERIAL9 matDef;				//現在のマテリアル保存用

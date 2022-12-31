@@ -5,6 +5,8 @@
 #include "player.h"
 #include "game.h"
 #include "game1.h"
+#include "mode.h"
+#include "movelife.h"
 
 #include"DebugProc.h"
 
@@ -26,7 +28,7 @@ HRESULT CMeshLine::Init()
 	}
 
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer((sizeof(VERTEX_3D) * m_pVtxMax),
@@ -55,8 +57,6 @@ HRESULT CMeshLine::Init()
 
 		//テクスチャの座標設定
 		pVtx[Cnt].tex = D3DXVECTOR2(0.0f, 0.0f);
-
-
 	}
 
 	//頂点バッファをアンロックする
@@ -81,11 +81,10 @@ void CMeshLine::Update()
 
 	D3DXVECTOR3 axis = CObjectX::GetAxis();
 	//プレイヤー情報
-
-	if (CApplication::GetpMode()->GetPlayer() != nullptr)
+	if (CApplication::Getinstnce()->GetpMode()->GetPlayer() != nullptr)
 	{
-		D3DXVECTOR3 pPlayerPos = CApplication::GetpMode()->GetPlayer()->GetPos();
-		D3DXVECTOR3 pPlayerPosOld = CApplication::GetpMode()->GetPlayer()->GetPosOld();
+		D3DXVECTOR3 pPlayerPos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
+		D3DXVECTOR3 pPlayerPosOld = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPosOld();
 
 		//頂点情報へのポインタ
 		VERTEX_3D*pVtx;
@@ -94,7 +93,7 @@ void CMeshLine::Update()
 		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 		//戻った際の当たり判定 (巻き戻し)
-		bUseflg = CollisionReturn(&pPlayerPos, 12);
+		bUseflg = CollisionReturn(&pPlayerPos);
 
 		if (!bUseflg)	//生成
 		{
@@ -104,10 +103,15 @@ void CMeshLine::Update()
 				{
 					pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
 				}
-				pVtx[1].pos = pPlayerPos + axis * 30.0f;			//高さ変更
-				pVtx[0].pos = pPlayerPos - axis * 30.0f;			//原点
+				pVtx[1].pos = pPlayerPos + axis * 10.0f;			//高さ変更
+				pVtx[0].pos = pPlayerPos - axis * 10.0f;			//原点
 				m_Vtxcount += 2;
 			}
+		}
+
+		if (m_Vtxcount == MaxLine)	//最大移動量に達した場合	プレイヤーの移動を制限
+		{
+			CMode::GetPlayer()->SetbMoveFlg(false);
 		}
 
 		//頂点バッファをアンロックする
@@ -116,6 +120,9 @@ void CMeshLine::Update()
 		CDebugProc::Print("プレイヤーの進行方向       (axis)       | X : %.2f | Y : %.2f | Z : %.2f |\n", axis.x, axis.y, axis.z);
 
 		CDebugProc::Print("プレイヤーの座標       (pPlayerPos)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);
+
+		CDebugProc::Print("m_Vtxcount       (m_Vtxcount)       %d\n", m_Vtxcount);
+
 #endif // _DEBUG
 	}
 }
@@ -123,7 +130,7 @@ void CMeshLine::Update()
 void CMeshLine::Draw()
 {
 	//GetDeviveの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	//ライト設定falseにするとライトと食らわない
@@ -135,11 +142,11 @@ void CMeshLine::Draw()
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);				//行列初期化関数(第一引数の行列を単位行列に初期化)
 
-													//向きを反映
+	//向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
 
-																		//位置を反映
+	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
@@ -165,15 +172,6 @@ void CMeshLine::Draw()
 	pDevice->SetTexture(0, NULL);
 
 }
-
-void CMeshLine::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
-{
-}
-
-void CMeshLine::LoadTexture(const char * aFileName)
-{
-}
-
 void CMeshLine::SetMtxParent(D3DXMATRIX * pMtx)
 {
 	m_pMtxParent = pMtx;
@@ -193,13 +191,11 @@ void CMeshLine::SetPos(D3DXVECTOR3 pos)
 void CMeshLine::SetCol(D3DXCOLOR col)
 {
 	m_col = col;
-
 }
 
 void CMeshLine::SetRot(D3DXVECTOR3 rot)
 {
 	m_rot = rot;
-
 }
 
 void CMeshLine::SetMoveFlg(bool movemaxflg)
@@ -249,16 +245,28 @@ bool CMeshLine::Collision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerSize)
 //=============================================================================
 // 当たり判定 プレイヤーが戻った際毛糸の回収を行う
 //=============================================================================
-bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
+bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos)
 {
+	const int LineDiameter = 2;
+
 	const int nPolygon = 100;
 	D3DXVECTOR3 VecA[nPolygon * 3];				//VecA
 	D3DXVECTOR3 VecB[nPolygon * 3];				//VecB
 	float Calculation2D[nPolygon * 3];			//2次元外積の計算結果
 
-												//頂点情報へのポインタ
+	//頂点情報へのポインタ
 	VERTEX_3D * pVtx = nullptr;
 	bool bIsLanding = false;
+
+	//スケール対応したサイズを計算		当たり判定使用
+	D3DXVECTOR3 Scale = CMode::GetPlayer()->GetScale();
+	D3DXVECTOR3 Size = CMode::GetPlayer()->GetSize();
+	{
+		//スケールとサイズ
+		Size.x = Scale.x * Size.x;
+		Size.y = Scale.y * Size.y;
+		Size.z = Scale.z * Size.z;
+	}
 
 	//頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -318,20 +326,17 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
 		//プレイヤーの位置が全部-か+
 		if ((Calculation2D[count * 3] > 0 && Calculation2D[count * 3 + 1] > 0 && Calculation2D[count * 3 + 2] > 0) || (Calculation2D[count * 3] < 0 && Calculation2D[count * 3 + 1] < 0 && Calculation2D[count * 3 + 2] < 0))
 		{//当たった時
-			if (MoveMaxFlg)	//動けなくなった時 (移動量すべて使い切った時)
-			{
-				//線を引いた場所だけ戻れるように
-			}
 			for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
 			{
+				CMode::GetPlayer()->SetScaleType(CPlayer::TypeScaleUp);
+
 				//配列を入れ替える事で消している
 				pVtx[Cnt] = pVtx[Cnt + 2];
-
 				// 頂点カラーの設定
 				pVtx[Cnt].col = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);				//判定　分かりやすく色を変える
 
 			}
-			m_Vtxcount = 0;
+			m_Vtxcount -= 2;
 
 			//false生成無し
 			bUseflg = false;
@@ -342,6 +347,7 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos, int line_collision)
 		 //判定　分かりやすく色を変える
 			for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
 			{
+
 				// 頂点カラーの設定
 				pVtx[Cnt].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 			}

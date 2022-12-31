@@ -26,22 +26,13 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-CRenderer *CApplication::m_pRenderer = nullptr;
-CInput *CApplication::m_pInput = nullptr;
-CMode *CApplication::m_pMode = nullptr;
-CCamera *CApplication::m_pCamera = nullptr;
-CTexture *CApplication::m_pTexture = nullptr;
-CObjectXGroup *CApplication::m_pObjectXGroup = nullptr;
-CSound *CApplication::m_pSound = nullptr;
-CApplication::MODE CApplication::m_mode = MODE_GAME1;
-CDebugProc *CApplication::m_pDebugProc = nullptr;					// デバック表示
-CStageImgui *CApplication::m_Imgui = nullptr;
+CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CApplication::CApplication()
+CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
 {
-
+	CApplication::m_mode = MODE_SELECT_STAGE;
 }
 
 //=============================================================================
@@ -176,7 +167,7 @@ void CApplication::Uninit(void)
 	//imguiの解放
 	if (m_Imgui != nullptr)
 	{
-	//	m_Imgui->Uninit();
+		//m_Imgui->Uninit();
 		delete m_Imgui;
 		m_Imgui = nullptr;
 	}

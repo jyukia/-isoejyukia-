@@ -20,6 +20,7 @@
 #include"score.h"
 #include "file.h"
 #include "goal.h"
+#include "load_stage.h"
 
 #include "movelife.h"
 #include "Preparation.h"
@@ -68,8 +69,8 @@ HRESULT CGame::Init(void)
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 
 	//プレイヤーの生成
-	CApplication::GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
-	CApplication::GetpMode()->GetPlayer()->LoadModel("Kedama");
+	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
+	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("Kedama");
@@ -85,6 +86,8 @@ HRESULT CGame::Init(void)
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
 
 	Load();
+
+	CLoadStage::SaveAll();
 
 	return S_OK;
 }
@@ -112,7 +115,7 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	// 入力処理用のポインタ宣言
-	CInput *pInput = CApplication::GetInput();
+	CInput *pInput = CApplication::Getinstnce()->GetInput();
 
 	if (m_pFade->GetFade() == CFade::FADE_NONE)
 	{

@@ -5,9 +5,12 @@
 #include "renderer.h"
 #include "application.h"
 #include "player.h"
+#include "Meshline.h"
+#include "movelife.h"
 
 CPlayer *CMode::m_pPlayer = nullptr;
-
+CMeshLine *CMode::m_pMeshLine = nullptr;
+CMovelife *CMode::m_MoveLife;
 
 //=============================================================================
 // コンストラクタ

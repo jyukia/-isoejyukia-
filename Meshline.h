@@ -29,10 +29,6 @@ public:
 	void Update() override;							// 更新処理
 	void Draw()   override;							// 描画処理
 
-	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);				// 派生のテクスチャポインタを親のテクスチャポインタに代入する処理
-
-	void LoadTexture(const char *aFileName);					// テクスチャの読み込み
-
 	//セッター
 	void SetMtxParent(D3DXMATRIX *pMtx);
 	void SetOfSetPos(D3DXVECTOR3 ofsetpos);
@@ -46,15 +42,17 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_rot; }		// 向き取得処理
 	D3DXCOLOR GetCol(void) { return m_col; }			// 色取得処理
 
-	static bool GetMoveFlg() { return MoveMaxFlg; }			//移動制限フラグ
-	static void SetMoveFlg(bool movemaxflg);
+	bool GetMoveFlg() { return MoveMaxFlg; }			//移動制限フラグ
+	void SetMoveFlg(bool movemaxflg);
+
+	int SetVtxCount(int vtxcount) { m_pVtxMax = vtxcount; }
+
+	bool GetbUseflg() { return bUseflg; }
 
 	static CMeshLine *Create(D3DXCOLOR col, D3DXVECTOR3 distancepos);		// 生成処理
 	bool Collision(D3DXVECTOR3 *PlayerPos, D3DXVECTOR3 *PlayerSize);	//当たり判定
-	bool ReturnCollision(D3DXVECTOR3 * PlayerPos, D3DXVECTOR3 * PlayerPosOld, D3DXVECTOR3 * PlayerSize);
 
-	bool CollisionReturn(D3DXVECTOR3 * PlayerPos,int line_collision);
-
+	bool CollisionReturn(D3DXVECTOR3 * PlayerPos);
 
 	float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2);
 	float Vec2Dot(D3DXVECTOR3* v1, D3DXVECTOR3* v2);

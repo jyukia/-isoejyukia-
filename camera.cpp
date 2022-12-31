@@ -94,7 +94,7 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 	//キーボードの情報取得
-	CInput *pInputKeyboard = CApplication::GetInput();
+	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 
 	//カメラの移動
 	if (pInputKeyboard->Press(DIK_DOWN))
@@ -150,11 +150,11 @@ void CCamera::Update(void)
 		m_rot.y -= 0.05f;
 	}
 
-	int mode = CApplication::GetMode();
+	int mode = CApplication::Getinstnce()->GetMode();
 	if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1)
 	{
 		//プレイヤー情報
-		D3DXVECTOR3 pPlayerPos = CApplication::GetpMode()->GetPlayer()->GetPos();
+		D3DXVECTOR3 pPlayerPos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
 
 		//計算用マトリックス
 		D3DXMATRIX mtxRot, mtxTrans;
@@ -226,7 +226,7 @@ void CCamera::Update(void)
 void CCamera::SetCamera(bool bfixed, bool btypecom, int numCamera)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	switch (m_cameratype)
 	{

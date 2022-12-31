@@ -27,7 +27,7 @@ CLight::~CLight()
 HRESULT CLight::Init(void)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	D3DXVECTOR3 vecDir1;		//ライトの方向ベクトル
 	D3DXVECTOR3 vecDir2;		//ライトの方向ベクトル

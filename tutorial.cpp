@@ -64,7 +64,7 @@ void CTutorial::Uninit(void)
 void CTutorial::Update(void)
 {
 	// キーボードの情報取得
-	CInput *pInputKeyboard = CApplication::GetInput();
+	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 
 	//これがないと上手く表示されない
 	if (m_pObject2D != nullptr)

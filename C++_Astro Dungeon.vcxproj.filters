@@ -19,6 +19,12 @@
     <Filter Include="ソース ファイル\imgui\program">
       <UniqueIdentifier>{10b4cafe-c638-4b46-9e15-f42c13b8a541}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameTurf">
+      <UniqueIdentifier>{b5427e69-bdbf-4beb-9492-af57970b15eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameRoom">
+      <UniqueIdentifier>{3e267fa0-70d0-4cd4-8212-804425b5d33e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -28,9 +34,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
@@ -97,9 +100,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="load_stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="file.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DebugProc.cpp">
@@ -175,7 +175,16 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="game1.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameTurf</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\gameRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>ソース ファイル\GameTurf</Filter>
+    </ClCompile>
+    <ClCompile Include="file_map1.cpp">
+      <Filter>ソース ファイル\gameRoom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -330,6 +339,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="game1.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="file_map1.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

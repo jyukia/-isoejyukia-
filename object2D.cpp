@@ -40,7 +40,7 @@ CObject2D::~CObject2D()
 HRESULT CObject2D::Init()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer((sizeof(VERTEX_2D) * 4),
@@ -166,7 +166,7 @@ void CObject2D::Update()
 void CObject2D::Draw()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
@@ -286,7 +286,7 @@ void CObject2D::SetRot(D3DXVECTOR3 rot)
 //=============================================================================
 void CObject2D::BindTexture(std::string inPath)
 {
-	m_pTexture = CApplication::GetTexture()->GetTexture(inPath);		//テクスチャのポインタ
+	m_pTexture = CApplication::Getinstnce()->GetTexture()->GetTexture(inPath);		//テクスチャのポインタ
 }
 
 //=============================================================================

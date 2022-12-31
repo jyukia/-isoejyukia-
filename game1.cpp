@@ -68,8 +68,8 @@ HRESULT CGame1::Init(void)
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 
 	//プレイヤーの生成
-	CApplication::GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
-	CApplication::GetpMode()->GetPlayer()->LoadModel("Kedama");
+	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
+	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("Kedama");
@@ -112,7 +112,7 @@ void CGame1::Uninit(void)
 void CGame1::Update(void)
 {
 	// 入力処理用のポインタ宣言
-	CInput *pInput = CApplication::GetInput();
+	CInput *pInput = CApplication::Getinstnce()->GetInput();
 
 	if (m_pFade->GetFade() == CFade::FADE_NONE)
 	{

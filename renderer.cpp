@@ -67,8 +67,8 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;		// リフレッシュレート
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;		// インターバル
 
-																	// ディスプレイアダプタを表すためのデバイスを作成
-																	// 描画と頂点処理をハードウェアで行なう
+	// ディスプレイアダプタを表すためのデバイスを作成
+	// 描画と頂点処理をハードウェアで行なう
 	if ((FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &m_pD3DDevice))) &&
 		// 上記の設定が失敗したら
 		// 描画をハードウェアで行い、頂点処理はCPUで行なう
@@ -191,7 +191,7 @@ void CRenderer::Draw()
 			//全てのオブジェクトの描画処理
 			CObject::DrawAll();
 
-			CApplication::GetImgui()->Draw();
+			CApplication::Getinstnce()->GetImgui()->Draw();
 #ifdef _DEBUG
 			// FPS表示
 			DrawFPS();

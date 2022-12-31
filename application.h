@@ -26,7 +26,14 @@ class CMode;
 //=============================================================================
 class CApplication
 {
+private:
+	CApplication();
+
+	static CApplication *m_pApplication;
 public:
+	//シングルトンでのインスタンスの取得
+
+	static CApplication* Getinstnce() {return m_pApplication != nullptr ? m_pApplication : m_pApplication = new CApplication;}
 
 	//=============================================================================
 	// 列挙型
@@ -46,9 +53,7 @@ public:
 	//-------------------------------------------------------------------------
 	// コンストラクタとデストラクタ
 	//-------------------------------------------------------------------------
-	CApplication();
 	~CApplication();
-
 	//-------------------------------------------------------------------------
 	// メンバー関数
 	//-------------------------------------------------------------------------
@@ -56,31 +61,31 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static void SetMode(MODE mode);
-	static MODE GetMode();
-	static CRenderer *GetRenderer();
-	static CInput *GetInput();
-	static CCamera *GetCamera() { return m_pCamera; }
-	static CTexture *GetTexture() { return m_pTexture; }
-	static CObjectXGroup *GetObjectXGroup() { return m_pObjectXGroup; }
-	static CSound *GetSound() { return m_pSound; }
-	static CStageImgui *GetImgui() { return m_Imgui; }
-	static CMode *GetpMode() { return m_pMode; }
+	void SetMode(MODE mode);
+	MODE GetMode();
+	CRenderer *GetRenderer();
+	CInput *GetInput();
+	CCamera *GetCamera() { return m_pCamera; }
+	CTexture *GetTexture() { return m_pTexture; }
+	CObjectXGroup *GetObjectXGroup() { return m_pObjectXGroup; }
+	CSound *GetSound() { return m_pSound; }
+	CStageImgui *GetImgui() { return m_Imgui; }
+	CMode *GetpMode() { return m_pMode; }
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
-	static CRenderer *m_pRenderer;
-	static CInput *m_pInput;
-	static MODE m_mode;
-	static CMode *m_pMode;
-	static CCamera *m_pCamera;
-	static CTexture *m_pTexture;
-	static CObjectXGroup *m_pObjectXGroup;
-	static CSound *m_pSound;
-	static CDebugProc *m_pDebugProc;			// デバック表示
+	CRenderer *m_pRenderer;
+	CInput *m_pInput;
+	MODE m_mode;
+	CMode *m_pMode;
+	CCamera *m_pCamera;
+	CTexture *m_pTexture;
+	CObjectXGroup *m_pObjectXGroup;
+	CSound *m_pSound;
+	CDebugProc *m_pDebugProc;			// デバック表示
 
-	static CStageImgui *m_Imgui;
+	CStageImgui *m_Imgui;
 };
 
 #endif

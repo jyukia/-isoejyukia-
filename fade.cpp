@@ -29,7 +29,7 @@ void CFade::Init(CApplication::MODE modeNext)
 	SetCol(m_color);
 
 	//モードの設定
-	CApplication::SetMode(m_ModeNext);
+	CApplication::Getinstnce()->SetMode(m_ModeNext);
 }
 
 void CFade::Uninit(void)
@@ -62,7 +62,7 @@ void CFade::Update(void)
 				m_pfade = FADE_IN;		//フェードイン状態に
 
 				//モード設定(次の画面に移行)
-				CApplication::SetMode(m_ModeNext);
+				CApplication::Getinstnce()->SetMode(m_ModeNext);
 			}
 		}
 

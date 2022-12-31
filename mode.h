@@ -14,7 +14,8 @@ class CTitle;
 class CGame;
 class CResult;
 class CPlayer;
-
+class CMeshLine;
+class CMovelife;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -48,12 +49,20 @@ public:
 
 	static CPlayer *GetPlayer() { return m_pPlayer; }
 	static void SetPlayer(CPlayer* player) { m_pPlayer = player; }
+
+	static CMeshLine *GetMeshLine() { return m_pMeshLine; }
+
+	static CMovelife *GetMoveLife() {return m_MoveLife;}
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
 
 	static CPlayer *m_pPlayer;				// プレイヤーのポインタ
+
+	static CMeshLine *m_pMeshLine;
+
+	static CMovelife *m_MoveLife;
 };
 
 #endif

@@ -98,7 +98,7 @@ void CSelectStage::Update(void)
 	D3DXVECTOR3 rot1 = pStage1->GetRot();
 
 	// 入力処理用のポインタ宣言
-	CInput *pInput = CApplication::GetInput();
+	CInput *pInput = CApplication::Getinstnce()->GetInput();
 
 	if (m_modeSelectcount == 1)
 	{

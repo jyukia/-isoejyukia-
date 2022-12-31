@@ -181,7 +181,7 @@ void CMotion::SetMotion(const int nCntMotionSet)
 void CMotion::SetParts(D3DXMATRIX mtxWorld)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	for (int nCntParts = 0; nCntParts < m_nMaxParts; nCntParts++)
 	{// モデルの描画
@@ -408,7 +408,7 @@ void CMotion::LoodSetMotion(const char *pFileName)
 
 			nameTag += std::to_string(nCntFileName);
 
-			CApplication::GetObjectXGroup()->Load(nameTag, m_partsFile[nCntFileName]);
+			CApplication::Getinstnce()->GetObjectXGroup()->Load(nameTag, m_partsFile[nCntFileName]);
 			nCntFileName++;
 		}
 

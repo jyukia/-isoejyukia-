@@ -38,11 +38,11 @@ HRESULT CGoal::Init()
 
 void CGoal::Update()
 {
-	if (CApplication::GetpMode()->GetPlayer() != nullptr)
+	if (CApplication::Getinstnce()->GetpMode()->GetPlayer() != nullptr)
 	{
-		D3DXVECTOR3 pPlayerPos = CApplication::GetpMode()->GetPlayer()->GetPos();
-		D3DXVECTOR3 pPlayerPosOld = CApplication::GetpMode()->GetPlayer()->GetPosOld();
-		D3DXVECTOR3 pSize = CApplication::GetpMode()->GetPlayer()->GetSize();
+		D3DXVECTOR3 pPlayerPos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
+		D3DXVECTOR3 pPlayerPosOld = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPosOld();
+		D3DXVECTOR3 pSize = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetSize();
 		// 座標取得
 		D3DXVECTOR3 pos = GetPos();
 		// ポインタ宣言

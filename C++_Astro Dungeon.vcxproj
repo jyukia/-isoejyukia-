@@ -25,6 +25,7 @@
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="file.cpp" />
+    <ClCompile Include="file_map1.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game1.cpp" />
     <ClCompile Include="goal.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="file.h" />
+    <ClInclude Include="file_map1.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game1.h" />
     <ClInclude Include="goal.h" />

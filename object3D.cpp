@@ -34,7 +34,7 @@ CObject3D::~CObject3D()
 HRESULT CObject3D::Init()
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer((sizeof(VERTEX_3D) * 4),
@@ -120,7 +120,7 @@ void CObject3D::Update()
 void CObject3D::Draw()
 {
 	//GetDeviveの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
@@ -315,7 +315,7 @@ CObject3D * CObject3D::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size
 void CObject3D::LoadTexture(const char * aFileName)
 {
 	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(
