@@ -24,6 +24,8 @@ public:
 	static void LoadAll(const D3DXVECTOR3& inPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f));		// 全ての読み込み
 	static void SaveAll();		// 全ての書込み
 
+	static void LoadAllTest();
+
 private: /* プライベート関数 */
 
 private:

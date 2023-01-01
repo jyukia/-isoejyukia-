@@ -5,6 +5,8 @@
 #include "file.h"
 #include "objectX_group.h"
 #include"object.h"
+#include"objectX.h"
+#include "goal.h"
 
 //=============================================================================
 // コンストラクタ
@@ -74,8 +76,15 @@ void CLoadStage::SaveAll()
 					{ "POS",{
 						{ "X", pObjeX->GetPos().x } ,
 						{ "Y", pObjeX->GetPos().y } ,
-						{ "Z", pObjeX->GetPos().z } } }, };
+						{ "Z", pObjeX->GetPos().z } } }, 
 
+					{ "ROT",{
+						{ "X", pObjeX->GetRot().x } ,
+						{ "Y", pObjeX->GetRot().y } ,
+						{ "Z", pObjeX->GetRot().z } } },
+
+					{ "NAME", pObjeX->Getstring().c_str()}
+				};
 				nIndex++;
 			}
 			//pObjectにpObjectのpNextを代入
@@ -83,10 +92,50 @@ void CLoadStage::SaveAll()
 		}
 	}
 
+	list["INDEX"] = nIndex;
+
 	auto jobj = list.dump();
 	std::ofstream writing_file;
 	const std::string pathToJSON = "Data/FILE/Save.Json";
 	writing_file.open(pathToJSON, std::ios::out);
 	writing_file << jobj << std::endl;
 	writing_file.close();
+}
+
+//関数読み込み
+void CLoadStage::LoadAllTest()
+{
+	nlohmann::json list = LoadJsonStage(L"Data/FILE/Save.json");
+	int nIndex = list["INDEX"];
+
+	CGoal* pGoal;				//ゴールポインタ
+
+
+	for (int Count = 0;Count < nIndex;Count++)
+	{
+		std::string name = "OBJECTX";
+		std::string Number = std::to_string(Count);
+		name += Number;
+	
+		//座標の設定
+		D3DXVECTOR3 pos = D3DXVECTOR3(list[name]["POS"]["X"], list[name]["POS"]["Y"], list[name]["POS"]["Z"]);
+		//objectX->SetPos(pos);
+
+		//回転座標設定
+		D3DXVECTOR3 rot = D3DXVECTOR3(list[name]["ROT"]["X"], list[name]["ROT"]["Y"], list[name]["ROT"]["Z"]);
+		//objectX->SetRot(rot);
+
+		std::string modelname = list[name]["NAME"];
+
+		if (modelname == "GOAL")
+		{
+			pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
+			pGoal->LoadModel("Kedama");
+			pGoal->Setstring("GOAL");
+		}
+		else
+		{
+			CObjectX* model = CObjectX::Create(modelname.c_str(), rot, pos, 3);
+		}
+	}
 }

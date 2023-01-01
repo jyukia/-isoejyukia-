@@ -98,12 +98,16 @@ public:
 	//クォータニオン
 	void QuaternionCalculation(float ModelDiameter/*モデルの直径*/, D3DXVECTOR3 *move, D3DXQUATERNION *FstQuaternion);
 
+	//モデル配置のため
+	std::string Getstring(void) { return m_ObjeX; }		// 頂点最小値取得処理
+	void Setstring(const std::string objex) { m_ObjeX = objex; }						// ラインセット処理
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
 	D3DXVECTOR3 m_pos;					// 座標
-	D3DXVECTOR3 m_posold;					// 座標 1フレーム前の取得
+	D3DXVECTOR3 m_posold;				// 座標 1フレーム前の取得
 
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 座標
@@ -126,12 +130,12 @@ private:
 	CObjectX *m_pParent;				// 親モデルの情報
 	bool m_isCollision;					// 当たり判定が必要か
 
+	std::string m_ObjeX;
+
 	//-------------------------------------------------------------------------
 	//クォータニオン
 	D3DXQUATERNION m_quaternion;
-
 	static D3DXVECTOR3 m_axis;    // 回転軸
-
 	bool bQuaternion;	//クォータニオンフラグ
 
 };

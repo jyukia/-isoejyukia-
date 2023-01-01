@@ -19,6 +19,7 @@ CObject3D::CObject3D(int nPriority) :
 	m_rot(D3DXVECTOR3(0.0f, 0.0f, 0.0f)),
 	m_size(D3DXVECTOR2(0.0f, 0.0f))
 {
+
 }
 
 //=============================================================================

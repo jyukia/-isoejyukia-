@@ -32,7 +32,7 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_SELECT_STAGE;
+	CApplication::m_mode = MODE_GAME;
 }
 
 //=============================================================================

@@ -16,7 +16,10 @@
     [ "CHEST", "Data\/MODEL\/Chest.x" ],
     [ "SPOON", "Data\/MODEL\/spoon.x" ],
     [ "PLATE", "Data\/MODEL\/plate.x" ],
+    [ "CAKESTAND", "Data\/MODEL\/cakestand.x" ],
+    [ "HOURGLASS", "Data\/MODEL\/hourglass.x" ],
     [ "MAP1", "Data\/MODEL\/map1.x" ],
     [ "MAP2", "Data\/MODEL\/map2.x" ]
+
   ]
 }

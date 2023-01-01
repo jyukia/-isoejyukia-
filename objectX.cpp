@@ -49,8 +49,6 @@ HRESULT CObjectX::Init()
 		bQuaternion = false;
 	}
 
-
-
 	return S_OK;
 }
 
@@ -82,7 +80,7 @@ void CObjectX::Draw()
 	D3DMATERIAL9 matDef;				//現在のマテリアル保存用
 	D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
 
-										//ワールドマトリックスの初期化
+	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	//計算用マトリックス
@@ -159,11 +157,11 @@ void CObjectX::Draw(D3DXMATRIX mtxParent)
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);	// 行列回転関数
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				// 行列掛け算関数 
 
-																		// 位置を反映
+	// 位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);		// 行列移動関数
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);			// 行列掛け算関数
 
-																		// 行列掛け算関数
+	// 行列掛け算関数
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
 
 	// デバイスの取得
@@ -297,6 +295,8 @@ CObjectX * CObjectX::Create(const char *aFileName, D3DXVECTOR3 pos, int nPriorit
 	if (pObjectX != nullptr)
 	{//ポインタが存在したら実行
 		pObjectX->Init();
+
+		pObjectX->Setstring(aFileName);
 		pObjectX->LoadModel(aFileName);
 		pObjectX->SetPos(pos);
 		pObjectX->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -347,6 +347,8 @@ CObjectX * CObjectX::Create(const char * aFileName, D3DXVECTOR3 rot, D3DXVECTOR3
 	if (pObjectX != nullptr)
 	{//ポインタが存在したら実行
 		pObjectX->Init();
+
+		pObjectX->Setstring(aFileName);
 		pObjectX->LoadModel(aFileName);
 		pObjectX->SetPos(pos);
 		pObjectX->SetRot(rot);

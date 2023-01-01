@@ -66,6 +66,7 @@ public:
 	static CObject3D *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	static CObject3D *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size,int nPriority);	// 生成処理
 
+
 	void LoadTexture(const char *aFileName);					// テクスチャの読み込み
 
 private:

@@ -55,15 +55,14 @@ CGame::~CGame()
 //=============================================================================
 HRESULT CGame::Init(void)
 {
+	//ライトの生成
+	m_pLight = CLight::Create();
 	{//初期化
 		m_rot = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	}
 
 	//モデル読み込み一番上に配置
 	OutputStatus();
-
-	//ライトの生成
-	m_pLight = CLight::Create();
 
 	//メッシュフィールドの生成
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
@@ -74,6 +73,28 @@ HRESULT CGame::Init(void)
 
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("Kedama");
+	m_pGoal->Setstring("GOAL");
+
+	{//壁
+		D3DXVECTOR3 WallSize(3050, 0.0f, 1000.0f);
+
+		CObject3D* wallX = CObject3D::Create(D3DXVECTOR3(1300.0f, 700.0f, 1750.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, 0.0f), WallSize,3);
+		wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+
+		CObject3D* wallX1 = CObject3D::Create(D3DXVECTOR3(1300.0f, 700.0f, -4300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), WallSize, 3);
+		wallX1->LoadTexture("Data/TEXTURE/Background_6.png");
+
+		CObject3D* wallX2 = CObject3D::Create(D3DXVECTOR3(4300.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI / 2), WallSize, 3);
+		wallX2->LoadTexture("Data/TEXTURE/Background_6.png");
+
+		CObject3D* wallX3 = CObject3D::Create(D3DXVECTOR3(-1700.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, -D3DX_PI / 2), WallSize, 3);
+		wallX3->LoadTexture("Data/TEXTURE/Background_6.png");
+
+		float lch = -2600;
+		CObject3D* me = CObject3D::Create(D3DXVECTOR3(100.0f, 920.0f, -1680.0f + lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 250.0f), 3);
+		me->LoadTexture("Data/TEXTURE/01.png");
+
+	}
 
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
@@ -84,6 +105,8 @@ HRESULT CGame::Init(void)
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
+
+	//CLoadStage::LoadAllTest();
 
 	Load();
 

@@ -60,6 +60,7 @@ void OutputStatus()
 		//情報
 		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1000.0f, 0.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
+
 	for (int Cnt = 0; Cnt < 2; Cnt++)
 	{//椅子 横
 
@@ -116,14 +117,6 @@ void OutputStatus()
 		//情報
 		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(100.0f, 600.0f, -1700.0f + lch), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
-	{//自分写真
-		std::string a = "01";
-		std::string b = std::to_string(0);
-		a += b;
-
-		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(100.0f, 920.0f, -1680.0f+ lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI));
-	}
 
 	{//宝箱
 	std::string a = "CHEST";
@@ -150,39 +143,59 @@ void OutputStatus()
 		//情報
 		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(-1150.0f, 0.0f, 1700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
-	{//壁 後ろ
-		std::string a = "WALL";
+	{//ケーキスタンド
+		std::string a = "CAKESTAND";
 		std::string b = std::to_string(0);
 		a += b;
 
 		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1300.0f, 700.0f, 1750.0f), D3DXVECTOR3(-D3DX_PI /2.0f, 0.0f, 0.0f));
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1200.0f, 600.0f, -1100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
-	{//壁 前
-		std::string a = "WALL1";
+	{//砂時計
+		std::string a = "HOURGLASS";
 		std::string b = std::to_string(0);
 		a += b;
 
 		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1300.0f, 700.0f, -4300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI));
+		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(800.0f, 600.0f, -1100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
-	{//壁 左
-		std::string a = "WALL2";
-		std::string b = std::to_string(0);
-		a += b;
+	
 
-		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(4300.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI/2));
-	}
-	{//壁 右
-		std::string a = "WALL3";
-		std::string b = std::to_string(0);
-		a += b;
-
-
-		//情報
-		JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(-1700.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, -D3DX_PI / 2));
-	}
+	//{//自分写真
+	//	std::string a = "01";
+	//	std::string b = std::to_string(0);
+	//	a += b;
+	//	//情報
+	//	JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(100.0f, 920.0f, -1680.0f + lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI));
+	//}
+	//{//壁 後ろ
+	//	std::string a = "WALL";
+	//	std::string b = std::to_string(0);
+	//	a += b;
+	//	//情報
+	//	JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1300.0f, 700.0f, 1750.0f), D3DXVECTOR3(-D3DX_PI /2.0f, 0.0f, 0.0f));
+	//}
+	//{//壁 前
+	//	std::string a = "WALL1";
+	//	std::string b = std::to_string(0);
+	//	a += b;
+	//	//情報
+	//	JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(1300.0f, 700.0f, -4300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI));
+	//}
+	//{//壁 左
+	//	std::string a = "WALL2";
+	//	std::string b = std::to_string(0);
+	//	a += b;
+	//	//情報
+	//	JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(4300.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI/2));
+	//}
+	//{//壁 右
+	//	std::string a = "WALL3";
+	//	std::string b = std::to_string(0);
+	//	a += b;
+	//	//情報
+	//	JsoninD3DXVVECTOR3(j, a, D3DXVECTOR3(-1700.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, -D3DX_PI / 2));
+	//}
 
 	auto jobj = j.dump();
 
@@ -311,18 +324,6 @@ void Load()
 		D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
 		CObjectX* pchest = CObjectX::Create("CHEST", rot, pos, 3);
 		}
-
-		{//自分写真
-			std::string a = "01";
-			std::string b = std::to_string(0);
-			a += b;
-
-			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
-			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
-
-			CObject3D* me = CObject3D::Create(pos, rot, D3DXVECTOR3(150, 0.0f, 250.0f), 3);
-			me->LoadTexture("Data/TEXTURE/01.png");
-		}
 		{//ドア
 			std::string a = "DOOR";
 			std::string b = std::to_string(0);
@@ -331,56 +332,79 @@ void Load()
 			//右
 			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
 			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
-			CObjectX* door = CObjectX::Create("DOOR", pos, 3);
+			CObjectX* door = CObjectX::Create("DOOR", rot, pos, 3);
 		}
-		{//壁
-			std::string a = "WALL";
+		{//ケーキスタンド
+			std::string a = "CAKESTAND";
 			std::string b = std::to_string(0);
 			a += b;
 
-			//
+			//右
 			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
 			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
-
-			CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050,0.0f,1000.0f),3);
-			wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+			CObjectX* cakestand = CObjectX::Create("CAKESTAND", rot, pos, 3);
 		}
-		{//壁
-			std::string a = "WALL1";
-		std::string b = std::to_string(0);
-		a += b;
-
-		//
-		D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
-		D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
-
-		CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050,0.0f,1000.0f),3);
-		wallX->LoadTexture("Data/TEXTURE/Background_6.png");
-		}
-		{//壁
-			std::string a = "WALL2";
+		{//砂時計
+			std::string a = "HOURGLASS";
 			std::string b = std::to_string(0);
 			a += b;
 
-			//
+			//右
 			D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
 			D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
-
-			CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050, 0.0f, 1000.0f), 3);
-			wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+			CObjectX* hourglass = CObjectX::Create("HOURGLASS", rot, pos, 3);
 		}
-		{//壁
-			std::string a = "WALL3";
-		std::string b = std::to_string(0);
-		a += b;
+		
 
-		//
-		D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
-		D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
-
-		CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050, 0.0f, 1000.0f), 3);
-		wallX->LoadTexture("Data/TEXTURE/Background_6.png");
-		}
+		//{//自分写真
+		//	std::string a = "01";
+		//	std::string b = std::to_string(0);
+		//	a += b;
+		//	D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		//	D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		//	CObject3D* me = CObject3D::Create(pos, rot, D3DXVECTOR3(150, 0.0f, 250.0f), 3);
+		//	me->LoadTexture("Data/TEXTURE/01.png");
+		//}
+		//{//壁
+		//	std::string a = "WALL";
+		//	std::string b = std::to_string(0);
+		//	a += b;
+		//	//
+		//	D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		//	D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		//	CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050,0.0f,1000.0f),3);
+		//	wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+		//}
+		//{//壁
+		//	std::string a = "WALL1";
+		//std::string b = std::to_string(0);
+		//a += b;
+		////
+		//D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		//D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		//CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050,0.0f,1000.0f),3);
+		//wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+		//}
+		//{//壁
+		//	std::string a = "WALL2";
+		//	std::string b = std::to_string(0);
+		//	a += b;
+		//	//
+		//	D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		//	D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		//	CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050, 0.0f, 1000.0f), 3);
+		//	wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+		//}
+		//{//壁
+		//	std::string a = "WALL3";
+		//std::string b = std::to_string(0);
+		//a += b;
+		////
+		//D3DXVECTOR3 pos = D3DXVECTOR3(j[a]["POS"]["X"], j[a]["POS"]["Y"], j[a]["POS"]["Z"]);
+		//D3DXVECTOR3 rot = D3DXVECTOR3(j[a]["ROT"]["X"], j[a]["ROT"]["Y"], j[a]["ROT"]["Z"]);
+		//CObject3D* wallX = CObject3D::Create(pos, rot, D3DXVECTOR3(3050, 0.0f, 1000.0f), 3);
+		//wallX->LoadTexture("Data/TEXTURE/Background_6.png");
+		//}
 
 	}
 }
@@ -400,6 +424,5 @@ nlohmann::json LoadJsonStage(const wchar_t* cUrl)
 	}
 
 	/* ↓ファイルを開くのを失敗した場合↓ */
-
 	return nullptr;
 }
