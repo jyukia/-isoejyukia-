@@ -71,7 +71,7 @@ HRESULT CGame::Init(void)
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
-	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
+	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("Kedama");
 	m_pGoal->Setstring("GOAL");
 
@@ -91,8 +91,12 @@ HRESULT CGame::Init(void)
 		wallX3->LoadTexture("Data/TEXTURE/Background_6.png");
 
 		float lch = -2600;
-		CObject3D* me = CObject3D::Create(D3DXVECTOR3(100.0f, 920.0f, -1680.0f + lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 250.0f), 3);
+		CObject3D* me = CObject3D::Create(D3DXVECTOR3(100.0f, 500.0f, -1680.0f + lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 200.0f), 3);
 		me->LoadTexture("Data/TEXTURE/01.png");
+
+		CObject3D* memory = CObject3D::Create(D3DXVECTOR3(1250.0f, 680.0f, -1096.0f), D3DXVECTOR3(-D3DX_PI / 1.83f, D3DX_PI, D3DX_PI), D3DXVECTOR3(50, 0.0f, 70.0f), 3);
+		memory->LoadTexture("Data/TEXTURE/omoide.png");
+
 
 	}
 

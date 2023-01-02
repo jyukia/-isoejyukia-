@@ -294,12 +294,12 @@ void CPlayer::Update()
 	move.y -= GRAVITY_POWER;
 
 	// ƒWƒƒƒ“ƒvˆ—
-	//if (pInputKeyboard->Trigger(DIK_SPACE))
-	//{
-	//	m_bJumpFlag = true;
-	//	move.y = 0.0f;
-	//	move.y += 14.0f;
-	//}
+	if (pInputKeyboard->Trigger(DIK_SPACE))
+	{
+		m_bJumpFlag = true;
+		move.y = 0.0f;
+		move.y += 14.0f;
+	}
 
 	// Šp“x‚Ì³‹K‰»(Œ»Ý‚ÌŠp“x)
 	if (rot.y > D3DX_PI)

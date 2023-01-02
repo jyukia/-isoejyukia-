@@ -1,6 +1,5 @@
 {
-  "MODEL": 
-  [
+  "MODEL": [
     [ "Box", "Data\/MODEL\/Box.x" ],
     [ "Ball", "Data\/MODEL\/Ball.x" ],
     [ "Kedama", "Data\/MODEL\/kedama.x" ],
@@ -18,6 +17,10 @@
     [ "PLATE", "Data\/MODEL\/plate.x" ],
     [ "CAKESTAND", "Data\/MODEL\/cakestand.x" ],
     [ "HOURGLASS", "Data\/MODEL\/hourglass.x" ],
+    [ "BOOK", "Data\/MODEL\/book.x" ],
+    [ "PHOTOSTAND", "Data\/MODEL\/photostand.x" ],
+
+
     [ "MAP1", "Data\/MODEL\/map1.x" ],
     [ "MAP2", "Data\/MODEL\/map2.x" ]
 
