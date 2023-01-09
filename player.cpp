@@ -85,7 +85,7 @@ HRESULT CPlayer::Init()
 	//m_MeshEffect->SetMtxParent(GetMtxWorld());
 
 	//毛糸線
-	m_pMeshLine = CMeshLine::Create(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), D3DXVECTOR3(50.0f, 0.0f, 0.0f));
+	m_pMeshLine = CMeshLine::Create(D3DXVECTOR3(pos), D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), D3DXVECTOR3(50.0f, 0.0f, 0.0f));
 	m_pMeshLine->SetMtxParent(GetMtxTransPos());
 
 
@@ -372,8 +372,14 @@ void CPlayer::Update()
 		move.y = 0.0f;
 	}
 
-	OutSide(pos);
-
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME)
+	{
+		OutSide(pos);
+	}
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
+	{
+		OutSide1(pos);
+	}
 	//for (int nCnt = 0; nCnt < 12; nCnt++)
 	//{
 	//	m_Line[nCnt]->SetPos(GetPos());
@@ -391,7 +397,6 @@ void CPlayer::Update()
 
 void CPlayer::OutSide(D3DXVECTOR3 &Playerpos)
 {
-
 	//場外に行かないため処理
 	if (Playerpos.z >= -505.0f)
 	{
@@ -408,6 +413,31 @@ void CPlayer::OutSide(D3DXVECTOR3 &Playerpos)
 	if (Playerpos.x <= 1.0f)
 	{
 		Playerpos.x = 1.0f;
+	}
+}
+
+void CPlayer::OutSide1(D3DXVECTOR3 & Playerpos)
+{
+	//場外に行かないため処理
+	if (Playerpos.y <= 20.0f)
+	{
+		Playerpos.y = 20.0f;
+	}
+	if (Playerpos.z >= -350.0f)
+	{
+		Playerpos.z = -350.0f;
+	}
+	if (Playerpos.z <= -3500.0f)
+	{
+		Playerpos.z = -3500.0f;
+	}
+	if (Playerpos.x <= 500.0f)
+	{
+		Playerpos.x = 500.0f;
+	}
+	if (Playerpos.x >= 3000.0f)
+	{
+		Playerpos.x = 3000.0f;
 	}
 }
 

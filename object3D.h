@@ -1,9 +1,3 @@
-//=============================================================================
-//
-// 3Dオブジェクト処理 [object3d.h]
-// Author : KADO TAKUMA
-//
-//=============================================================================
 #ifndef _OBJECT3D_H_
 #define _OBJECT3D_H_
 
@@ -13,11 +7,10 @@
 #include "main.h"
 #include "object.h"
 
+
 //=============================================================================
 // マクロ定義
 //=============================================================================
-// 頂点フォーマット
-const DWORD FVF_VERTEX_3D = (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
 //=============================================================================
 // 構造体定義
@@ -50,6 +43,7 @@ public:
 	void Uninit() override;										// 終了処理						
 	void Update() override;										// 更新処理
 	void Draw() override;										// 描画処理
+
 	void VtxUpdate() override;									// 頂点座標更新処理
 	void SetPos(D3DXVECTOR3 pos) override;						// 座標設定処理
 	void SetSize(D3DXVECTOR3 size) override;					// サイズ設定処理
@@ -65,7 +59,6 @@ public:
 	D3DXCOLOR GetCol(void) override { return m_col; }			// 色取得処理
 	static CObject3D *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	static CObject3D *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size,int nPriority);	// 生成処理
-
 
 	void LoadTexture(const char *aFileName);					// テクスチャの読み込み
 
@@ -84,6 +77,7 @@ private:
 	float m_fAngle;							// 角度
 	EObjType m_type;						// オブジェクトのタイプ
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
+
 };
 
 #endif

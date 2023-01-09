@@ -49,7 +49,7 @@ public:
 
 	bool GetbUseflg() { return bUseflg; }
 
-	static CMeshLine *Create(D3DXCOLOR col, D3DXVECTOR3 distancepos);		// ¶¬ˆ—
+	static CMeshLine *Create(D3DXVECTOR3 pos ,D3DXCOLOR col, D3DXVECTOR3 distancepos);		// ¶¬ˆ—
 	bool Collision(D3DXVECTOR3 *PlayerPos, D3DXVECTOR3 *PlayerSize);	//“–‚½‚è”»’è
 
 	bool CollisionReturn(D3DXVECTOR3 * PlayerPos);

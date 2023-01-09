@@ -57,6 +57,10 @@ public:
 
 	static D3DXVECTOR3 GetRot() { return m_rot; }
 
+	static D3DXMATRIX GetMtxView() { return m_mtxView[0]; }
+	static D3DXMATRIX GetProjection() { return m_mtxProjection[0]; }
+
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -68,8 +72,8 @@ private:
 	D3DXVECTOR3	m_vecU[2];				//上方向ベクトル
 	D3DXVECTOR3	m_posVDest;			//目的の視点
 	D3DXVECTOR3	m_posRDest;			//目的の注視点
-	D3DXMATRIX	m_mtxProjection[2];	//プロジェクションマトリックス
-	D3DXMATRIX	m_mtxView[2];			//ビューマトリックス
+	static D3DXMATRIX	m_mtxProjection[2];	//プロジェクションマトリックス
+	static D3DXMATRIX	m_mtxView[2];			//ビューマトリックス
 	float		m_fDistance;		//視点から注視点の距離
 
 	D3DXVECTOR3 m_CamPosV[2];	//計算後

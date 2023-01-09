@@ -201,9 +201,13 @@ void CRenderer::Draw()
 			//カメラのセット処理
 			if (m_pCamera != nullptr)		//プレイヤーカメラ
 			{
-				if (CApplication::MODE_GAME)
+				if (CApplication::MODE_GAME || CApplication::MODE_GAME)
 				{
 					m_pCamera->SetCamera(true, true, cnt);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)引数3 画面複数生成(true 画面複数生成 false 無効)
+				}
+				else
+				{
+					m_pCamera->SetCamera(true, true, 0);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)引数3 画面複数生成(true 画面複数生成 false 無効)
 				}
 
 			}

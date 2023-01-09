@@ -104,17 +104,30 @@ void CSelectStage::Update(void)
 	{
 		//ƒ‚ƒfƒ‹‚Ì‰ñ“]•ÏX–³‚µ
 		rot.y += 0.01f;
+		if (m_pFade->GetFade() == CFade::FADE_NONE)
+		{
+
+			if (pInput->Trigger(DIK_RETURN))
+			{
+				//‘JˆÚ
+				CFade::SetFade(CApplication::MODE_GAME);	//ƒQ[ƒ€‘JˆÚ
+			}
+		}
 	}
 	if (m_modeSelectcount == 2)
 	{
 		//ƒ‚ƒfƒ‹‚Ì‰ñ“]•ÏX–³‚µ
 		rot1.y += 0.01f;
+		if (m_pFade->GetFade() == CFade::FADE_NONE)
+		{
+			if (pInput->Trigger(DIK_RETURN))
+			{
+				//‘JˆÚ
+				CFade::SetFade(CApplication::MODE_GAME1);	//ƒQ[ƒ€‘JˆÚ
+			}
+		}
 	}
-	if (pInput->Trigger(DIK_RETURN))
-	{
-		//‘JˆÚ
-		CFade::SetFade(CApplication::MODE_GAME);	//ƒQ[ƒ€‘JˆÚ
-	}
+
 	//=====================================
 	pStage->SetPos(pos);
 	pStage->SetRot(rot);

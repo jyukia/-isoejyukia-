@@ -53,7 +53,7 @@ void CLoadStage::LoadAll(const D3DXVECTOR3& inPos)
 	}
 }
 
-void CLoadStage::SaveAll()
+void CLoadStage::SaveAll(std::string file)
 {
 	int nIndex = 0;
 	nlohmann::json list;
@@ -96,16 +96,28 @@ void CLoadStage::SaveAll()
 
 	auto jobj = list.dump();
 	std::ofstream writing_file;
-	const std::string pathToJSON = "Data/FILE/Save.Json";
+	const std::string pathToJSON = file.c_str();
 	writing_file.open(pathToJSON, std::ios::out);
 	writing_file << jobj << std::endl;
 	writing_file.close();
 }
 
 //関数読み込み
-void CLoadStage::LoadAllTest()
+void CLoadStage::LoadAllTest(int select_stage)
 {
-	nlohmann::json list = LoadJsonStage(L"Data/FILE/Save.json");
+	//nlohmann::json list = LoadJsonStage(L"Data/FILE/Save.json");
+
+	nlohmann::json list;
+
+	switch (select_stage)
+	{
+	case 0:	//マップ1
+			list = LoadJsonStage(L"Data/testmap.json");
+			break;
+	default:
+		break;
+	}
+
 	int nIndex = list["INDEX"];
 
 	CGoal* pGoal;				//ゴールポインタ

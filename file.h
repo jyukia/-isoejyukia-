@@ -39,8 +39,11 @@ typedef struct
 // §ŒäŠÖ”
 Set *GetStatus(void);//ƒQƒbƒg
 void OutputStatus();
-
 void Load();	//“Ç‚İ‚İŠÖ”
+
+void OutputStatusFirst();
+void LoadFirst();	//“Ç‚İ‚İŠÖ”
+
 
 #endif
 

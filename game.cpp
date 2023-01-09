@@ -62,10 +62,12 @@ HRESULT CGame::Init(void)
 	}
 
 	//モデル読み込み一番上に配置
-	OutputStatus();
+//	OutputStatus();
 
 	//メッシュフィールドの生成
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
+	m_pMeshField->LoadTexture("Data\\TEXTURE\\wood.png");
+
 
 	//プレイヤーの生成
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
@@ -89,17 +91,16 @@ HRESULT CGame::Init(void)
 
 		CObject3D* wallX3 = CObject3D::Create(D3DXVECTOR3(-1700.0f, 700.0f, -1300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, -D3DX_PI / 2), WallSize, 3);
 		wallX3->LoadTexture("Data/TEXTURE/Background_6.png");
+	}
 
+	{//写真
 		float lch = -2600;
 		CObject3D* me = CObject3D::Create(D3DXVECTOR3(100.0f, 500.0f, -1680.0f + lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 200.0f), 3);
 		me->LoadTexture("Data/TEXTURE/01.png");
 
-		CObject3D* memory = CObject3D::Create(D3DXVECTOR3(1250.0f, 680.0f, -1096.0f), D3DXVECTOR3(-D3DX_PI / 1.83f, D3DX_PI, D3DX_PI), D3DXVECTOR3(50, 0.0f, 70.0f), 3);
+		CObject3D* memory = CObject3D::Create(D3DXVECTOR3(1250.0f, 680.0f, -1098.0f), D3DXVECTOR3(-D3DX_PI / 1.83f, D3DX_PI, D3DX_PI), D3DXVECTOR3(50, 0.0f, 70.0f), 3);
 		memory->LoadTexture("Data/TEXTURE/omoide.png");
-
-
 	}
-
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
@@ -110,11 +111,11 @@ HRESULT CGame::Init(void)
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
 
-	//CLoadStage::LoadAllTest();
+	CLoadStage::LoadAllTest(0);
 
-	Load();
+	//Load();
 
-	CLoadStage::SaveAll();
+	//CLoadStage::SaveAll();
 
 	return S_OK;
 }

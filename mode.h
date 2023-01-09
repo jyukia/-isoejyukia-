@@ -16,6 +16,9 @@ class CResult;
 class CPlayer;
 class CMeshLine;
 class CMovelife;
+class CSkyField;
+class CLight;
+class CTexture;
 //=============================================================================
 // ƒNƒ‰ƒX‚Ì’è‹`
 //=============================================================================
@@ -50,6 +53,12 @@ public:
 	static CPlayer *GetPlayer() { return m_pPlayer; }
 	static void SetPlayer(CPlayer* player) { m_pPlayer = player; }
 
+	static CSkyField *GetSkyField() { return m_SkyField; }
+	static void SetSkyField(CSkyField* skyfield) { m_SkyField = skyfield; }
+
+	static CTexture *GetTexture() { return m_Texture; }
+	static void SetTexture(CTexture* texture) { m_Texture = texture; }
+
 	static CMeshLine *GetMeshLine() { return m_pMeshLine; }
 
 	static CMovelife *GetMoveLife() {return m_MoveLife;}
@@ -63,6 +72,10 @@ private:
 	static CMeshLine *m_pMeshLine;
 
 	static CMovelife *m_MoveLife;
+
+	static CSkyField *m_SkyField;
+
+	static CTexture *m_Texture;
 };
 
 #endif

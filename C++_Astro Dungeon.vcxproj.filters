@@ -25,6 +25,12 @@
     <Filter Include="ソース ファイル\gameRoom">
       <UniqueIdentifier>{3e267fa0-70d0-4cd4-8212-804425b5d33e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\selectStage">
+      <UniqueIdentifier>{98403452-ae17-4fce-aaf7-d5378261467f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\file">
+      <UniqueIdentifier>{e668d029-5254-4efc-a6f7-27f0dc8a5e96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -171,20 +177,20 @@
     <ClCompile Include="Preparation.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SelectStage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="game1.cpp">
       <Filter>ソース ファイル\GameTurf</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>ソース ファイル\gameRoom</Filter>
     </ClCompile>
-    <ClCompile Include="file.cpp">
-      <Filter>ソース ファイル\GameTurf</Filter>
+    <ClCompile Include="SelectStage.cpp">
+      <Filter>ソース ファイル\selectStage</Filter>
     </ClCompile>
-    <ClCompile Include="file_map1.cpp">
-      <Filter>ソース ファイル\gameRoom</Filter>
+    <ClCompile Include="skyfield.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>ソース ファイル\file</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,7 +347,7 @@
     <ClInclude Include="game1.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="file_map1.h">
+    <ClInclude Include="skyfield.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -31,11 +31,13 @@ public:
 	void Update(void);					// 更新処理
 	static CLight *Create(void);		// 生成処理
 
+	static D3DLIGHT9 GetLight() { return m_aLight[0]; }
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
-	D3DLIGHT9 m_aLight[MAX_LIGHT];		//ライト情報
+	static D3DLIGHT9 m_aLight[MAX_LIGHT];		//ライト情報
 };
 
 #endif

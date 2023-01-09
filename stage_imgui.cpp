@@ -12,6 +12,7 @@
 // include
 //-----------------------------------------------------------------------------
 #include "stage_imgui.h"
+#include"load_stage.h"
 //-----------------------------------------------------------------------------
 // imgui
 //-----------------------------------------------------------------------------
@@ -83,6 +84,8 @@ bool CStageImgui::Update()
 {
 #ifdef _DEBUG
 
+	HWND wnd = CApplication::Getinstnce()->GetHWnd();
+
 	CImguiProperty::Update();
 
 	// テキスト表示
@@ -108,7 +111,10 @@ bool CStageImgui::Update()
 	{// ボタンが押された
 		checkBox = !checkBox;
 	}
-
+	if (ImGui::Button(u8"マップの保存"))
+	{// ボタンが押された
+		funcFileLoad(wnd);
+	}
 	ImGui::End();
 	return false;
 #endif // _DEBUG
@@ -186,3 +192,36 @@ void CStageImgui::SetMeshPos(float x, float y, float z)
 //
 //	//ImGui::EndMenuBar();
 //}
+
+//========================
+//ウィンドウだしてやるやつ
+//========================
+void CStageImgui::funcFileLoad(HWND hWnd)
+{
+	static OPENFILENAME     ofn;
+	static TCHAR            szPath[MAX_PATH];
+	static TCHAR            szFile[MAX_PATH];
+
+	if (szPath[0] == TEXT('\0')) {
+		GetCurrentDirectory(MAX_PATH, szPath);
+	}
+	if (ofn.lStructSize == 0) {
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = hWnd;
+		ofn.lpstrInitialDir = szPath;    // 初期フォルダ位置
+		ofn.lpstrFile = szFile;            // 選択ファイル格納
+		ofn.nMaxFile = MAX_PATH;
+		ofn.lpstrDefExt = TEXT(".json");
+		ofn.lpstrFilter = TEXT("jsonファイル(.json)\0.json\0");
+		ofn.lpstrTitle = TEXT("テキストファイル読み込む。");
+		ofn.Flags = OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT;
+	}
+	if (GetSaveFileName(&ofn)) {
+		MessageBox(hWnd, szFile, TEXT("これを読み込むぞぉ"), MB_OK);
+	}
+
+	if (szFile[0] != '\0')
+	{
+		CLoadStage::SaveAll(szFile);
+	}
+}

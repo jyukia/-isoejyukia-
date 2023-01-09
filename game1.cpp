@@ -20,9 +20,10 @@
 #include"score.h"
 #include "file.h"
 #include "goal.h"
-
+#include"skyfield.h"
 #include "movelife.h"
 #include "Preparation.h"
+#include "load_stage.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -54,25 +55,45 @@ CGame1::~CGame1()
 //=============================================================================
 HRESULT CGame1::Init(void)
 {
+	//ライトの生成
+	m_pLight = CLight::Create();
+
 	{//初期化
 		m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 
-	//モデル読み込み一番上に配置
-	OutputStatus();
-
-	//ライトの生成
-	m_pLight = CLight::Create();
-
 	//メッシュフィールドの生成
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
+	m_pMeshField->LoadTexture("Data\\TEXTURE\\shiba.png");
 
 	//プレイヤーの生成
-	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
+	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(2700.0f, 20.0f, -3000.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
+
+	D3DXVECTOR3 pos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
 
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("Kedama");
+	m_pGoal->Setstring("GOAL");
+
+	{//壁
+		for (int cont = 0; cont < 5; cont++)
+		{
+			CObjectX* wallX = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(700 +520 * cont, 0, -3500), 3);
+		}
+		for (int cont = 0; cont < 6; cont++)
+		{
+			CObjectX* wallX1 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(3000, 0, -3200 + 515 * cont), 3);
+		}
+		for (int cont = 0; cont < 5; cont++)
+		{
+			CObjectX* wallX2 = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(2780 - 515 * cont, 0, -350), 3);
+		}
+		for (int cont = 0; cont < 6; cont++)
+		{
+			CObjectX* wallX3 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(450, 0, -3200 + 515 * cont), 3);
+		}
+	}
 
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
@@ -84,7 +105,9 @@ HRESULT CGame1::Init(void)
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
-	Load();
+	CSkyField::Create();
+
+	//CLoadStage::LoadAllTest(0);
 
 	return S_OK;
 }

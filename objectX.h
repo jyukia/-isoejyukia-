@@ -8,6 +8,8 @@
 #include "object.h"
 #include <string>
 
+#define MAX_MATERIAL_TEXTURE_NUM (100)
+
 //=============================================================================
 // 前方定義
 //=============================================================================
@@ -19,6 +21,20 @@ class CLine;
 class CObjectX : public CObject
 {
 public:
+	//=========================================
+	// モデルのマテリアル情報
+	//=========================================
+	struct MODEL_MATERIAL
+	{
+		LPD3DXMESH		pMesh;				// メッシュ情報へのポインタ
+		LPD3DXBUFFER	pBuffer;			// マテリアル情報へのポインタ
+		DWORD			nNumMat;			// マテリアル情報の数
+		D3DXVECTOR3		size;				// モデルの大きさ
+		int				*pNumTex;			// テクスチャタイプ
+		char			aFileName[0xff];	// Xファイルのパス
+		LPDIRECT3DTEXTURE9 pTexture[MAX_MATERIAL_TEXTURE_NUM];		// テクスチャ
+	};
+
 	//-------------------------------------------------------------------------
 	// コンストラクタとデストラクタ
 	//-------------------------------------------------------------------------
@@ -82,6 +98,11 @@ public:
 	//クォータニオン	
 	D3DXQUATERNION GetQuaternionFst(void) { return m_quaternion; }
 
+	//シェーダー
+	void DrawMaterial();													// マテリアル描画
+	static MODEL_MATERIAL *GetMaterial() { return m_material; }				// マテリアル情報の取得
+	//MODEL_MATERIAL GetMyMaterial() { return m_material[m_nModelID]; }		// マテリアル情報の取得
+
 	static CObjectX *Create(const char *aFileName, D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	static CObjectX *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	static CObjectX *Create(const char *aFileName, D3DXVECTOR3 rot,D3DXVECTOR3 pos, int nPriority);	// 生成処理
@@ -137,6 +158,23 @@ private:
 	D3DXQUATERNION m_quaternion;
 	static D3DXVECTOR3 m_axis;    // 回転軸
 	bool bQuaternion;	//クォータニオンフラグ
+
+	//=========================================
+	LPD3DXEFFECT		pEffect;					// シェーダー
+	IDirect3DTexture9	*pTex0 = NULL;				// テクスチャ保存用
+	//=========================================
+	//ハンドル一覧
+	//=========================================
+	D3DXHANDLE			m_hmWVP;					// ワールド	射影行列
+	D3DXHANDLE			m_hmWIT;					// ローカル - ワールド変換行列
+	D3DXHANDLE			m_hvLightDir;				// ライトの方向
+	D3DXHANDLE			m_hvCol;					// 頂点色
+	D3DXHANDLE			m_hvEyePos;					// 視点の位置
+	D3DXHANDLE			m_hTechnique;				// テクニック
+	D3DXHANDLE			m_hTexture;					// テクスチャ
+
+	static MODEL_MATERIAL	*m_material;		// マテリアル情報
+	static int				m_nMaxModel;		// モデル数			
 
 };
 #endif

@@ -48,7 +48,11 @@ public:
 	HRESULT Init() override;			// 初期化処理
 	void Update() override;				// 更新処理
 
+	//ステージ1使用場外に行かなくするための処理
 	void OutSide(D3DXVECTOR3 &Playerpos);
+	//ステージ2使用場外に行かなくするための処理
+	void OutSide1(D3DXVECTOR3 &Playerpos);
+
 
 	static CPlayer *Create(const D3DXVECTOR3 pos, int nPriority);    // 生成処理
 

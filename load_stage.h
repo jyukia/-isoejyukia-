@@ -22,9 +22,9 @@ public:
 	// メンバー関数
 	//-------------------------------------------------------------------------
 	static void LoadAll(const D3DXVECTOR3& inPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f));		// 全ての読み込み
-	static void SaveAll();		// 全ての書込み
+	static void SaveAll(std::string file);		// 全ての書込み
 
-	static void LoadAllTest();
+	static void LoadAllTest(int select_stage);
 
 private: /* プライベート関数 */
 

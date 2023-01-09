@@ -32,7 +32,7 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_GAME;
+	CApplication::m_mode = MODE_GAME1;
 }
 
 //=============================================================================
@@ -48,6 +48,8 @@ CApplication::~CApplication()
 //=============================================================================
 HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
+	Hwnd = hWnd;
+
 	//乱数の初期化
 	srand((unsigned int)time(0));
 
@@ -171,7 +173,6 @@ void CApplication::Uninit(void)
 		delete m_Imgui;
 		m_Imgui = nullptr;
 	}
-
 }
 
 //=============================================================================
@@ -185,8 +186,8 @@ void CApplication::Update(void)
 	CDebugProc::Print("フレームレート : %d\n", FPS);
 
 	CDebugProc::Print("現在の画面遷移番号 : [%d] \n", m_mode);
-
 #endif // _DEBUG
+
 	//インプットの更新処理
 	if (m_pInput != nullptr)
 	{
@@ -197,13 +198,11 @@ void CApplication::Update(void)
 	{
 		m_pRenderer->Update();
 	}
-
 	//カメラの更新処理
 	if (m_pCamera != nullptr)
 	{
 		m_pCamera->Update();
 	}
-
 	//imguiの更新処理
 	if (m_Imgui != nullptr)
 	{
@@ -226,7 +225,6 @@ void CApplication::Draw(void)
 	{
 		m_Imgui->Draw();
 	}
-
 }
 
 //=============================================================================

@@ -25,7 +25,6 @@
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="file.cpp" />
-    <ClCompile Include="file_map1.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game1.cpp" />
     <ClCompile Include="goal.cpp" />
@@ -69,6 +68,7 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="SelectStage.cpp" />
     <ClCompile Include="shadow.cpp" />
+    <ClCompile Include="skyfield.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="stage_imgui.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -82,7 +82,6 @@
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="file.h" />
-    <ClInclude Include="file_map1.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game1.h" />
     <ClInclude Include="goal.h" />
@@ -125,6 +124,7 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="SelectStage.h" />
     <ClInclude Include="shadow.h" />
+    <ClInclude Include="skyfield.h" />
     <ClInclude Include="stage_imgui.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />

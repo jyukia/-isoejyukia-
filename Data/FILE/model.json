@@ -19,8 +19,15 @@
     [ "HOURGLASS", "Data\/MODEL\/hourglass.x" ],
     [ "BOOK", "Data\/MODEL\/book.x" ],
     [ "PHOTOSTAND", "Data\/MODEL\/photostand.x" ],
+    [ "TEAPOT", "Data\/MODEL\/Teapot.x" ],
+    [ "SCISSORS", "Data\/MODEL\/scissors.x" ],
+    [ "BEERMUG", "Data\/MODEL\/beermug.x" ],
 
 
+    [ "FENCE", "Data\/MODEL\/fence.x" ],
+    [ "FENCEROT", "Data\/MODEL\/fenceRot.x" ],
+
+   
     [ "MAP1", "Data\/MODEL\/map1.x" ],
     [ "MAP2", "Data\/MODEL\/map2.x" ]
 

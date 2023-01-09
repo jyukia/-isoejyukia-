@@ -19,6 +19,8 @@
 class CStageImgui : public CImguiProperty
 {
 public:
+
+
 	CStageImgui();
 	~CStageImgui();
 
@@ -31,6 +33,8 @@ public:
 	int GetModel() const { return sliderIntmodel; }
 
 	void SetMeshPos(float x, float y, float z);
+
+	void funcFileLoad(HWND hWnd);
 
 private: // プライベート関数
 	void TaskBarUpdate();

@@ -41,7 +41,7 @@ HRESULT CMeshfield::Init()
 	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
-	LoadTexture("Data\\TEXTURE\\wood.png");
+	//LoadTexture("Data\\TEXTURE\\wood.png");
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MESHFIELD_VERTEX_NUM,

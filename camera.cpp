@@ -16,6 +16,8 @@
 // 静的メンバ変数宣言
 //=============================================================================
 D3DXVECTOR3 CCamera::m_rot;
+D3DXMATRIX	CCamera::m_mtxProjection[2];
+D3DXMATRIX	CCamera::m_mtxView[2];
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -54,7 +56,8 @@ HRESULT CCamera::Init(void)
 		m_game_viewport[NumCameraZero].MaxZ = 1.0f;
 		m_game_viewport[NumCameraZero].MinZ = 0.0f;
 	}
-
+	//NumCameraZero
+	//NumCameraOne
 	{//画面分割 マップ
 		m_posV[NumCameraOne] = D3DXVECTOR3(0.0f, 1000.0f, -400.0f);						//視点
 		m_posR[NumCameraOne] = D3DXVECTOR3(0.0f, 20.0f, -1.0f);							//注視点
@@ -159,21 +162,23 @@ void CCamera::Update(void)
 		//計算用マトリックス
 		D3DXMATRIX mtxRot, mtxTrans;
 
-		for (int cameranum = 0; cameranum <2; cameranum++)
+		for (int cameranum = 0; cameranum < 2; cameranum++)
 		{
-			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&m_mtxView[cameranum]);		//行列初期化関数(第一引数の行列を単位行列に初期化)
+			D3DXMATRIX mtx;
 
-			//向きを反映
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
-			D3DXMatrixMultiply(&m_mtxView[cameranum], &m_mtxView[cameranum], &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
+			//ワールドマトリックスの初期化
+			D3DXMatrixIdentity(&mtx);        //行列初期化関数(第一引数の行列を単位行列に初期化)
+
+			 //向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);            //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
+			D3DXMatrixMultiply(&mtx, &mtx, &mtxRot);    //行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
 
 			//位置を反映
-			D3DXMatrixTranslation(&mtxTrans, pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
-			D3DXMatrixMultiply(&m_mtxView[cameranum], &m_mtxView[cameranum], &mtxTrans);
+			D3DXMatrixTranslation(&mtxTrans, pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);        //行列移動関数(第一引数にx,y,z方向の移動行列を作成)
+			D3DXMatrixMultiply(&mtx, &mtx, &mtxTrans);
 
-			D3DXVec3TransformCoord(&m_CamPosV[cameranum], &m_posV[cameranum], &m_mtxView[cameranum]);	//ワールド変換行列
-			D3DXVec3TransformCoord(&m_CamPosR[cameranum], &m_posR[cameranum], &m_mtxView[cameranum]);	//ワールド変換行列
+			D3DXVec3TransformCoord(&m_CamPosV[cameranum], &m_posV[cameranum], &mtx);    //ワールド変換行列
+			D3DXVec3TransformCoord(&m_CamPosR[cameranum], &m_posR[cameranum], &mtx);    //ワールド変換行列
 		}
 	}
 	if (mode == CApplication::MODE_SELECT_STAGE)
@@ -279,7 +284,7 @@ void CCamera::SetCamera(bool bfixed, bool btypecom, int numCamera)
 		pDevice->SetViewport(&m_game_viewport[numCamera]);
 
 		//ビューマトリックスの初期化
-		D3DXMatrixIdentity(&m_mtxView[NumCameraOne]);
+		D3DXMatrixIdentity(&m_mtxView[numCamera]);
 
 		//ビューマトリックスの作成
 		D3DXMatrixLookAtLH(&m_mtxView[numCamera],

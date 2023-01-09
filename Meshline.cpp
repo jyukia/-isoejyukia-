@@ -27,6 +27,15 @@ HRESULT CMeshLine::Init()
 		m_pVtxMax = MaxLine;	//頂点数最大数
 	}
 
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME)
+	{
+		m_pos = D3DXVECTOR3(110.0f, 610.0f, -600.0f);
+	}
+	else if(CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
+	{
+		m_pos = D3DXVECTOR3(1000.0f, 0.0f, -2000.0f);
+	}
+
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
@@ -47,7 +56,8 @@ HRESULT CMeshLine::Init()
 	for (int Cnt = 0; Cnt < m_pVtxMax; Cnt++)
 	{
 		// 頂点情報を設定
-		pVtx[Cnt].pos = D3DXVECTOR3(110.0f, 610.0f, -600.0f);
+		//pVtx[Cnt].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		pVtx[Cnt].pos = m_pos;
 
 		//各頂点の法線の設定（※ベクトルの大きさは1にする必要がある）
 		pVtx[Cnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -203,16 +213,16 @@ void CMeshLine::SetMoveFlg(bool movemaxflg)
 	MoveMaxFlg = movemaxflg;
 }
 
-CMeshLine * CMeshLine::Create(D3DXCOLOR col, D3DXVECTOR3 distancepos)
+CMeshLine * CMeshLine::Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR3 distancepos)
 {
 	CMeshLine *pMeshLine = new CMeshLine(2);
 
 	if (pMeshLine != nullptr)
 	{
-		pMeshLine->SetCol(col);
 		pMeshLine->Init();
 		pMeshLine->SetOfSetPos(distancepos);
-
+		pMeshLine->SetCol(col);
+		pMeshLine->SetPos(pos);
 	}
 	else
 	{
