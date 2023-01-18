@@ -57,14 +57,22 @@ public:
 	static CPlayer *Create(const D3DXVECTOR3 pos, int nPriority);    // 生成処理
 
 	static int GetKeyCnt(void) { return keyCnt; }		// カウント取得処理
+	void SetKeyCnt(int keycnt) { keyCnt = keycnt; }
 
 	void SetJumpFlag(bool fFlag) { m_bJumpFlag = fFlag; }
 
 	void SetScaleType(ScaleType scaletype) { eScaleType = scaletype; }
 	ScaleType GetscaleType() { return eScaleType; }
 
+	bool GetMoveFlg() { return bMoveFlg; }
 	void SetbMoveFlg(bool bmoveflg) { bMoveFlg = bmoveflg; }
 
+	//プレイヤー角度
+	D3DXVECTOR3 GetrotDest() { return m_rotDest; }
+
+	//プレイヤーのスピード
+	float Getnspeed() { return m_nSpeed; }
+		
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -91,5 +99,6 @@ private:
 	static int keyCnt;
 	//クォータニオン使用のフラグ取得
 	bool Quaternionflg;
+
 };
 #endif

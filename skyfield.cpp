@@ -285,6 +285,8 @@ void CSkyField::Update()
 
 		m_pos.z = CMode::GetPlayer()->GetPos().z;
 	}
+
+	m_rot.y += 0.001f;
 }
 
 //------------------------------------

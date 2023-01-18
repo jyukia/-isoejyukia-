@@ -10,6 +10,7 @@
 #include "player.h"
 #include"light.h"
 #include"camera.h"
+#include "Mapcamera.h"
 
 D3DXVECTOR3 CObjectX::m_axis;    // 回転軸
 
@@ -101,7 +102,6 @@ void CObjectX::Update()
 //=============================================================================
 void CObjectX::Draw()
 {
-
 		//デバイスの取得
 		LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
@@ -146,27 +146,29 @@ void CObjectX::Draw()
 			D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
 		}
 
-	//Projection();
+	Projection();
 
-	//ワールドマトリックスの設定（ワールド座標行列の設定）
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+	//CMapcamera* pMapCamera = CApplication::Getinstnce()->GetMapCamera();
+	//if(pMapCamera)
+	//{
+	//	//ワールドマトリックスの設定（ワールド座標行列の設定）
+	//	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+	//	//現在のマテリアルを保持
+	//	pDevice->GetMaterial(&matDef);
+	//	//マテリアルデータへのポインタを取得
+	//	pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
+	//	for (int nCntMat = 0; nCntMat < (int)m_NumMat; nCntMat++)
+	//	{
+	//		//マテリアルの設定
+	//		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+	//		//モデルパーツの描画
+	//		m_pMesh->DrawSubset(nCntMat);
+	//	}
+	//	//保持していたマテリアルを戻す
+	//	pDevice->SetMaterial(&matDef);
+	//}
 
-		//現在のマテリアルを保持
-		pDevice->GetMaterial(&matDef);
-		//マテリアルデータへのポインタを取得
-		pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
-		for (int nCntMat = 0; nCntMat < (int)m_NumMat; nCntMat++)
-		{
-			//マテリアルの設定
-			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-			//モデルパーツの描画
-			m_pMesh->DrawSubset(nCntMat);
-		}
-
-	//保持していたマテリアルを戻す
-	pDevice->SetMaterial(&matDef);
-
-	//DrawMaterial();
+	DrawMaterial();
 }
 
 void CObjectX::Draw(D3DXMATRIX mtxParent)
@@ -236,7 +238,6 @@ void CObjectX::Draw(D3DXMATRIX mtxParent)
 //=============================================================================
 void CObjectX::DrawMaterial()
 {
-	//==================================================================================
 	if (pEffect != NULL)
 	{
 		CCamera* pCamera = CApplication::Getinstnce()->GetCamera();
@@ -256,7 +257,6 @@ void CObjectX::DrawMaterial()
 		//-------------------------------------------------
 		pEffect->SetTechnique(m_hTechnique);
 		pEffect->Begin(NULL, 0);
-		pEffect->BeginPass(0);
 
 		D3DXMatrixTranslation(&m, 1.0f, 0.0f, 0.0f);
 
@@ -286,7 +286,7 @@ void CObjectX::DrawMaterial()
 		D3DXMatrixInverse(&m, NULL, &m);
 
 		//環境光
-		v = D3DXVECTOR4(0, 0, 0, 1);
+		v = D3DXVECTOR4(1, 0, 0, 1);
 
 		//マテリアルデータのポインタを取得する
 		D3DXMATERIAL* pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
@@ -306,7 +306,7 @@ void CObjectX::DrawMaterial()
 				Diffuse = D3DXVECTOR4(pMat[nCntMat].MatD3D.Diffuse.r, pMat[nCntMat].MatD3D.Diffuse.g, pMat[nCntMat].MatD3D.Diffuse.b, pMat[nCntMat].MatD3D.Diffuse.a);
 
 				pEffect->SetVector(m_hvCol, &Diffuse);
-			}
+			} 
 
 			//if (CTexture::GetTexture != nullptr)
 			//{// テクスチャの適応
@@ -316,13 +316,16 @@ void CObjectX::DrawMaterial()
 			// テクスチャの設定
 			pEffect->SetTexture(m_hTexture, NULL);
 
+			pEffect->BeginPass(0);
+
 			//モデルパーツの描画
 			m_pMesh->DrawSubset(nCntMat);
+
+			pEffect->EndPass();
 
 			pMtrl++;
 		}
 
-		pEffect->EndPass();
 		pEffect->End();
 	}
 	else
@@ -759,7 +762,7 @@ void CObjectX::QuaternionCalculation(float ModelDiameter/*モデルの直径*/, D3DXVE
 
 	float Length = fLength / Cnt;
 	// クオータニオンの計算
-	D3DXQuaternionRotationAxis(&quaternion, &m_axis, Length *0.1f);	// 回転軸と回転角度を指定
+	D3DXQuaternionRotationAxis(&quaternion, &m_axis, Length *0.3f);	// 回転軸と回転角度を指定
 
 	*FstQuaternion *= quaternion;
 

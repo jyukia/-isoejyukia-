@@ -10,6 +10,7 @@
 #include"mode.h"
 //‘O•ûéŒ¾
 class CNumber;
+class CMeshLine;
 
 class CMovelife : public CObject2D
 {
@@ -37,6 +38,8 @@ public:
 	static CMovelife* Create(D3DXVECTOR3 pos,int nPriority);
 
 private:
+
+	CMeshLine *m_meshline;
 
 	CNumber* pNumber[3];
 	int m_Life;	//î•ñ•Û‘¶

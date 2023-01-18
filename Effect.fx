@@ -102,7 +102,7 @@ float4 PS(VS_OUTPUT In) : COLOR
 	float cgnc = LH*gnc + 1;
 	float F = 0.5f * gnc * gnc * (1 + cgpc * cgpc / (cgnc * cgnc)) / (gpc * gpc);
 
-	float4 Ambient = { 0.0f,0.0f,0.0f, 1.0f };
+	float4 Ambient = { 0.2f,0.0f,0.0f, 1.0f };
 
 	return In.Color + Ambient;		// 拡散光＋環境光(テクスチャの色)
 }

@@ -89,13 +89,10 @@ void CObject::UninitAll(void)
 	}
 }
 
-//=============================================================================
-// 全てのインスタンスの更新処理
-//=============================================================================
-void CObject::UpdateAll(void)
+//
+template<typename Func>
+inline void CObject::AllProcess(Func func)
 {
-	bool isPause = false;
-
 	for (int nPriority = 0; nPriority < PRIORITY_LEVELMAX; nPriority++)
 	{
 		CObject *pObject = m_pTop[nPriority];
@@ -105,45 +102,52 @@ void CObject::UpdateAll(void)
 			//pNextの保存
 			CObject *pObjectNext = pObject->m_pNext;
 
-			if (pObject->m_bDeath == false)
-			{
-				if (pObject->GetObjType() == OBJTYPE_PAUSE)
-				{
-					isPause = true;
-				}
+			func(pObject);
 
-				if (isPause)
-				{
-					if (pObject->m_canPoseUpdate)
-					{
-						pObject->Update();
-					}
-				}
-				else
-				{
-					pObject->Update();
-				}
-			}
-
-			//pObjectにpObjectのpNextを代入
-			pObject = pObjectNext;
-		}
-
-		pObject = m_pTop[nPriority];
-
-		while (pObject != nullptr)
-		{
-			//pNextの保存
-			CObject *pObjectNext = pObject->m_pNext;
-
-			if (pObject->m_bDeath == true)
-			{
-				pObject->Death();
-			}
 			//pObjectにpObjectのpNextを代入
 			pObject = pObjectNext;
 		}
 	}
+}
+//=============================================================================
+// 全てのインスタンスの更新処理
+//=============================================================================
+void CObject::UpdateAll(void)
+{
+	auto update = [](CObject* pObject)
+	{
+		bool isPause = false;
+		if (pObject->m_bDeath == false)
+		{
+			if (pObject->GetObjType() == OBJTYPE_PAUSE)
+			{
+				isPause = true;
+			}
+			if (isPause)
+			{
+				if (pObject->m_canPoseUpdate)
+				{
+					pObject->Update();
+				}
+			}
+			else
+			{
+				pObject->Update();
+			}
+		}
+	};
+
+	AllProcess(update);
+
+	auto Death = [](CObject* pObject)
+	{
+		if (pObject->m_bDeath == true)
+		{
+			pObject->Death();
+		}
+	};
+
+	AllProcess(Death);
 }
 
 //=============================================================================
@@ -151,25 +155,16 @@ void CObject::UpdateAll(void)
 //=============================================================================
 void CObject::DrawAll(void)
 {
-	for (int nPriority = 0; nPriority < PRIORITY_LEVELMAX; nPriority++)
+	auto Death = [](CObject* pObject)
 	{
-		CObject *pObject = m_pTop[nPriority];
-
-		while (pObject != nullptr)
+		if (pObject->m_bDeath == false)
 		{
-			//pNextの保存
-			CObject *pObjectNext = pObject->m_pNext;	//Update()で削除されると、pNextも消えるので事前に保存しておく
-
-			if (pObject->m_bDeath == false)
-			{
-				//描画処理の関数呼び出し
-				pObject->Draw();
-			}
-
-			//pObjectにpObjectのpNextを代入
-			pObject = pObjectNext;
+			//描画処理の関数呼び出し
+			pObject->Draw();
 		}
-	}
+	};
+
+		AllProcess(Death);
 }
 
 //=============================================================================
@@ -243,48 +238,30 @@ void CObject::Release()
 //=============================================================================
 void CObject::ModeRelease()
 {
-	for (int nPriority = 0; nPriority < PRIORITY_LEVELMAX; nPriority++)
+	auto Release = [](CObject* pObject)
 	{
+		if (pObject->GetObjType() != OBJTYPE_MODE)
 		{
-			CObject *pObject = m_pTop[nPriority];
-
-			while (pObject != nullptr)
-			{
-				//pNextの保存
-				CObject *pObjectNext = pObject->m_pNext;
-
-				if (pObject->GetObjType() != OBJTYPE_MODE)
-				{
-					//終了処理の関数呼び出し
-					pObject->Release();
-				}
-				else
-				{
-					int a = 0;
-				}
-
-				//pObjectにpObjectのpNextを代入
-				pObject = pObjectNext;
-			}
+			//終了処理の関数呼び出し
+			pObject->Release();
 		}
+		else
 		{
-			CObject *pObject = m_pTop[nPriority];
-
-			while (pObject != nullptr)
-			{
-				//pNextの保存
-				CObject *pObjectNext = pObject->m_pNext;
-
-				if (pObject->GetObjType() != OBJTYPE_MODE)
-				{
-					pObject->Death();
-				}
-
-				//pObjectにpObjectのpNextを代入
-				pObject = pObjectNext;
-			}
+			int a = 0;
 		}
-	}
+	};
+	
+	AllProcess(Release);
+
+	auto Death = [](CObject* pObject)
+	{
+		if (pObject->GetObjType() != OBJTYPE_MODE)
+		{
+			pObject->Death();
+		}
+	};
+
+	AllProcess(Death);
 }
 
 //=============================================================================

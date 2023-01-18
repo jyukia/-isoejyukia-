@@ -44,6 +44,7 @@
     <ClCompile Include="line.cpp" />
     <ClCompile Include="load_stage.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mapcamera.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="Meshline.cpp" />
     <ClCompile Include="meshorbit.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="line.h" />
     <ClInclude Include="load_stage.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Mapcamera.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="Meshline.h" />
     <ClInclude Include="meshorbit.h" />

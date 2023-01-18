@@ -6,6 +6,8 @@
 #include "object.h"
 #include "input.h"
 #include "camera.h"
+#include "Mapcamera.h"
+
 #include "light.h"
 #include "texture.h"
 #include "title.h"
@@ -23,6 +25,10 @@
 
 #include"stage_imgui.h"
 
+//紅茶で移動速度を落とすギミック追加
+
+//２つ目のマップ坂を作り移動、虫の追加はねられて移動ベクトル変更
+
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
@@ -30,9 +36,9 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
+CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pMapCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_GAME1;
+	CApplication::m_mode = MODE_TITLE;//MODE_GAME
 }
 
 //=============================================================================
@@ -80,6 +86,8 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	assert(m_Imgui != nullptr);
 	m_Imgui->Init(hWnd, pDevice);
 
+
+	m_pMapCamera = new CMapcamera;
 
 	// カメラの初期化
 	m_pCamera = new CCamera;
@@ -166,10 +174,18 @@ void CApplication::Uninit(void)
 		delete m_pCamera;
 		m_pCamera = nullptr;
 	}
+	//カメラの解放・削除
+	if (m_pMapCamera != nullptr)
+	{
+		m_pMapCamera->Uninit();
+		delete m_pMapCamera;
+		m_pMapCamera = nullptr;
+	}
+
 	//imguiの解放
 	if (m_Imgui != nullptr)
 	{
-		//m_Imgui->Uninit();
+		//m_Imgui->Uninit(Hwnd, wcex);
 		delete m_Imgui;
 		m_Imgui = nullptr;
 	}
@@ -197,6 +213,11 @@ void CApplication::Update(void)
 	if (m_pRenderer != nullptr)
 	{
 		m_pRenderer->Update();
+	}
+	//カメラの更新処理
+	if (m_pMapCamera != nullptr)
+	{
+		m_pMapCamera->Update();
 	}
 	//カメラの更新処理
 	if (m_pCamera != nullptr)
@@ -257,6 +278,8 @@ void CApplication::SetMode(MODE mode)
 	CObject::ModeRelease();
 
 	m_mode = mode;
+
+	m_pMapCamera->Init();
 
 	m_pCamera->Init();
 

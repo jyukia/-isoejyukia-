@@ -106,12 +106,10 @@ HRESULT CGame::Init(void)
 
 	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
 
-	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
-
 	//ƒQ[ƒ€ŠJŽn‚Ì‡}
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
 
-	CLoadStage::LoadAllTest(0);
+	//CLoadStage::LoadAllTest(0);
 
 	//Load();
 

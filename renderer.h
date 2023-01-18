@@ -5,6 +5,7 @@
 // クラスの定義
 //=============================================================================
 class CCamera;
+class CMapcamera;
 
 class CRenderer
 {
@@ -27,7 +28,6 @@ public:
 	LPDIRECT3DDEVICE9 GetDevice();					// デバイスの取得
 	void SetFog(bool bFlag, D3DXCOLOR col);
 
-
 private:
 	//-------------------------------------------------------------------------
 	// メンバー関数
@@ -39,6 +39,7 @@ private:
 	//-------------------------------------------------------------------------
 
 	static CCamera *m_pCamera;				// カメラのポインタ
+	static CMapcamera *m_pMapCamera;
 
 	LPDIRECT3D9 m_pD3D;								// Direct3Dオブジェクト
 	LPDIRECT3DDEVICE9 m_pD3DDevice;					// Deviceオブジェクト

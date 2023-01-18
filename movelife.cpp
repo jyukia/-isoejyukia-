@@ -26,6 +26,7 @@ CMovelife::~CMovelife()
 //-----------------------------------------
 HRESULT CMovelife::Init()
 {
+
 	for (int numberCnt = 0; numberCnt <3; numberCnt++)
 	{
 		pNumber[numberCnt] = CNumber::Create("NUMBER", D3DXVECTOR3(50.0f + numberCnt *45.0f, 360.0f, 0.0f), D3DXVECTOR3(35.0f, 40.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3);
@@ -49,9 +50,14 @@ void CMovelife::Update()
 	D3DXVECTOR3 pos = CObject2D::GetPos();
 
 	//ƒvƒŒƒCƒ„[î•ñ
-	D3DXVECTOR3 Playerpos = CMode::GetPlayer()->GetPos();
+	D3DXVECTOR3 Playerpos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
 	D3DXVECTOR3 PlayerposOld = CMode::GetPlayer()->GetPosOld();
-	if (Playerpos != PlayerposOld)	//“®‚¢‚Ä‚¢‚é
+	bool flg =CApplication::Getinstnce()->GetpMode()->GetMeshLine()->GetbIsLanding();
+	if (flg)
+	{
+		Addlife(2);
+	}
+	if(!flg)
 	{
 		//Œ¸‚éˆ—
 		Sublife(2);

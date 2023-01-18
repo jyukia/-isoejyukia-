@@ -7,10 +7,12 @@
 #include "game1.h"
 #include "mode.h"
 #include "movelife.h"
+#include "input.h"
+#include "camera.h"
 
 #include"DebugProc.h"
 
-bool CMeshLine::MoveMaxFlg = false;
+bool CMeshLine::bIsLanding = false;
 
 CMeshLine::CMeshLine(int nPriority) :m_pVtxMax(0), m_col(0.0f, 0.0f, 0.0f, 0.0f), m_Vtxcount(0), bUseflg(false)
 {
@@ -20,9 +22,27 @@ CMeshLine::CMeshLine(int nPriority) :m_pVtxMax(0), m_col(0.0f, 0.0f, 0.0f, 0.0f)
 CMeshLine::~CMeshLine()
 {
 }
+//=============================================================================
+// テクスチャロード処理
+//=============================================================================
+void CMeshLine::LoadTexture(const char * aFileName)
+{
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(
+		pDevice,
+		aFileName,
+		&m_pTexture);
+}
 HRESULT CMeshLine::Init()
 {
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
+	{
+		m_pVtxMax = MaxLineTitle;	//頂点数最大数
+	}
+	else
 	{//初期化
 		m_pVtxMax = MaxLine;	//頂点数最大数
 	}
@@ -33,8 +53,14 @@ HRESULT CMeshLine::Init()
 	}
 	else if(CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
 	{
-		m_pos = D3DXVECTOR3(1000.0f, 0.0f, -2000.0f);
+		m_pos = D3DXVECTOR3(2600.0f, 20.0f, -3100.0f);
 	}
+	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
+	{
+		m_pos = D3DXVECTOR3(0.0f, 20.0f, 1500.0f);
+	}
+
+	LoadTexture("Data/TEXTURE/kedama.png");
 
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
@@ -53,6 +79,7 @@ HRESULT CMeshLine::Init()
 	//頂点バッファをロックし、頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
+	int X = 0;
 	for (int Cnt = 0; Cnt < m_pVtxMax; Cnt++)
 	{
 		// 頂点情報を設定
@@ -63,12 +90,21 @@ HRESULT CMeshLine::Init()
 		pVtx[Cnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 		// 頂点カラーの設定
-		pVtx[Cnt].col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+		pVtx[Cnt].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 		//テクスチャの座標設定
-		pVtx[Cnt].tex = D3DXVECTOR2(0.0f, 0.0f);
-	}
+		pVtx[Cnt].tex = D3DXVECTOR2(0.0f, 1.0f);
 
+
+		float Y = Cnt / 2;
+		pVtx[Cnt].tex = D3DXVECTOR2((float)X, Y);
+		X++;
+		if (X >= 2)	//テクスチャ
+		{
+			X = 0;
+		}
+
+	}
 	//頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
 
@@ -102,27 +138,31 @@ void CMeshLine::Update()
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-		//戻った際の当たり判定 (巻き戻し)
-		bUseflg = CollisionReturn(&pPlayerPos);
-
-		if (!bUseflg)	//生成
+		if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
 		{
-			if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
+			for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
 			{
-				for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
-				{
-					pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
-				}
-				pVtx[1].pos = pPlayerPos + axis * 10.0f;			//高さ変更
-				pVtx[0].pos = pPlayerPos - axis * 10.0f;			//原点
-				m_Vtxcount += 2;
+				pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
+			}
+			pVtx[1].pos = pPlayerPos + axis * 5.0f;			//高さ変更
+			pVtx[0].pos = pPlayerPos - axis * 5.0f;			//原点
+			m_Vtxcount += 2;
+		}
+		if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
+		{
+			if (m_Vtxcount >= MaxLineTitle)	//最大移動量に達した場合	プレイヤーの移動を制限
+			{
+				CMode::GetPlayer()->SetbMoveFlg(false);
+			}
+		}
+		else
+		{
+			if (m_Vtxcount >= MaxLine)	//最大移動量に達した場合	プレイヤーの移動を制限
+			{
+				CMode::GetPlayer()->SetbMoveFlg(false);
 			}
 		}
 
-		if (m_Vtxcount == MaxLine)	//最大移動量に達した場合	プレイヤーの移動を制限
-		{
-			CMode::GetPlayer()->SetbMoveFlg(false);
-		}
 
 		//頂点バッファをアンロックする
 		m_pVtxBuff->Unlock();
@@ -170,7 +210,7 @@ void CMeshLine::Draw()
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	//テクスチャの設定
-	pDevice->SetTexture(0, NULL);
+	pDevice->SetTexture(0, m_pTexture);
 
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, m_pVtxMax - 2);
@@ -206,11 +246,6 @@ void CMeshLine::SetCol(D3DXCOLOR col)
 void CMeshLine::SetRot(D3DXVECTOR3 rot)
 {
 	m_rot = rot;
-}
-
-void CMeshLine::SetMoveFlg(bool movemaxflg)
-{
-	MoveMaxFlg = movemaxflg;
 }
 
 CMeshLine * CMeshLine::Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR3 distancepos)
@@ -263,10 +298,10 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos)
 	D3DXVECTOR3 VecA[nPolygon * 3];				//VecA
 	D3DXVECTOR3 VecB[nPolygon * 3];				//VecB
 	float Calculation2D[nPolygon * 3];			//2次元外積の計算結果
-
+	const int vecCount = 3;
 	//頂点情報へのポインタ
 	VERTEX_3D * pVtx = nullptr;
-	bool bIsLanding = false;
+	bIsLanding = false;
 
 	//スケール対応したサイズを計算		当たり判定使用
 	D3DXVECTOR3 Scale = CMode::GetPlayer()->GetScale();
@@ -283,55 +318,19 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos)
 
 	for (int count = 0; count < nPolygon; count++)
 	{
-		//ベクトルの取得 VecA 2 3 4
+		//ベクトルの取得 VecA
 		VecA[count * 3] = pVtx[3 + count].pos - pVtx[2 + count].pos;
 		VecA[count * 3 + 1] = pVtx[4 + count].pos - pVtx[3 + count].pos;
 		VecA[count * 3 + 2] = pVtx[2 + count].pos - pVtx[4 + count].pos;
 
-		//ベクトルの取得 VecA 2 3 4
-		//VecA[0] = pVtx[3].pos - pVtx[2].pos;
-		//VecA[1] = pVtx[4].pos - pVtx[3].pos;
-		//VecA[2] = pVtx[2].pos - pVtx[4].pos;
-		//ベクトルの取得 VecA
-		//VecA[3] = pVtx[4].pos - pVtx[3].pos;
-		//VecA[4] = pVtx[5].pos - pVtx[4].pos;
-		//VecA[5] = pVtx[3].pos - pVtx[5].pos;
-		//VecA[6] = pVtx[5].pos - pVtx[4].pos;
-		//VecA[7] = pVtx[6].pos - pVtx[5].pos;
-		//VecA[8] = pVtx[4].pos - pVtx[6].pos;
-		//VecA[9] = pVtx[6].pos - pVtx[5].pos;
-		//VecA[10] = pVtx[7].pos - pVtx[6].pos;
-		//VecA[11] = pVtx[5].pos - pVtx[7].pos;
-
-		//プレイヤー	頂点を測る
+		//プレイヤー頂点を測る
 		VecB[count * 3] = *PlayerPos - pVtx[2 + count].pos;
 		VecB[count * 3 + 1] = *PlayerPos - pVtx[3 + count].pos;
 		VecB[count * 3 + 2] = *PlayerPos - pVtx[4 + count].pos;
 
-		//VecB[0] = *PlayerPos - pVtx[2].pos;
-		//VecB[1] = *PlayerPos - pVtx[3].pos;
-		//VecB[2] = *PlayerPos - pVtx[4].pos;
-		//VecB[3] = *PlayerPos - pVtx[3].pos;
-		//VecB[4] = *PlayerPos - pVtx[4].pos;
-		//VecB[5] = *PlayerPos - pVtx[5].pos;
-		//VecB[6] = *PlayerPos - pVtx[4].pos;
-		//VecB[7] = *PlayerPos - pVtx[5].pos;
-		//VecB[8] = *PlayerPos - pVtx[6].pos;
-		//VecB[9] = *PlayerPos - pVtx[5].pos;
-		//VecB[10] = *PlayerPos - pVtx[6].pos;
-		//VecB[11] = *PlayerPos - pVtx[7].pos;
-
 		Calculation2D[count * 3] = Vec2Cross(&VecA[count * 3], &VecB[count * 3]);
 		Calculation2D[count * 3 + 1] = Vec2Cross(&VecA[count * 3 + 1], &VecB[count * 3 + 1]);
 		Calculation2D[count * 3 + 2] = Vec2Cross(&VecA[count * 3 + 2], &VecB[count * 3 + 2]);
-
-		//2次元外積の計算結果
-		//Calculation2D[0] = Vec2Cross(&VecA[0], &VecB[0]);
-		//Calculation2D[1] = Vec2Cross(&VecA[1], &VecB[1]);
-		//Calculation2D[2] = Vec2Cross(&VecA[2], &VecB[2]);
-		//Calculation2D[3] = Vec2Cross(&VecA[3], &VecB[3]);
-		//Calculation2D[4] = Vec2Cross(&VecA[4], &VecB[4]);
-		//Calculation2D[5] = Vec2Cross(&VecA[5], &VecB[5]);
 
 		//プレイヤーの位置が全部-か+
 		if ((Calculation2D[count * 3] > 0 && Calculation2D[count * 3 + 1] > 0 && Calculation2D[count * 3 + 2] > 0) || (Calculation2D[count * 3] < 0 && Calculation2D[count * 3 + 1] < 0 && Calculation2D[count * 3 + 2] < 0))
@@ -342,10 +341,8 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos)
 
 				//配列を入れ替える事で消している
 				pVtx[Cnt] = pVtx[Cnt + 2];
-				// 頂点カラーの設定
-				pVtx[Cnt].col = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);				//判定　分かりやすく色を変える
-
 			}
+
 			m_Vtxcount -= 2;
 
 			//false生成無し
@@ -354,13 +351,7 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos)
 		}
 		else
 		{//当たっていないとき
-		 //判定　分かりやすく色を変える
-			for (int Cnt = 0; Cnt < m_pVtxMax - 3; Cnt++)
-			{
-
-				// 頂点カラーの設定
-				pVtx[Cnt].col = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-			}
+			int a = 1;
 		}
 	}
 

@@ -9,8 +9,10 @@
 #include"DebugProc.h"
 #include "camera.h"
 #include"stage_imgui.h"
+#include"Mapcamera.h"
 
 CCamera *CRenderer::m_pCamera = nullptr;
+CMapcamera *CRenderer::m_pMapCamera = nullptr;
 
 //=============================================================================
 //マクロ定義
@@ -115,8 +117,9 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	//SetFog(true, D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.3f));
 
 	//カメラの生成
-	m_pCamera = CCamera::Create(CCamera::CAMERA_MAP);	//プレイヤーカメラ
+	m_pCamera = CCamera::Create();	//プレイヤーカメラ
 
+	m_pMapCamera = CMapcamera::Create();
 
 	return S_OK;
 }
@@ -136,12 +139,21 @@ void CRenderer::Uninit()
 #endif // _DEBUG
 
 	//カメラの解放・削除
+	if (m_pMapCamera != nullptr)
+	{
+		m_pMapCamera->Uninit();
+		delete m_pMapCamera;
+		m_pMapCamera = nullptr;
+	}
+	//カメラの解放・削除
 	if (m_pCamera != nullptr)
 	{
 		m_pCamera->Uninit();
 		delete m_pCamera;
 		m_pCamera = nullptr;
 	}
+
+	
 	// デバイスの破棄
 	if (m_pD3DDevice != nullptr)
 	{
@@ -166,7 +178,11 @@ void CRenderer::Update()
 	{
 		m_pCamera->Update();
 	}
-
+	//カメラの更新処理
+	if (m_pMapCamera != nullptr)
+	{
+		m_pMapCamera->Update();
+	}
 	//全てのオブジェクトの更新処理
 	CObject::UpdateAll();
 }
@@ -176,8 +192,6 @@ void CRenderer::Update()
 //=============================================================================
 void CRenderer::Draw()
 {
-	for (int cnt = 0; cnt < 2; cnt++)
-	{
 		// バックバッファ＆Ｚバッファのクリア
 		m_pD3DDevice->Clear(0, NULL,
 			(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER),
@@ -186,35 +200,34 @@ void CRenderer::Draw()
 		// Direct3Dによる描画の開始
 		if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 		{
-			//全てのオブジェクトの描画処理
-			CObject::DrawAll();
-
-			CApplication::Getinstnce()->GetImgui()->Draw();
-#ifdef _DEBUG
-			// FPS表示
-			DrawFPS();
-
-			// デバック表示
-			CDebugProc::Draw();
-#endif // _DEBUG
-
+			//カメラのセット処理
+			if (m_pMapCamera != nullptr)		//プレイヤーカメラ
+			{
+				m_pMapCamera->SetCamera(true, true);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)
+				//全てのオブジェクトの描画処理
+				CObject::DrawAll();
+			}
 			//カメラのセット処理
 			if (m_pCamera != nullptr)		//プレイヤーカメラ
 			{
-				if (CApplication::MODE_GAME || CApplication::MODE_GAME)
-				{
-					m_pCamera->SetCamera(true, true, cnt);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)引数3 画面複数生成(true 画面複数生成 false 無効)
-				}
-				else
-				{
-					m_pCamera->SetCamera(true, true, 0);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)引数3 画面複数生成(true 画面複数生成 false 無効)
-				}
+				m_pCamera->SetCamera(true, true);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)
+				
+				//全てのオブジェクトの描画処理
+				CObject::DrawAll();
+#ifdef _DEBUG
+				// FPS表示
+				DrawFPS();
 
+				// デバック表示
+				CDebugProc::Draw();
+#endif // _DEBUG
 			}
+			CApplication::Getinstnce()->GetImgui()->Draw();
+
 			// Direct3Dによる描画の終了
 			m_pD3DDevice->EndScene();
 		}
-	}
+
 	// バックバッファとフロントバッファの入れ替え
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }

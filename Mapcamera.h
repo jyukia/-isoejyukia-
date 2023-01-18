@@ -1,10 +1,7 @@
-#ifndef _CAMERA_H_
-#define _CAMERA_H_
+#ifndef _MAP_CAMERA_H_
+#define _MAP_CAMERA_H_
 
-//=============================================================================
-// インクルードファイル
-//=============================================================================
-#include "main.h"
+#include"camera.h"
 
 //=============================================================================
 //マクロ定義
@@ -14,27 +11,26 @@
 //=============================================================================
 // クラスの定義
 //=============================================================================
-class CCamera
+class CMapcamera
 {
 public:
 	//-------------------------------------------------------------------------
 	// コンストラクタとデストラクタ
 	//-------------------------------------------------------------------------
-	explicit CCamera();
-	virtual ~CCamera();
+	explicit CMapcamera();
+	~CMapcamera();
 
 	//-------------------------------------------------------------------------
 	// メンバー関数
 	//-------------------------------------------------------------------------
-	virtual HRESULT Init(void);					// 初期化処理
-	virtual void Uninit(void);					// 終了処理
-	virtual void Update(void);					// 更新処理
+	HRESULT Init(void);					// 初期化処理
+	void Uninit(void);					// 終了処理
+	void Update(void);					// 更新処理
 
 	void SetCamera(bool bfixed, bool btypecom);				// 設定処理
-	static CCamera *Create();		// 生成処理
+	static CMapcamera *Create();		// 生成処理
 
 	void SetTarget();
-	void SetCameraType();
 
 	void SetSIz_Camera(D3DXVECTOR2 siz);
 	void SetPos_Camera(D3DXVECTOR2 pos);
@@ -43,8 +39,8 @@ public:
 
 	static D3DXVECTOR3 GetRot() { return m_rot; }
 
-	static D3DXMATRIX GetMtxView() { return m_mtxView; }
-	static D3DXMATRIX GetProjection() { return m_mtxProjection; }
+	D3DXMATRIX GetMtxView() { return m_mtxView; }
+	D3DXMATRIX GetProjection() { return m_mtxProjection; }
 
 private:
 	//-------------------------------------------------------------------------
@@ -56,8 +52,8 @@ private:
 	D3DXVECTOR3	m_vecU;				//[2]上方向ベクトル
 	D3DXVECTOR3	m_posVDest;			//目的の視点
 	D3DXVECTOR3	m_posRDest;			//目的の注視点
-	static D3DXMATRIX	m_mtxProjection;	// [2]プロジェクションマトリックス
-	static D3DXMATRIX	m_mtxView;			//[2] ビューマトリックス
+	D3DXMATRIX	m_mtxProjection;	// [2]プロジェクションマトリックス
+	D3DXMATRIX	m_mtxView;			//[2] ビューマトリックス
 	float		m_fDistance;		//視点から注視点の距離
 
 	D3DXVECTOR3 m_CamPosV;	// [2]計算後
@@ -72,5 +68,4 @@ protected:
 
 	CRenderer * m_prenderer;
 };
-
 #endif

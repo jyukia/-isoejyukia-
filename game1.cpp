@@ -56,6 +56,7 @@ CGame1::~CGame1()
 HRESULT CGame1::Init(void)
 {
 	//ライトの生成
+
 	m_pLight = CLight::Create();
 
 	{//初期化
@@ -67,10 +68,8 @@ HRESULT CGame1::Init(void)
 	m_pMeshField->LoadTexture("Data\\TEXTURE\\shiba.png");
 
 	//プレイヤーの生成
-	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(2700.0f, 20.0f, -3000.0f), CObject::PRIORITY_LEVEL3));
+	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(2600.0f, 20.0f, -3100.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
-
-	D3DXVECTOR3 pos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
 
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("Kedama");
@@ -79,7 +78,7 @@ HRESULT CGame1::Init(void)
 	{//壁
 		for (int cont = 0; cont < 5; cont++)
 		{
-			CObjectX* wallX = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(700 +520 * cont, 0, -3500), 3);
+			CObjectX* wallX = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(700 + 520 * cont, 0, -3500), 3);
 		}
 		for (int cont = 0; cont < 6; cont++)
 		{
@@ -94,13 +93,32 @@ HRESULT CGame1::Init(void)
 			CObjectX* wallX3 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(450, 0, -3200 + 515 * cont), 3);
 		}
 	}
+	{
+		for (int cont = 0; cont < 6; cont++)
+		{
+			CObjectX* botle = CObjectX::CObjectX::Create("BEERBOTTLE", D3DXVECTOR3(2000.0f, 0.0f, -3400.0f + 100 * cont), 3);
+		}
+		for (int cont = 0; cont < 6; cont++)
+		{
+			CObjectX* botle = CObjectX::CObjectX::Create("BEERBOTTLE", D3DXVECTOR3(2450.0f + 100 * cont, 0.0f, -2500.0f), 3);
+		}
+
+		CObjectX* buckt = CObjectX::CObjectX::Create("BUCKET", D3DXVECTOR3(1950.0f, 0.0f, -1600.0f), 3);
+
+		for (int cont = 0; cont < 2; cont++)
+		{
+			CObjectX* cone = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(2100.0f + 240 * cont, 0.0f, -2200.0f), 3);
+		}
+		for (int cont = 0; cont < 2; cont++)
+		{
+			CObjectX* cone = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(1300.0f, 0.0f, -1400.0f + 240 * cont), 3);
+		}
+	}
 
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	pScore = CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
-	pMovelife = CMovelife::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);

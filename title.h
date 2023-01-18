@@ -18,6 +18,7 @@ class CPlayer;
 class CCamera;
 class CMeshfield;
 class CLight;
+class CMeshLine;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -60,7 +61,8 @@ private:
 
 	static CPlayer *m_pPlayer;				// プレイヤーのポインタ
 	static CLight *m_pLight;				// ライトのポインタ
-	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
+	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ
+	static CMeshLine *m_pMeshLine;			//	メッシュライン
 	CFade *m_pFade;							// フェードのポインタ
 
 	bool m_bmodeflg;

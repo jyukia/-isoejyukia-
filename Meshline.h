@@ -3,7 +3,7 @@
 
 //前方宣言
 class CTexture;
-
+class CMovelife;
 //=============================================================================
 // インクルードファイル
 //=============================================================================
@@ -15,9 +15,11 @@ class CMeshLine : public CObject
 public:
 	//生成ライン回数
 	const int MaxLine = 1000;
-
+	//生成ライン回数	title
+	const int MaxLineTitle = 900;
 
 public:
+
 	explicit CMeshLine(int nPriority = PRIORITY_LEVEL3);
 	~CMeshLine() override;
 
@@ -29,6 +31,8 @@ public:
 	void Update() override;							// 更新処理
 	void Draw()   override;							// 描画処理
 
+	void LoadTexture(const char * aFileName);
+
 	//セッター
 	void SetMtxParent(D3DXMATRIX *pMtx);
 	void SetOfSetPos(D3DXVECTOR3 ofsetpos);
@@ -38,13 +42,15 @@ public:
 	void SetRot(D3DXVECTOR3 rot);			// 向き設定処理
 
 	//ゲッター
-	D3DXVECTOR3 GetOfSetPos() { return OfSetPos; }			//サイズ変更
+	D3DXVECTOR3 GetOfSetPos(void) { return OfSetPos; }			//サイズ変更
 	D3DXVECTOR3 GetRot(void) { return m_rot; }		// 向き取得処理
 	D3DXCOLOR GetCol(void) { return m_col; }			// 色取得処理
 
-	bool GetMoveFlg() { return MoveMaxFlg; }			//移動制限フラグ
-	void SetMoveFlg(bool movemaxflg);
 
+	
+
+	bool GetbIsLanding() { return bIsLanding; }
+	
 	int SetVtxCount(int vtxcount) { m_pVtxMax = vtxcount; }
 
 	bool GetbUseflg() { return bUseflg; }
@@ -70,13 +76,17 @@ private:
 	D3DXCOLOR m_col;
 	D3DXVECTOR3 OfSetPos;	//	縦座標の変換 サイズ変更可能
 
-	int m_pVtxMax;	//最大数
+	D3DXVECTOR3 m_buckpos;
 
-	static bool MoveMaxFlg;
+	CMovelife *m_movelife;
+
+	int m_pVtxMax;	//最大数
 
 	bool bUseflg;
 
 	int m_Vtxcount;
+
+	static bool bIsLanding;	//増やす変数
 };
 
 #endif

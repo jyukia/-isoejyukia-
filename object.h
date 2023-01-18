@@ -85,7 +85,12 @@ public:
 	virtual int GetID(void) { return m_nID; }						// 接続先の番号のゲッター
 
 	static void UninitAll(void);						// 全てのインスタンスの終了処理
+
 	static void UpdateAll(void);						// 全てのインスタンスの更新処理
+
+	template<typename Func>	//ラムダ式
+	static void AllProcess(Func func);
+
 	static void DrawAll(void);							// 全てのインスタンスの描画処理
 	static void ModeRelease();							// モード以外だったら破棄処理
 	void Death(void);									// オブジェクト破棄処理
@@ -121,3 +126,5 @@ private:
 };
 
 #endif
+
+

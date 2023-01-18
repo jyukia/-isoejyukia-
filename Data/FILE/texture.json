@@ -7,6 +7,7 @@
     [ "SHIBA", "Data\/TEXTURE\/shiba.png" ],
     [ "WOOD", "Data\/TEXTURE\/wood.png" ],
 
+    [ "KEITO", "Data\/TEXTURE\/kedama.png" ],
     [ "TITLE", "Data\/TEXTURE\/title.png" ],
     [ "RANKING", "Data\/TEXTURE\/Ranking.png" ],
     [ "COMPASS", "Data\/TEXTURE\/compas.png" ],
