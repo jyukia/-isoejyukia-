@@ -84,6 +84,8 @@ void CCamera::Uninit(void)
 //=============================================================================
 void CCamera::Update(void)
 {
+	m_cnt++;
+
 	//キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 
@@ -179,7 +181,6 @@ void CCamera::Update(void)
 	{
 		SetTarget();
 	}
-
 }
 //=============================================================================
 // 設定処理	(引数1 true 固定カメラ false フリーカメラ)(引数2 true 投影 false 並行投影)(引数3 true 画面複数生成 false 無効)

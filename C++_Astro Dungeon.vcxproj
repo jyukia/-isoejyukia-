@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="DebugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="effect3D.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="file.cpp" />
     <ClCompile Include="game.cpp" />
@@ -39,6 +41,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inputjoypad.cpp" />
     <ClCompile Include="inputkeyboard.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="letter.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="line.cpp" />
@@ -58,6 +61,7 @@
     <ClCompile Include="object3D.cpp" />
     <ClCompile Include="objectX.cpp" />
     <ClCompile Include="objectX_group.cpp" />
+    <ClCompile Include="particle.cpp" />
     <ClCompile Include="parts.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Precompile.cpp">
@@ -78,9 +82,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="Billboard.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="DebugProc.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="effect3D.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="file.h" />
     <ClInclude Include="game.h" />
@@ -99,6 +105,7 @@
     <ClInclude Include="inputjoypad.h" />
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="inputkeydata.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="letter.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="line.h" />
@@ -117,6 +124,7 @@
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
     <ClInclude Include="objectX.h" />
+    <ClInclude Include="particle.h" />
     <ClInclude Include="parts.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="Precompile.h" />

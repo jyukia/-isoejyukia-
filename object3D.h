@@ -57,6 +57,11 @@ public:
 	D3DXVECTOR3 GetMove(void) override { return m_move; }		// 移動量取得処理
 	D3DXVECTOR3 GetRot(void) override { return m_rot; }			// 向き取得処理
 	D3DXCOLOR GetCol(void) override { return m_col; }			// 色取得処理
+	void SetBillboard(bool bBillboard) { m_bBillboard = bBillboard; }				// ビルボードの設定
+	bool GetBillboard() { return m_bBillboard; }									// ビルボードの取得
+
+	D3DXMATRIX GetMtxWorld() { return m_mtxWorld; }
+
 	static CObject3D *Create(D3DXVECTOR3 pos, int nPriority);	// 生成処理
 	static CObject3D *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size,int nPriority);	// 生成処理
 
@@ -77,6 +82,7 @@ private:
 	float m_fAngle;							// 角度
 	EObjType m_type;						// オブジェクトのタイプ
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
+	bool	m_bBillboard;		// ビルボードかどうか
 
 };
 

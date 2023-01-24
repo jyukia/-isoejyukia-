@@ -37,6 +37,11 @@ CObject3D::~CObject3D()
 //=============================================================================
 HRESULT CObject3D::Init()
 {
+	{
+		m_bBillboard = false;							// ビルボードかどうか
+	
+	}
+
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
@@ -55,7 +60,7 @@ HRESULT CObject3D::Init()
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//テクスチャの読み込み
-	LoadTexture("Data\\TEXTURE\\yuka000.jpg");
+	//LoadTexture("Data\\TEXTURE\\yuka000.jpg");
 
 	//対角線の長さ算出
 	m_fLength = sqrtf(((m_size.x * m_size.x) + (m_size.y * m_size.y)));
@@ -105,7 +110,6 @@ void CObject3D::Uninit()
 		m_pVtxBuff = NULL;
 	}
 
-
 	//インスタンスの解放処理
 	Release();
 }
@@ -133,9 +137,29 @@ void CObject3D::Draw()
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);			//行列初期化関数(第一引数の行列を単位行列に初期化)
 
-	//向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
+	//カメラの逆行列を設定
+	if (m_bBillboard)
+	{
+		// ビューマトリックスの設定
+		pDevice->GetTransform(D3DTS_VIEW, &mtxRot);
+
+		// カメラ逆行列を設定
+		D3DXMatrixInverse(&m_mtxWorld, NULL, &mtxRot);
+
+		m_mtxWorld._41 = 0.0f;
+		m_mtxWorld._42 = 0.0f;
+		m_mtxWorld._43 = 0.0f;
+
+		//向きを反映
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
+
+	}
+	else
+	{
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z); //行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
+	}
 
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);		//行列移動関数(第一引数にx,y,z方向の移動行列を作成)

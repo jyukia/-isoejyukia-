@@ -38,7 +38,7 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pMapCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_TITLE;//MODE_GAME
+	CApplication::m_mode = MODE_GAME;//MODE_TITLE
 }
 
 //=============================================================================
@@ -277,12 +277,11 @@ void CApplication::SetMode(MODE mode)
 
 	CObject::ModeRelease();
 
-	m_mode = mode;
-
 	m_pMapCamera->Init();
 
 	m_pCamera->Init();
 
+	m_mode = mode;
 	switch (m_mode)
 	{
 	case MODE_TITLE:
@@ -313,4 +312,74 @@ void CApplication::SetMode(MODE mode)
 CApplication::MODE CApplication::GetMode()
 {
 	return m_mode;
+}
+
+//アプリケーション
+namespace ease
+{
+
+	// 正弦で算出
+	float InSine(float x) { return 1 - cosf((x * D3DX_PI) * 0.5f); }
+	float OutSine(float x) { return sinf((x * D3DX_PI) * 0.5f); }
+	float InOutSine(float x) { return -(cosf(D3DX_PI * x) - 1.0f) * 0.5f; }
+
+	// 2の累乗で算出
+	float InQuad(float x) { return x * x; }
+	float OutQuad(float x) { return 1.0f - (1.0f - x) * (1 - x); }
+	float InOutQuad(float x) { return x < 0.5f ? 2.0f * x * x : 1.0f - powf(-2.0f * x + 2.0f, 2) * 0.5f; }
+
+	// 3の累乗で算出
+	float InCubic(float x) { return x * x * x; }
+	float OutCubic(float x) { return 1 - powf(1.0f - x, 3.0f); }
+	float InOutCubic(float x) { return x < 0.5f ? 4.0f * x * x * x : 1.0f - powf(-2.0f * x + 2.0f, 3) * 0.5f; }
+
+	// 4の累乗で算出
+	float InQuart(float x) { return x * x * x * x; }
+	//float OutQuart(float x);
+	//float InOutQuart(float x);
+
+	// 5の累乗で算出
+	float InQuint(float x) { return x * x * x * x * x; }
+	//float OutQuint(float x);
+	//float InOutQuint(float x);
+
+	// 指数関数で算出
+	float InExpo(float x) { return x == 0.0f ? 0 : powf(2.0f, 10.0f * x - 10.0f); }
+	//float OutExpo(float x);
+	//float InOutExpo(float x);
+
+	float InCirc(float x) { return 1.0f - sqrtf(1.0f - powf(x, 2)); }
+	//float OutCirc(float x);
+	//float InOutCirc(float x);
+
+	float InBack(float x, float s) { return (s + 1.0f) * x * x * x - s * x * x; }
+	//float OutBack(float x);
+	//float InOutBack(float x);
+
+	float InElastic(float x, float c) { return x == 0 ? 0 : x == 1 ? 1 : -powf(2.f, 10.f * x - 10.f) * sinf((x * 10.f - 10.75f) * c); }
+	float OutElastic(float x, float c) { return x == 0 ? 0 : x == 1 ? 1 : powf(2.f, -10.f * x) * sinf((x * 10.f - 0.75f) * c) + 1.f; }
+	float InOutElastic(float x, float c) { return x == 0 ? 0 : x == 1 ? 1 : x < 0.5f ? -(powf(2.f, 20.f * x - 10.f) * sinf((x * 20.f - 11.125f) * c)) * 0.5f : (powf(2.f, -20.f * x + 10.f) * sinf((x * 20.f - 11.125f) * c)) * 0.5f + 1.f; }
+
+	float InBounce(float x, float n, float d) { return 1.0f - OutBounce(1 - x, n, d); }
+	float OutBounce(float x, float n, float d)
+	{
+		if (x < 1.0f / d)
+		{
+			return n * x * x;
+		}
+		else if (x < 2.0f / d)
+		{
+			return n * (x -= 1.5f / d) * x + 0.75f;
+		}
+		else if (x < 2.5f / d)
+		{
+			return n * (x -= 2.25f / d) * x + 0.9375f;
+		}
+		else
+		{
+			return n * (x -= 2.625f / d) * x + 0.984375f;
+		}
+	}
+	float InOutBounce(float x, float n, float d) { return x < 0.5f ? (1.0f - OutBounce(1.0f - 2.0f * x, n, d)) * 0.5f : (1.0f + OutBounce(2.0f * x - 1.0f, n, d)) * 0.5f; }
+
 }

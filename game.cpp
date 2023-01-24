@@ -25,6 +25,9 @@
 #include "movelife.h"
 #include "Preparation.h"
 #include "mode.h"
+#include "Item.h"
+#include "billboard.h"
+#include "particle.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -34,6 +37,7 @@ CLight *CGame::m_pLight = nullptr;
 CScore* CGame::pScore = nullptr;
 CMovelife* CGame::pMovelife = nullptr;
 CGoal* CGame::m_pGoal = nullptr;
+CItem* CGame::m_pItem = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -73,10 +77,6 @@ HRESULT CGame::Init(void)
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
-	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3);
-	m_pGoal->LoadModel("Kedama");
-	m_pGoal->Setstring("GOAL");
-
 	{//壁
 		D3DXVECTOR3 WallSize(3050, 0.0f, 1000.0f);
 
@@ -109,7 +109,19 @@ HRESULT CGame::Init(void)
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
 
-	//CLoadStage::LoadAllTest(0);
+	CLoadStage::LoadAllTest(0);
+
+	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3);
+	m_pGoal->LoadModel("BSKET");
+	m_pGoal->Setstring("GOAL");
+
+	m_pItem = CItem::Create(D3DXVECTOR3(890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SIZ_UP);
+	m_pItem->LoadModel("BOOTS");
+
+
+	CObject3D* m_billboard = CObject3D::Create(D3DXVECTOR3(890.0f, 605.0f, -2300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 200.0f), 3);
+	m_billboard->LoadTexture("Data/TEXTURE/01.png");
+	m_billboard->SetBillboard(true);
 
 	//Load();
 

@@ -38,10 +38,16 @@ public:
 
 	void SetSIz_Camera(D3DXVECTOR2 siz);
 	void SetPos_Camera(D3DXVECTOR2 pos);
-	void SetPosV(D3DXVECTOR3 posv) { m_posV = posv; }
-	void SetPosR(D3DXVECTOR3 posr) { m_posR = posr; }
 
+	void SetPosV(D3DXVECTOR3 posv) { m_posV = posv; }
+	D3DXVECTOR3 GetPosV() { return m_posV; }
+
+	void SetPosR(D3DXVECTOR3 posr) { m_posR = posr; }
+	D3DXVECTOR3 GetPosR() { return m_posR; }
+	
 	static D3DXVECTOR3 GetRot() { return m_rot; }
+
+
 
 	static D3DXMATRIX GetMtxView() { return m_mtxView; }
 	static D3DXMATRIX GetProjection() { return m_mtxProjection; }
@@ -66,6 +72,12 @@ private:
 	D3DXVECTOR2 m_Siz;		//‰æ–ÊƒTƒCƒY
 
 	D3DVIEWPORT9 m_game_viewport;	//[2]‰æ–Ê•ªŠ„
+
+	int m_cnt;
+
+	bool bcam;
+	bool bcom1;
+	bool flgstp;
 
 protected:
 	static D3DXVECTOR3 m_rot;		//Œü‚«

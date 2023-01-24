@@ -17,7 +17,7 @@
 #include "title.h"
 #include "Meshline.h"
 #include "movelife.h"
-
+#include"Item.h"
 //=============================================================================
 // 定数定義
 //=============================================================================
@@ -85,7 +85,7 @@ HRESULT CPlayer::Init()
 	//m_MeshEffect->SetMtxParent(GetMtxWorld());
 
 	//毛糸線
-	m_pMeshLine = CMeshLine::Create(D3DXVECTOR3(pos), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DXVECTOR3(50.0f, 0.0f, 0.0f));
+	m_pMeshLine = CMeshLine::Create(D3DXVECTOR3(pos.x, pos.y -10, pos.z), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DXVECTOR3(50.0f, 0.0f, 0.0f));
 	m_pMeshLine->SetMtxParent(GetMtxTransPos());
 
 	SetScale(D3DXVECTOR3(1.0f, 1.0f, 1.0f));
@@ -277,15 +277,31 @@ void CPlayer::Update()
 
 	// 目的の値に近づける
 	rot.y += (m_rotDest.y - rot.y) * PurposeRot;
-
-	//// 重力設定
-	//move.y -= GRAVITY_POWER;
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
+	{
+		pos.y = 30;
+	}
+	else
+	{
+		// 重力設定
+		move.y -= GRAVITY_POWER;
+	}
 	//// ジャンプ処理
 	//if (pInputKeyboard->Trigger(DIK_SPACE))
 	//{
 	//	m_bJumpFlag = true;
 	//	move.y = 0.0f;
 	//	move.y += 14.0f;
+	//}
+
+	//bool SizUpflg = CApplication::Getinstnce()->GetpMode()->GetItem()->GetSizupflg();
+	//if (SizUpflg)	//アイテム獲得時
+	//{//効果記載
+	//	int a = 0;
+	//}
+	//bool SizDownflg = CApplication::Getinstnce()->GetpMode()->GetItem()->GetSizdownflg();
+	//if (SizDownflg)	//アイテム獲得時
+	//{//効果記載
 	//}
 
 	// 角度の正規化(現在の角度)
@@ -356,7 +372,8 @@ void CPlayer::Update()
 
 		if (objType == OBJTYPE_MODEL)
 		{
-			CObjectX *pObjectX = (CObjectX*)pObject;
+			CObjectX *pObjectX = (CObjectX*)pObject;	//ダウンキャスト
+
 			m_bIsLanding = pObjectX->Collision(&pos, &posOld, &Size, true);
 			m_bIsLandingUp = pObjectX->UpCollision(&pos, &posOld, &Size, &move, true);
 		}

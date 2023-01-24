@@ -69,19 +69,19 @@ HRESULT CTitle::Init(void)
 	{//壁
 		for (int cont = 0; cont < 5; cont++)
 		{
-			CObjectX* wallX = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(700 + 520 * cont, 0, -3500), 3);
+			CObjectX* wallX = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(700.0f + 520.0f * cont, 0.0f, -3500.0f), 3);
 		}
 		for (int cont = 0; cont < 6; cont++)
 		{
-			CObjectX* wallX1 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(3000, 0, -3200 + 515 * cont), 3);
+			CObjectX* wallX1 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(3000.0f, 0.0f, -3200.0f + 515.0f * cont), 3);
 		}
 		for (int cont = 0; cont < 5; cont++)
 		{
-			CObjectX* wallX2 = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(2780 - 515 * cont, 0, -350), 3);
+			CObjectX* wallX2 = CObjectX::CObjectX::Create("FENCE", D3DXVECTOR3(2780.0f - 515.0f * cont, 0.0f, -350.0f), 3);
 		}
 		for (int cont = 0; cont < 6; cont++)
 		{
-			CObjectX* wallX3 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(450, 0, -3200 + 515 * cont), 3);
+			CObjectX* wallX3 = CObjectX::CObjectX::Create("FENCEROT", D3DXVECTOR3(450.0f, 0, -3200.0f + 515.0f * cont), 3);
 		}
 	}
 
@@ -90,12 +90,12 @@ HRESULT CTitle::Init(void)
 	m_pMeshField->LoadTexture("Data\\TEXTURE\\shiba.png");
 
 	//タイトル配置
-	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-20.0f,0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL5);
+	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-150.0f,0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
 	//プレイヤー入力選択
-	m_pGame = CObject2D::Create("OMOIDE", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, 500.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL5);
-	
-	m_pRanking = CObject2D::Create("INIESUTA", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, 500.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL5);
+	m_pGame = CObject2D::Create("OMOIDE", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, -350.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL4);
+
+	m_pRanking = CObject2D::Create("INIESUTA", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, -350.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL4);
 
 	CSkyField::Create();
 
@@ -129,31 +129,48 @@ void CTitle::Update(void)
 	}
 
 	D3DXVECTOR3 move = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetMove();
-
 	bool flg = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetMoveFlg();
+
+	D3DXVECTOR3 pos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
+	pos.y += 20;
+	CApplication::Getinstnce()->GetpMode()->GetPlayer()->SetPos(pos);
 
 	if (flg)	//移動可
 	{
-		move.z -= 3;
+		move.z -= 1;
 	}
 	else	//移動不可
 	{
 		move.z = 0;
 	}
-
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->SetMove(move);
 
 	//ゲームネームの情報取得
 	D3DXVECTOR3 Titlepos = m_pTitle->GetPos();
+	D3DXVECTOR3 Gamepos = m_pGame->GetPos();
+	D3DXVECTOR3 Rankingpos = m_pRanking->GetPos();
+	int stop = (int)SCREEN_HEIGHT_HALF - 110;
+	int stop1 = (int)SCREEN_HEIGHT_HALF + 110;
 
 	//タイトル止まる処理
-	if (Titlepos.y >= SCREEN_HEIGHT_HALF)
+	if (Titlepos.y >= stop)
 	{
 		m_pTitle->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 	else
 	{
 		m_pTitle->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
+	}
+	//タイトル止まる処理
+	if (Gamepos.y >= stop1)
+	{
+		m_pGame->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pRanking->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+	else
+	{
+		m_pGame->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
+		m_pRanking->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
 	}
 
 	// キーボードの情報取得
@@ -166,6 +183,34 @@ void CTitle::Update(void)
 	{// 下に移動
 		m_modecount--;
 	}
+	if (pInputKeyboard->Trigger(DIK_RETURN))		//選択シーン実行
+	{
+		m_bmodeflg = true;
+		m_pTitle->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF, (float)stop, 0.0f));
+		m_pGame->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF - 300.0f, (float)stop1, 0.0f));
+		m_pRanking->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300.0f, (float)stop1, 0.0f));
+	}
+	if (m_bmodeflg)
+	{
+		if (pInputKeyboard->Trigger(DIK_RETURN))		//選択シーン実行
+		{
+			D3DXVECTOR3 posV = CApplication::Getinstnce()->GetCamera()->GetPosV();
+			if (m_pFade->GetFade() == CFade::FADE_NONE)
+			{
+				if (m_modecount == 1)
+				{
+					//遷移
+					CFade::SetFade(CApplication::MODE_SELECT_STAGE);	//ゲーム遷移
+				}
+				if (m_modecount == 2)
+				{
+					//遷移
+					CFade::SetFade(CApplication::MODE_RANKING); //ランキング遷移
+				}
+			}
+		}
+	}
+
 	//選択カウントの制限
 	if (m_modecount > m_modeMax)
 	{
@@ -189,39 +234,7 @@ void CTitle::Update(void)
 		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
-	// 入力処理用のポインタ宣言
-	CInput *pInput = CApplication::Getinstnce()->GetInput();
-	if (!m_bmodeflg)	//フェードキャンセル
-	{
-		if (pInput->Trigger(DIK_RETURN))		//選択シーン実行
-		{
-			m_bmodeflg = true;
-		}
-	}
-	if (m_pFade->GetFade() == CFade::FADE_NONE)
-	{
-		if (pInput->Trigger(DIK_RETURN))
-		{
-			if (m_modecount == 1)
-			{
-				//遷移
-				CFade::SetFade(CApplication::MODE_SELECT_STAGE);	//ゲーム遷移
-			}
-			if (m_modecount == 2)
-			{
-				//遷移
-				CFade::SetFade(CApplication::MODE_RANKING); //ランキング遷移
-			}
-		}
-	}
-
-	//降りきるまでにEnterを押した際移動を終了させる
-	if (m_bmodeflg)
-	{
-		m_pTitle->SetPos(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f));
-	}
 }
-
 //=============================================================================
 // 描画処理
 //=============================================================================

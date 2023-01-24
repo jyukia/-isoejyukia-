@@ -19,6 +19,7 @@ class CCamera;
 class CMeshfield;
 class CLight;
 class CMeshLine;
+class CSkyField;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -63,9 +64,12 @@ private:
 	static CLight *m_pLight;				// ライトのポインタ
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ
 	static CMeshLine *m_pMeshLine;			//	メッシュライン
+	
 	CFade *m_pFade;							// フェードのポインタ
 
 	bool m_bmodeflg;
+	bool m_modebool;
+	int cnt;
 
 	int m_modecount;			//画面遷移のためのカウント
 

@@ -19,6 +19,7 @@ class CMovelife;
 class CSkyField;
 class CLight;
 class CTexture;
+class CItem;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -62,6 +63,9 @@ public:
 	static CMeshLine *GetMeshLine() { return m_pMeshLine; }
 
 	static CMovelife *GetMoveLife() {return m_MoveLife;}
+
+	static CItem* GetItem() { return m_Item; }
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -76,6 +80,9 @@ private:
 	static CSkyField *m_SkyField;
 
 	static CTexture *m_Texture;
+
+	static 	CItem *m_Item;
+
 };
 
 #endif

@@ -57,7 +57,7 @@ HRESULT CMeshLine::Init()
 	}
 	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 	{
-		m_pos = D3DXVECTOR3(0.0f, 20.0f, 1500.0f);
+		m_pos = D3DXVECTOR3(1850.0f, 20.0f, -600.0f);
 	}
 
 	LoadTexture("Data/TEXTURE/kedama.png");

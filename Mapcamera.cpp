@@ -37,25 +37,6 @@ HRESULT CMapcamera::Init(void)
 {
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//向き
 
-	{//プレイヤー
-	 //視点・注視点・上方向を設定する（構造体の初期化）
-		int mode = CApplication::Getinstnce()->GetMode();
-
-		m_posV = D3DXVECTOR3(0.0f, 200.0f, -400.0f);								//視点
-		m_posR = D3DXVECTOR3(0.0f, 20.0f, -1.0f);								//注視点
-		m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);									//上方向ベクトル ←固定でOK!!
-
-		m_CamPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		m_CamPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-		//ビューポート構成の保存
-		m_game_viewport.X = 1050;
-		m_game_viewport.Y = 10;
-		m_game_viewport.Width = 200;
-		m_game_viewport.Height = 200;
-		m_game_viewport.MaxZ = 1.0f;
-		m_game_viewport.MinZ = 0.0f;
-	}
 
 
 	float fLength1 = (m_posV.x - m_posR.x);									//視点から注視点のX軸の距離
@@ -77,6 +58,40 @@ void CMapcamera::Uninit(void)
 //=============================================================================
 void CMapcamera::Update(void)
 {
+	int mode = CApplication::Getinstnce()->GetMode();
+	if (mode == CApplication::MODE_TITLE)
+	{
+		//ビューポート構成の保存
+		m_game_viewport.X = 0;
+		m_game_viewport.Y = 0;
+		m_game_viewport.Width = 0;
+		m_game_viewport.Height = 0;
+		m_game_viewport.MaxZ = 1.0f;
+		m_game_viewport.MinZ = 0.0f;
+
+	}
+	else if (mode == CApplication::MODE_GAME)
+	{//プレイヤー
+	 //視点・注視点・上方向を設定する（構造体の初期化）
+		int mode = CApplication::Getinstnce()->GetMode();
+
+		m_posV = D3DXVECTOR3(0.0f, 200.0f, -400.0f);								//視点
+		m_posR = D3DXVECTOR3(0.0f, 20.0f, -1.0f);								//注視点
+		m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);									//上方向ベクトル ←固定でOK!!
+
+		m_CamPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		m_CamPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		//ビューポート構成の保存
+		m_game_viewport.X = 1050;
+		m_game_viewport.Y = 10;
+		m_game_viewport.Width = 200;
+		m_game_viewport.Height = 200;
+		m_game_viewport.MaxZ = 1.0f;
+		m_game_viewport.MinZ = 0.0f;
+	}
+
+
 	//キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 

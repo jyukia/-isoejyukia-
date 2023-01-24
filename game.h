@@ -20,7 +20,9 @@ class CScore;
 class CMovelife;
 class CMeshLine;
 class CGoal;
+class CItem;
 class Cpreparation;
+class CBillboard;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -52,6 +54,9 @@ private:
 	static CLight *m_pLight;				// ライトのポインタ
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
 	static CGoal *m_pGoal;				//ゴールポインタ
+	static CItem *m_pItem;
+
+
 
 	Cpreparation *m_pPreparation;	//ゲーム開始の合図ポインタ
 
@@ -68,6 +73,7 @@ private:
 	//移動可能距離
 	static CMovelife* GetMovelife() { return pMovelife; }
 	static CMovelife* pMovelife;
+
 
 	//メッシュライン
 	CMeshLine *m_pMeshLine;

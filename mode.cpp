@@ -12,6 +12,7 @@ CPlayer *CMode::m_pPlayer = nullptr;
 CMeshLine *CMode::m_pMeshLine = nullptr;
 CMovelife *CMode::m_MoveLife = nullptr;
 
+CItem *CMode::m_Item = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
