@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="2dParticle.cpp" />
     <ClCompile Include="application.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -77,10 +78,12 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="stage_imgui.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="2dParticle.h" />
     <ClInclude Include="application.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="camera.h" />
@@ -137,6 +140,7 @@
     <ClInclude Include="skyfield.h" />
     <ClInclude Include="stage_imgui.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
   </ItemGroup>

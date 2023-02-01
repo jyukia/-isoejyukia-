@@ -11,8 +11,6 @@
 #include"stage_imgui.h"
 #include"Mapcamera.h"
 
-CCamera *CRenderer::m_pCamera = nullptr;
-CMapcamera *CRenderer::m_pMapCamera = nullptr;
 
 //=============================================================================
 //ƒ}ƒNƒ’è‹`

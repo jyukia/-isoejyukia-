@@ -53,6 +53,8 @@ private:
 	CShadow *m_shadow;					// ‰e‚Ìƒ|ƒCƒ“ƒ^
 
 	TypeItem typeItem;
+	
+	int Cnt;
 
 	 bool HitFlg;
 

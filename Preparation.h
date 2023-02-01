@@ -26,9 +26,11 @@ public:
 
 	static Cpreparation* Create(const char *aFileName, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, int nPriority);
 
+
 private:
 
 	int ChangeCount;
+
 };
 
 #endif

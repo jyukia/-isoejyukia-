@@ -38,7 +38,7 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pMapCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_GAME;//MODE_TITLE
+	CApplication::m_mode = MODE_TITLE;//MODE_TITLE
 }
 
 //=============================================================================
@@ -86,7 +86,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	assert(m_Imgui != nullptr);
 	m_Imgui->Init(hWnd, pDevice);
 
-
+	// カメラの初期化
 	m_pMapCamera = new CMapcamera;
 
 	// カメラの初期化
@@ -317,7 +317,6 @@ CApplication::MODE CApplication::GetMode()
 //アプリケーション
 namespace ease
 {
-
 	// 正弦で算出
 	float InSine(float x) { return 1 - cosf((x * D3DX_PI) * 0.5f); }
 	float OutSine(float x) { return sinf((x * D3DX_PI) * 0.5f); }
@@ -381,5 +380,21 @@ namespace ease
 		}
 	}
 	float InOutBounce(float x, float n, float d) { return x < 0.5f ? (1.0f - OutBounce(1.0f - 2.0f * x, n, d)) * 0.5f : (1.0f + OutBounce(2.0f * x - 1.0f, n, d)) * 0.5f; }
+
+	//--------------------------------------------------
+	// sinカーブの値が1.0f～0.0fで帰ってくる
+	//--------------------------------------------------
+	float SinCurve(int nTime, float fCycle)
+	{
+		return  (sinf(D3DXToRadian(nTime * fCycle) * (D3DX_PI * 2.0f)) + 1.0f) * 0.5f;
+	}//(float)(sinf(D3DXToRadian(Cnt * 20)) * 1.5f);
+
+	//--------------------------------------------------
+	// cosカーブの値が1.0f～0.0fで帰ってくる
+	//--------------------------------------------------
+	float CosCurve(int nTime, float fCycle)
+	{
+		return  (cosf(D3DXToRadian((nTime * fCycle) * (D3DX_PI * 2.0f)) + 1.0f)) * 0.5f;
+	}
 
 }

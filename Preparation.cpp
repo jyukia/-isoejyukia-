@@ -9,6 +9,8 @@
 //*****************************************************************************
 #include "Preparation.h"
 #include"DebugProc.h"
+#include "player.h"
+#include "mode.h"
 
 //コンストラクタ
 Cpreparation::Cpreparation(int nPriority):ChangeCount(0)
@@ -27,6 +29,7 @@ HRESULT Cpreparation::Init()
 {
 	{//初期化
 		ChangeCount = 0;
+
 	}
 	CObject2D::Init();
 
@@ -57,11 +60,13 @@ void Cpreparation::Update()
 		if (ChangeCount >= 120)
 		{
 			BindTexture("GO");
+
+			CApplication::Getinstnce()->GetpMode()->GetPlayer()->Setbredycheck(true);
 		}
 		if (ChangeCount == 150)
 		{
 			//SetCol(col);
-			Cpreparation::Uninit();
+			Cpreparation::Release();
 		}
 	}
 	else		//画面半分まで進みきっていないとき

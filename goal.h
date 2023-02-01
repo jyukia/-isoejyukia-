@@ -31,11 +31,17 @@ public:
 	static CGoal *Create(const D3DXVECTOR3 pos, int nPriority);    // ¶¬ˆ—
 
 	static bool GetGoalFlg(void) { return GoalFlg; }
+
+	static bool Getflg(void) { return flg; }
+	static void Setflg(bool goalflg) { flg = goalflg; }
 private:
 	CShadow *m_shadow;					// ‰e‚Ìƒ|ƒCƒ“ƒ^
 	CFade *m_pFade;
 
 	static bool GoalFlg;
+
+	int Cnt;
+	static bool flg;
 };
 
 

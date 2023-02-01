@@ -24,6 +24,7 @@ class CStageImgui;
 class CMode;
 class CMeshLine;
 class CItem;
+class Cpreparation;
 //=============================================================================
 // ƒNƒ‰ƒX‚Ì’è‹`
 //=============================================================================
@@ -147,6 +148,8 @@ public:
 
 	CLight *GetLight() { return m_Light; }
 
+	Cpreparation * GetPreparation() { return m_preparation; }
+
 	HWND GetHWnd() { return Hwnd; }
 
 private:
@@ -172,7 +175,7 @@ private:
 	CStageImgui *m_Imgui;
 	CLight *m_Light;
 	CItem *m_Item;
-
+	Cpreparation *m_preparation;
 };
 
 
@@ -229,6 +232,9 @@ namespace ease
 	float OutBounce(float x, float n = 7.5625f, float d = 2.75f);
 	float InBounce(float x, float n = 7.5625f, float d = 2.75f);
 	float InOutBounce(float x, float n = 7.5625f, float d = 2.75f);
+
+	float SinCurve(int nTime, float fCycle);
+	float CosCurve(int nTime, float fCycle);
 }
 
 

@@ -9,6 +9,7 @@
 #include "game.h"
 #include"DebugProc.h"
 #include"SelectStage.h"
+#include "goal.h"
 
 #include <math.h>
 
@@ -84,66 +85,80 @@ void CCamera::Uninit(void)
 //=============================================================================
 void CCamera::Update(void)
 {
-	m_cnt++;
-
 	//キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 
-	//カメラの移動
-	if (pInputKeyboard->Press(DIK_DOWN))
-	{//上に移動
-		m_posV.x -= sinf(m_rot.y) * CAMERA_SPEED;
-		m_posV.z -= cosf(m_rot.y) * CAMERA_SPEED;
-		m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-		m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-	}
-	if (pInputKeyboard->Press(DIK_UP))
-	{//下に移動
-		m_posV.x += sinf(m_rot.y) * CAMERA_SPEED;
-		m_posV.z += cosf(m_rot.y) * CAMERA_SPEED;
-		m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-		m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-	}
-	if (pInputKeyboard->Press(DIK_RIGHT))
-	{//左に移動
-		m_posV.x += sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-		m_posV.z += cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-		m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-		m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-	}
-	if (pInputKeyboard->Press(DIK_LEFT))
-	{//右に移動
-		m_posV.x -= sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-		m_posV.z -= cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-		m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-		m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-	}
-
-	//注視点の旋回
-	if (pInputKeyboard->Press(DIK_C))
-	{//左に旋回
-		m_rot.y += 0.05f;
-		m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-		m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-	}
-	else if (pInputKeyboard->Press(DIK_Z))
-	{//右に旋回
-		m_rot.y -= 0.05f;
-		m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-		m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-	}
-
-	//視点の旋回
-	if (pInputKeyboard->Press(DIK_E))
-	{//左に旋回
-		m_rot.y += 0.05f;
-	}
-	else if (pInputKeyboard->Press(DIK_Q))
-	{//右に旋回
-		m_rot.y -= 0.05f;
-	}
-
 	int mode = CApplication::Getinstnce()->GetMode();
+	//ゴールして時のフラグ
+	bool goalflg = CApplication::Getinstnce()->GetpMode()->GetGoal()->Getflg();
+
+	if (goalflg)
+	{
+		m_rot.y += 0.005f;
+	}
+	else
+	{
+		if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1)
+		{
+			//カメラの移動
+			if (pInputKeyboard->Press(DIK_DOWN))
+			{//上に移動
+				m_posV.x -= sinf(m_rot.y) * CAMERA_SPEED;
+				m_posV.z -= cosf(m_rot.y) * CAMERA_SPEED;
+				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+			if (pInputKeyboard->Press(DIK_UP))
+			{//下に移動
+				m_posV.x += sinf(m_rot.y) * CAMERA_SPEED;
+				m_posV.z += cosf(m_rot.y) * CAMERA_SPEED;
+				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+			if (pInputKeyboard->Press(DIK_RIGHT))
+			{//左に移動
+				m_posV.x += sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+				m_posV.z += cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+			if (pInputKeyboard->Press(DIK_LEFT))
+			{//右に移動
+				m_posV.x -= sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+				m_posV.z -= cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+
+			//注視点の旋回
+			if (pInputKeyboard->Press(DIK_C))
+			{//左に旋回
+				m_rot.y += 0.05f;
+				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+			else if (pInputKeyboard->Press(DIK_Z))
+			{//右に旋回
+				m_rot.y -= 0.05f;
+				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+
+			//視点の旋回
+			if (pInputKeyboard->Press(DIK_E))
+			{//左に旋回
+				m_rot.y += 0.05f;
+			}
+			else if (pInputKeyboard->Press(DIK_Q))
+			{//右に旋回
+				m_rot.y -= 0.05f;
+			}
+
+		}
+	}
+
+
+
 	if (mode == CApplication::MODE_SELECT_STAGE)
 	{
 		//プレイヤー情報
@@ -181,6 +196,7 @@ void CCamera::Update(void)
 	{
 		SetTarget();
 	}
+
 }
 //=============================================================================
 // 設定処理	(引数1 true 固定カメラ false フリーカメラ)(引数2 true 投影 false 並行投影)(引数3 true 画面複数生成 false 無効)
@@ -270,21 +286,21 @@ void CCamera::SetTarget()
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
-	D3DXMATRIX mtx;
+	D3DXMATRIX mtxa;
 
 	//ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&mtx);        //行列初期化関数(第一引数の行列を単位行列に初期化)
+	D3DXMatrixIdentity(&mtxa);        //行列初期化関数(第一引数の行列を単位行列に初期化)
 
 	 //向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);//行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
-	D3DXMatrixMultiply(&mtx, &mtx, &mtxRot);//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
+	D3DXMatrixMultiply(&mtxa, &mtxa, &mtxRot);//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
 
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
-	D3DXMatrixMultiply(&mtx, &mtx, &mtxTrans);
+	D3DXMatrixMultiply(&mtxa, &mtxa, &mtxTrans);
 
-	D3DXVec3TransformCoord(&m_CamPosV, &m_posV, &mtx);//ワールド変換行列
-	D3DXVec3TransformCoord(&m_CamPosR, &m_posR, &mtx);//ワールド変換行列
+	D3DXVec3TransformCoord(&m_CamPosV, &m_posV, &mtxa);//ワールド変換行列
+	D3DXVec3TransformCoord(&m_CamPosR, &m_posR, &mtxa);//ワールド変換行列
 }
 
 void CCamera::SetSIz_Camera(D3DXVECTOR2 siz)

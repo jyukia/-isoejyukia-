@@ -8,6 +8,9 @@
     [ "WOOD", "Data\/TEXTURE\/wood.png" ],
     [ "SMOKE", "Data\/TEXTURE\/smoke.jpg" ],
 
+    [ "KEDAMA_UI","Data\/TEXTURE\/UI_Kedama.png" ],
+    [ "KEDAMA_Lope_UI","Data\/TEXTURE\/UI_KedamaLope.png" ],
+    
 
     [ "KEITO","Data\/TEXTURE\/kedama.png" ],
     [ "TITLE","Data\/TEXTURE\/title.png" ],

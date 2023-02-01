@@ -61,9 +61,6 @@ HRESULT CItem::Init()
 //=============================================================================
 void CItem::Update()
 {
-
-	CObject3D* particle = CParticle::Create(D3DXVECTOR3(890.0f, 685.0f, -2300.0f), D3DXVECTOR3(20, 20, 20));
-
 	if (CApplication::Getinstnce()->GetpMode()->GetPlayer() != nullptr)
 	{
 		D3DXVECTOR3 pPlayerPos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
@@ -71,6 +68,9 @@ void CItem::Update()
 		D3DXVECTOR3 pSize = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetSize();
 		// 座標取得
 		D3DXVECTOR3 pos = GetPos();
+
+		//CObject3D* particle = CParticle::Create(D3DXVECTOR3(pos.x, pos.y +50, pos.z), D3DXVECTOR3(20, 20, 20));
+
 		// ポインタ宣言
 		CObject *pObject = CObject::GetTop(PRIORITY_LEVEL3);
 		// プレイヤーとモデルの当たり判定
@@ -114,9 +114,14 @@ void CItem::Update()
 			default:
 				break;
 			}
-
-
 		}
+		else
+		{
+			Cnt++;
+			pos.y += (float)(sinf(D3DXToRadian(Cnt * 3)) * 1.5f);
+			SetPos(pos);
+		}
+
 	}
 
 }

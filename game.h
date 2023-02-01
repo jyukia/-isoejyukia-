@@ -23,6 +23,8 @@ class CGoal;
 class CItem;
 class Cpreparation;
 class CBillboard;
+class CTimer;
+class CParticle2D;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -56,7 +58,7 @@ private:
 	static CGoal *m_pGoal;				//ゴールポインタ
 	static CItem *m_pItem;
 
-
+	CTimer *m_Timer;
 
 	Cpreparation *m_pPreparation;	//ゲーム開始の合図ポインタ
 
@@ -64,6 +66,10 @@ private:
 	CCamera *m_pCamera;
 
 	CObject2D* m_pCompass;
+
+	CObject2D* m_pTimeUi;
+	CObject2D* m_pTime_Lope_Ui;
+
 	D3DXVECTOR3 m_rot;
 
 	//スコア
@@ -74,9 +80,10 @@ private:
 	static CMovelife* GetMovelife() { return pMovelife; }
 	static CMovelife* pMovelife;
 
-
+	int CntTime;
 	//メッシュライン
 	CMeshLine *m_pMeshLine;
 
+	CParticle2D* m_particle2d;
 };
 #endif

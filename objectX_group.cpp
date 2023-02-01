@@ -323,3 +323,28 @@ D3DXVECTOR3 CObjectXGroup::GetSize(std::string inKey)
 
 	return m_model[inKey].size;
 }
+
+std::vector<LPDIRECT3DTEXTURE9> CObjectXGroup::GetTexture(std::string inKey)
+{
+	// バッファの先頭ポインタをD3DXMATERIALにキャストして取得
+	D3DXMATERIAL* pMat = (D3DXMATERIAL*)m_model[inKey].pBuffMat->GetBufferPointer();
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
+
+	m_model[inKey].texture.resize((int)m_model[inKey].NumMat);
+
+	// 各メッシュのマテリアル情報を取得する
+	for (int i = 0; i < (int)m_model[inKey].NumMat; i++)
+	{
+		m_model[inKey].texture[i] = nullptr;
+
+		if (pMat[i].pTextureFilename != nullptr)
+		{// マテリアルで設定されているテクスチャ読み込み
+			D3DXCreateTextureFromFileA(pDevice,
+				pMat[i].pTextureFilename,
+				&m_model[inKey].texture[i]);
+		}
+	}
+
+	return m_model[inKey].texture;
+}

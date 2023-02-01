@@ -10,6 +10,7 @@
 
 float4x4 mWVP;
 
+int		bTex;		// テクスチャの中身があるかないかをチェックする
 float4 vLightDir;	// ライトの方向
 float4 vColor;		// ライト＊メッシュの色
 float3 vEyePos;		// カメラの位置（ローカル座標系）
@@ -104,7 +105,14 @@ float4 PS(VS_OUTPUT In) : COLOR
 
 	float4 Ambient = { 0.2f,0.0f,0.0f, 1.0f };
 
-	return In.Color + Ambient;		// 拡散光＋環境光(テクスチャの色)
+	if (!bTex)
+	{
+		return (In.Color);		// 拡散光＋環境光(テクスチャの色)
+	}
+	else
+	{
+		return (In.Color * tex2D(Samp, In.Tex)) + Ambient;		// 拡散光＋環境光(テクスチャの色)
+	}
 }
 
 // -------------------------------------------------------------

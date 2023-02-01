@@ -28,6 +28,9 @@
 #include "Item.h"
 #include "billboard.h"
 #include "particle.h"
+#include"Timer.h"
+#include "Particle.h"
+#include"2dParticle.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -72,7 +75,6 @@ HRESULT CGame::Init(void)
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 	m_pMeshField->LoadTexture("Data\\TEXTURE\\wood.png");
 
-
 	//プレイヤーの生成
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
@@ -101,10 +103,20 @@ HRESULT CGame::Init(void)
 		CObject3D* memory = CObject3D::Create(D3DXVECTOR3(1250.0f, 680.0f, -1098.0f), D3DXVECTOR3(-D3DX_PI / 1.83f, D3DX_PI, D3DX_PI), D3DXVECTOR3(50, 0.0f, 70.0f), 3);
 		memory->LoadTexture("Data/TEXTURE/omoide.png");
 	}
+
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	
+	m_pTime_Lope_Ui = CObject2D::Create("KEDAMA_Lope_UI", D3DXVECTOR3(SCREEN_WIDTH - 270, SCREEN_HEIGHT - 90, 0.0f), D3DXVECTOR3(900.0f, 800.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+
+	m_pTimeUi = CObject2D::Create("KEDAMA_UI", D3DXVECTOR3(SCREEN_WIDTH-80, SCREEN_HEIGHT-90, 0.0f), D3DXVECTOR3(1500.0f, 1000.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+
 
 	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
+
+	m_Timer = CTimer::Create(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0),3);
+
+	//CMovelife::Create(D3DXVECTOR3(150,200,0),3);
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
@@ -112,16 +124,48 @@ HRESULT CGame::Init(void)
 	CLoadStage::LoadAllTest(0);
 
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3);
-	m_pGoal->LoadModel("BSKET");
+	m_pGoal->LoadModel("BSKET");	//1890.0f, 605.0f, -2300.0f
 	m_pGoal->Setstring("GOAL");
 
-	m_pItem = CItem::Create(D3DXVECTOR3(890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SIZ_UP);
+	m_pItem = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SIZ_UP);
 	m_pItem->LoadModel("BOOTS");
 
+	CObjectX* obje= CObjectX::Create("BOTTLE",D3DXVECTOR3(700,605,-880),3);
+	CObjectX* obje1 = CObjectX::Create("BOTTLE", D3DXVECTOR3(400, 605, -880), 3);
 
-	CObject3D* m_billboard = CObject3D::Create(D3DXVECTOR3(890.0f, 605.0f, -2300.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 200.0f), 3);
-	m_billboard->LoadTexture("Data/TEXTURE/01.png");
-	m_billboard->SetBillboard(true);
+	for (int Cnt = 0; Cnt < 4; Cnt++)
+	{
+		CObjectX* obje2 = CObjectX::Create("BOTTLE", D3DXVECTOR3(300, 605, -880 +100 * Cnt), 3);
+	}
+	for (int Cnt = 0; Cnt < 3; Cnt++)
+	{
+		CObjectX* obje3 = CObjectX::Create("BOTTLE", D3DXVECTOR3(790 + 100 * Cnt, 605, -880), 3);
+	}
+	for (int Cnt = 0; Cnt < 5; Cnt++)
+	{
+		CObjectX* obje4 = CObjectX::Create("BEERBOTTLE", D3DXVECTOR3(200 + 100 * Cnt, 605, -1480), 3);
+	}
+	for (int Cnt = 0; Cnt < 6; Cnt++)
+	{
+		CObjectX* obje5 = CObjectX::Create("BEERBOTTLE", D3DXVECTOR3(600 , 605, -1600 - 100 * Cnt), 3);
+	}
+	for (int Cnt = 0; Cnt < 3; Cnt++)
+	{
+		CObjectX* obje5 = CObjectX::Create("TEAPOT", D3DXVECTOR3(1200 + 150 * Cnt, 605, -1400 - 150 * Cnt), 3);
+	}
+	for (int Cnt = 0; Cnt < 3; Cnt++)
+	{
+		CObjectX* obje6 = CObjectX::Create("HOURGLASS", D3DXVECTOR3(1642 + 100 * Cnt, 605, -2000), 3);
+	}
+	for (int Cnt = 0; Cnt < 3; Cnt++)
+	{
+		CObjectX* obje6 = CObjectX::Create("TEAPOT", D3DXVECTOR3(1625, 605, -700 - 200 * Cnt), 3);
+		obje6->SetRot(D3DXVECTOR3(0.0f,0.0f + 300 * Cnt,0.0f));
+	}
+
+	//CObject3D* i = CObject3D::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(100, 0.0f, 150.0f), 3);
+	//i->LoadTexture("Data/TEXTURE/01.png");
+	//i->SetBillboard(true);
 
 	//Load();
 
@@ -164,6 +208,9 @@ void CGame::Update(void)
 		}
 	}
 
+	//時間を分かりやすくするために糸をずらしている
+	m_pTime_Lope_Ui->SetMove(D3DXVECTOR3(0.11f,0.f,0.f));
+
 	//コンパス処理
 	{
 		m_rot = CCamera::GetRot();
@@ -179,6 +226,8 @@ void CGame::Update(void)
 		m_rot.y *= -1;
 		m_pCompass->SetRot(m_rot);
 	}
+
+	m_particle2d = CParticle2D::Create("INIESUTA", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL4);
 
 }
 

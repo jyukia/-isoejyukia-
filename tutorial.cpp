@@ -16,6 +16,7 @@
 #include "meshfield.h"
 #include "time.h"
 #include "load_stage.h"
+#include "goal.h"
 
 CPlayer *CTutorial::m_pPlayer = nullptr;
 CCamera *CTutorial::m_pCamera = nullptr;
@@ -44,6 +45,7 @@ CTutorial::~CTutorial()
 //=============================================================================
 HRESULT CTutorial::Init(void)
 {
+
 	m_pObject2D[0] = CObject2D::Create("TUTORIAL", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f), PRIORITY_LEVEL3);
 
 	return S_OK;

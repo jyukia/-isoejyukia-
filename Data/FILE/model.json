@@ -27,14 +27,11 @@
     [ "BSKET", "Data\/MODEL\/bsket.x" ],
     [ "BOOTS", "Data\/MODEL\/boots.x" ],
 
-
     [ "BUCKET", "Data\/MODEL\/Bucket.x" ],
     [ "FENCE", "Data\/MODEL\/fence.x" ],
     [ "FENCEROT", "Data\/MODEL\/fenceRot.x" ],
     [ "SCOOP", "Data\/MODEL\/scoop.x" ],
     [ "BIKE", "Data\/MODEL\/bike.x" ],
-
-
 
     [ "MAP1", "Data\/MODEL\/map1.x" ],
     [ "MAP2", "Data\/MODEL\/map2.x" ]

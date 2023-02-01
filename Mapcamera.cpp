@@ -15,7 +15,7 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-D3DXVECTOR3 CMapcamera::m_rot;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -37,7 +37,12 @@ HRESULT CMapcamera::Init(void)
 {
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//向き
 
+	m_posV = D3DXVECTOR3(0.0f, 200.0f, -400.0f);							//視点
+	m_posR = D3DXVECTOR3(0.0f, 20.0f, -1.0f);								//注視点
+	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);									//上方向ベクトル ←固定でOK!!
 
+	m_CamPosVm = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_CamPosRm = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	float fLength1 = (m_posV.x - m_posR.x);									//視点から注視点のX軸の距離
 	float fLength2 = (m_posV.z - m_posR.z);									//視点から注視点のZ軸の距離
@@ -70,17 +75,10 @@ void CMapcamera::Update(void)
 		m_game_viewport.MinZ = 0.0f;
 
 	}
-	else if (mode == CApplication::MODE_GAME)
+	else if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1)
 	{//プレイヤー
 	 //視点・注視点・上方向を設定する（構造体の初期化）
 		int mode = CApplication::Getinstnce()->GetMode();
-
-		m_posV = D3DXVECTOR3(0.0f, 200.0f, -400.0f);								//視点
-		m_posR = D3DXVECTOR3(0.0f, 20.0f, -1.0f);								//注視点
-		m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);									//上方向ベクトル ←固定でOK!!
-
-		m_CamPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		m_CamPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 		//ビューポート構成の保存
 		m_game_viewport.X = 1050;
@@ -89,8 +87,8 @@ void CMapcamera::Update(void)
 		m_game_viewport.Height = 200;
 		m_game_viewport.MaxZ = 1.0f;
 		m_game_viewport.MinZ = 0.0f;
-	}
 
+	}
 
 	//キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
@@ -148,6 +146,8 @@ void CMapcamera::Update(void)
 	{//右に旋回
 		m_rot.y -= 0.05f;
 	}
+
+
 }
 //=============================================================================
 // 設定処理	(引数1 true 固定カメラ false フリーカメラ)(引数2 true 投影 false 並行投影)(引数3 true 画面複数生成 false 無効)
@@ -163,8 +163,8 @@ void CMapcamera::SetCamera(bool bfixed, bool btypecom)
 	{
 		//ビューマトリックスの作成
 		D3DXMatrixLookAtLH(&m_mtxView,
-			&m_CamPosV,
-			&m_CamPosR,
+			&m_CamPosVm,
+			&m_CamPosRm,
 			&m_vecU);
 	}
 	else
@@ -246,8 +246,8 @@ void CMapcamera::SetTarget()
 	D3DXMatrixTranslation(&mtxTrans, pPlayerPos.x, pPlayerPos.y, pPlayerPos.z );//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
 	D3DXMatrixMultiply(&mtx, &mtx, &mtxTrans);
 
-	D3DXVec3TransformCoord(&m_CamPosV, &m_posV, &mtx);//ワールド変換行列
-	D3DXVec3TransformCoord(&m_CamPosR, &m_posR, &mtx);//ワールド変換行列
+	D3DXVec3TransformCoord(&m_CamPosVm, &m_posV, &mtx);//ワールド変換行列
+	D3DXVec3TransformCoord(&m_CamPosRm, &m_posR, &mtx);//ワールド変換行列
 }
 
 void CMapcamera::SetSIz_Camera(D3DXVECTOR2 siz)

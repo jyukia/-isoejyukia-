@@ -72,7 +72,10 @@ public:
 
 	//プレイヤーのスピード
 	float Getnspeed() { return m_nSpeed; }
-		
+
+	//よーいドンまではプレイヤーを動かさないフラグ
+	void Setbredycheck(bool bredycheckflg) { redycheckflg = bredycheckflg; }
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -99,6 +102,9 @@ private:
 	static int keyCnt;
 	//クォータニオン使用のフラグ取得
 	bool Quaternionflg;
+
+	//よーいドンまではプレイヤーを動かさないフラグ
+	bool redycheckflg;
 
 };
 #endif

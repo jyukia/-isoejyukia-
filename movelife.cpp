@@ -57,24 +57,22 @@ void CMovelife::Update()
 	{
 		Addlife(2);
 	}
-	if(!flg)
-	{
-		//減る処理
-		Sublife(2);
-	}
 
-	// キーボードの情報取得
-	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
-	if (pInputKeyboard->Trigger(DIK_B))
-	{
-		//増える処理
-		Addlife(1);
-	}
-	if (pInputKeyboard->Trigger(DIK_N))
-	{
 		//減る処理
-		Sublife(1);
-	}
+		//Sublife(2);
+
+	//// キーボードの情報取得
+	//CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
+	//if (pInputKeyboard->Trigger(DIK_B))
+	//{
+	//	//増える処理
+	//	Addlife(1);
+	//}
+	//if (pInputKeyboard->Trigger(DIK_N))
+	//{
+	//	//減る処理
+	//	Sublife(1);
+	//}
 
 	CObject2D::SetPos(pos);
 

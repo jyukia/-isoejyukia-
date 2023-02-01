@@ -7,6 +7,7 @@
 #include "main.h"
 #include "object.h"
 #include <string>
+#include <vector>
 
 #define MAX_MATERIAL_TEXTURE_NUM (100)
 
@@ -138,7 +139,7 @@ private:
 	D3DXCOLOR m_col;					// 色
 	D3DXMATRIX m_mtxWorld;				// ワールドマトリックス
 
-	LPDIRECT3DTEXTURE9 m_pTexture;		// テクスチャのポインタ
+	std::vector<LPDIRECT3DTEXTURE9> m_pTexture;		// テクスチャのポインタ
 	D3DXMATRIX mtxTransPos;		//回転削除
 
 	D3DXVECTOR3 m_scale;	
@@ -172,6 +173,7 @@ private:
 	D3DXHANDLE			m_hvEyePos;					// 視点の位置
 	D3DXHANDLE			m_hTechnique;				// テクニック
 	D3DXHANDLE			m_hTexture;					// テクスチャ
+	D3DXHANDLE			m_hBool;					// テクスチャの中身があるかないかをみる
 
 	static MODEL_MATERIAL	*m_material;		// マテリアル情報
 	static int				m_nMaxModel;		// モデル数			

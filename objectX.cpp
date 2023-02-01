@@ -67,6 +67,7 @@ HRESULT CObjectX::Init()
 			m_hvLightDir = pEffect->GetParameterByName(NULL, "vLightDir");		//ライトの方向
 			m_hvCol = pEffect->GetParameterByName(NULL, "vColor");				//頂点カラー
 			m_hvEyePos = pEffect->GetParameterByName(NULL, "vEyePos");
+			m_hBool = pEffect->GetParameterByName(NULL, "bTex");				// テクスチャの中身があるかないかをチェックする
 	}
 	{
 		m_scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
@@ -223,7 +224,7 @@ void CObjectX::Draw(D3DXMATRIX mtxParent)
 			m_pMesh->DrawSubset(nCntMat);
 
 			// テクスチャの設定
-			pDevice->SetTexture(0, nullptr);
+			pDevice->SetTexture(0, m_pTexture[nCntMat]);
 		}
 	}
 
@@ -308,13 +309,19 @@ void CObjectX::DrawMaterial()
 				pEffect->SetVector(m_hvCol, &Diffuse);
 			} 
 
-			//if (CTexture::GetTexture != nullptr)
-			//{// テクスチャの適応
-			//	pTex0 = ;
-			//}
+			if (pTex0 != nullptr)
+			{// テクスチャの適応
+				pTex0 = m_pTexture[nCntMat];
+				// テクスチャの設定
+				pEffect->SetTexture(m_hTexture, pTex0);
+				pEffect->SetBool(m_hBool, true);
+			}
+			else
+			{
+				pEffect->SetBool(m_hBool, false);
+				pEffect->SetTexture(m_hTexture,0);
+			}
 
-			// テクスチャの設定
-			pEffect->SetTexture(m_hTexture, NULL);
 
 			pEffect->BeginPass(0);
 
@@ -510,6 +517,7 @@ void CObjectX::LoadModel(const char *aFileName)
 	m_MinVtx = xGroup->GetMinVtx(aFileName);
 	m_NumMat = xGroup->GetNumMat(aFileName);
 	m_size = xGroup->GetSize(aFileName);
+	m_pTexture = xGroup->GetTexture(aFileName);
 }
 
 //=============================================================================
@@ -524,7 +532,7 @@ void CObjectX::Projection(void)
 	D3DMATERIAL9 matDef;				//現在のマテリアル保存用
 	D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
 
-										//変数宣言
+	//変数宣言
 	D3DXMATRIX mtxShadow;
 	D3DXPLANE planeField;
 	D3DXVECTOR4 vecLight;

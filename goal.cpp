@@ -8,6 +8,7 @@
 #include "fade.h"
 
 bool CGoal::GoalFlg;
+bool CGoal::flg;
 
 CFade *m_pFade;
 
@@ -21,7 +22,12 @@ CGoal::~CGoal()
 }
 
 HRESULT CGoal::Init()
-{	//objectxのposとrot
+{	
+	{
+		Cnt = 0;
+		flg = false;
+	}
+	//objectxのposとrot
 	D3DXVECTOR3 pos = CObjectX::GetPos();
 
 	D3DXVECTOR3 size = CObjectX::GetSize();
@@ -65,23 +71,37 @@ void CGoal::Update()
 			if (objType == OBJTYPE_PLAYER)	//接触がプレイヤーの時
 			{
 				CObjectX *pObjectX = (CObjectX*)pObject;
-				
-				D3DXVECTOR3 size = 	D3DXVECTOR3(100,100,100);
+
+				D3DXVECTOR3 size = 	D3DXVECTOR3(150,100,100);
 				GoalFlg = Collision(&pPlayerPos, &pPlayerPosOld, &size, false);
 			}
 			//ポインタを次に進める
 			pObject = pObject->GetNext();
 		}
+		//ゴールとプレイヤーが触れたら
+		if (GoalFlg)	
+		{
+			flg = true;
+		}
+	}
 
-		if (GoalFlg)	//ゴールとプレイヤーが触れたら
+	if (flg)	//ゴールとプレイヤーが触れたら
+	{
+		Cnt++;
+		if (Cnt >= 540)
 		{
 			if (m_pFade->GetFade() == CFade::FADE_NONE)
 			{
 				// 遷移
 				CFade::SetFade(CApplication::MODE_RANKING);
+
+				flg = false;
+
 			}
 		}
+		CDebugProc::Print("\n GOAL %d", Cnt);
 	}
+
 }
 
 //=============================================================================

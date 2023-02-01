@@ -20,6 +20,8 @@ class CSkyField;
 class CLight;
 class CTexture;
 class CItem;
+class Cpreparation;
+class CGoal;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -66,6 +68,10 @@ public:
 
 	static CItem* GetItem() { return m_Item; }
 
+	static 	Cpreparation * GetPreparation() { return m_preparation; }
+
+	static 	CGoal* GetGoal() { return m_Goal; }
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -82,6 +88,10 @@ private:
 	static CTexture *m_Texture;
 
 	static 	CItem *m_Item;
+
+	static 	Cpreparation *m_preparation;
+
+	static 	CGoal *m_Goal;
 
 };
 

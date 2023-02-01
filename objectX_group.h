@@ -15,6 +15,7 @@
 #include <vector>
 #include <map>
 
+#define MAX_TEXTURE_X (640)
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -29,6 +30,8 @@ public:
 		D3DXVECTOR3 MinVtx;
 		D3DXVECTOR3 MaxVtx;
 		D3DXVECTOR3 size;
+		// テクスチャの列挙型
+		std::vector<LPDIRECT3DTEXTURE9> texture;
 	};
 public:
 	//-------------------------------------------------------------------------
@@ -53,6 +56,8 @@ public:
 	D3DXVECTOR3 GetMinVtx(std::string inKey);	// 最小頂点の取得
 	D3DXVECTOR3 GetMaxVtx(std::string inKey);	// 最大頂点の取得
 	D3DXVECTOR3 GetSize(std::string inKey);		// 大きさの取得
+	std::vector<LPDIRECT3DTEXTURE9> GetTexture(std::string inKey);		// 大きさの取得
+
 
 private: /* プライベート関数 */
 	bool ExistsKey(std::string inKey) { return m_model.count(inKey) != 0; }	// Map内に指定されたKeyが存在するか否か

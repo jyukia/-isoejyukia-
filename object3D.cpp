@@ -39,7 +39,6 @@ HRESULT CObject3D::Init()
 {
 	{
 		m_bBillboard = false;							// ビルボードかどうか
-	
 	}
 
 	//デバイスの取得
@@ -143,16 +142,17 @@ void CObject3D::Draw()
 		// ビューマトリックスの設定
 		pDevice->GetTransform(D3DTS_VIEW, &mtxRot);
 
-		// カメラ逆行列を設定
-		D3DXMatrixInverse(&m_mtxWorld, NULL, &mtxRot);
 
-		m_mtxWorld._41 = 0.0f;
-		m_mtxWorld._42 = 0.0f;
-		m_mtxWorld._43 = 0.0f;
-
-		//向きを反映
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);				//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
-
+		// カメラの逆行列を設定
+		m_mtxWorld._11 = mtxRot._11;
+		m_mtxWorld._12 = mtxRot._21;
+		m_mtxWorld._13 = mtxRot._31;
+		m_mtxWorld._21 = mtxRot._12;
+		m_mtxWorld._22 = mtxRot._22;
+		m_mtxWorld._23 = mtxRot._32;
+		m_mtxWorld._31 = mtxRot._13;
+		m_mtxWorld._32 = mtxRot._23;
+		m_mtxWorld._33 = mtxRot._33;
 	}
 	else
 	{
