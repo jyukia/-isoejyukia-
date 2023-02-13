@@ -72,6 +72,7 @@ public:
 
 	//プレイヤーのスピード
 	float Getnspeed() { return m_nSpeed; }
+	void Setspeed(float Speed) { m_nSpeed = Speed; }
 
 	//よーいドンまではプレイヤーを動かさないフラグ
 	void Setbredycheck(bool bredycheckflg) { redycheckflg = bredycheckflg; }
@@ -105,6 +106,11 @@ private:
 
 	//よーいドンまではプレイヤーを動かさないフラグ
 	bool redycheckflg;
+
+	//移動時のクォータニオン制御
+	bool moverot;
+
+	std::vector<D3DXVECTOR3> m_logPos;
 
 };
 #endif

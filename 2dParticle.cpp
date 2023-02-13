@@ -66,8 +66,9 @@ void CParticle2D::Update()
 	ParticlePos += ParticleMove;
 
 	//ˆÚ“®•ûŒü
-	ParticleMove.x = cosf((float)(rand() % 360) / 100) * ((float)(rand() % 10) + 1);
-	ParticleMove.y = sinf((float)(rand() % 360) / 100) * ((float)(rand() % 10) + 1);
+	ParticleMove.x = cosf((float)(rand() % 360) / 20) * ((float)(rand() % 10) + 10);
+	ParticleMove.y = sinf((float)(rand() % 360) / -80) * ((float)(rand() % 10) + 5);
+
 
 	SetMove(D3DXVECTOR3(ParticleMove));
 	SetPos(D3DXVECTOR3(ParticlePos));
@@ -105,7 +106,7 @@ CParticle2D * CParticle2D::Create(const char *aFileName, D3DXVECTOR3 pos, D3DXVE
 		pParticle->SetPos(pos);
 		pParticle->SetSize(size);
 
-		pParticle->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		pParticle->SetCol(D3DXCOLOR(1.0f, 0.2f, 0.2f, 1.0f));
 		pParticle->Init();
 	}
 	else

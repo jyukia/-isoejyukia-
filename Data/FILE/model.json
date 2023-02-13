@@ -26,6 +26,7 @@
     [ "CONE", "Data\/MODEL\/cone.x" ],
     [ "BSKET", "Data\/MODEL\/bsket.x" ],
     [ "BOOTS", "Data\/MODEL\/boots.x" ],
+    [ "COIN", "Data\/MODEL\/coin.x" ],
 
     [ "BUCKET", "Data\/MODEL\/Bucket.x" ],
     [ "FENCE", "Data\/MODEL\/fence.x" ],

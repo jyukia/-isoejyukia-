@@ -15,6 +15,7 @@
 #include"player.h"
 #include "fade.h"
 #include "goal.h"
+#include "sound.h"
 
 CFade *m_pFadeTime;
 
@@ -115,6 +116,8 @@ void CTimer::Sublife(int nDecrease)
 	if (m_Time <= 0)
 	{//0ˆÈ‰º‚¾‚Á‚½‚ç
 		m_Time = 0;
+
+		CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GAME);
 
 		if (m_pFadeTime->GetFade() == CFade::FADE_NONE)
 		{

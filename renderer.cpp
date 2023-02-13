@@ -11,7 +11,6 @@
 #include"stage_imgui.h"
 #include"Mapcamera.h"
 
-
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -115,9 +114,10 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	//SetFog(true, D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.3f));
 
 	//カメラの生成
-	m_pCamera = CCamera::Create();	//プレイヤーカメラ
-
-	m_pMapCamera = CMapcamera::Create();
+	for (int Cnt = 0; Cnt < 2; Cnt++)
+	{
+		m_pCamera[Cnt] = CCamera::Create();	//プレイヤーカメラ
+	}
 
 	return S_OK;
 }
@@ -136,22 +136,17 @@ void CRenderer::Uninit()
 	}
 #endif // _DEBUG
 
-	//カメラの解放・削除
-	if (m_pMapCamera != nullptr)
+	for (int Cnt = 0; Cnt < 2; Cnt++)
 	{
-		m_pMapCamera->Uninit();
-		delete m_pMapCamera;
-		m_pMapCamera = nullptr;
-	}
-	//カメラの解放・削除
-	if (m_pCamera != nullptr)
-	{
-		m_pCamera->Uninit();
-		delete m_pCamera;
-		m_pCamera = nullptr;
+		//カメラの解放・削除
+		if (m_pCamera[Cnt] != nullptr)
+		{
+			m_pCamera[Cnt]->Uninit();
+			delete m_pCamera[Cnt];
+			m_pCamera[Cnt] = nullptr;
+		}
 	}
 
-	
 	// デバイスの破棄
 	if (m_pD3DDevice != nullptr)
 	{
@@ -171,15 +166,13 @@ void CRenderer::Uninit()
 //=============================================================================
 void CRenderer::Update()
 {
-	//カメラの更新処理
-	if (m_pCamera != nullptr)
+	for(int Cnt = 0; Cnt < 2; Cnt++)
 	{
-		m_pCamera->Update();
-	}
-	//カメラの更新処理
-	if (m_pMapCamera != nullptr)
-	{
-		m_pMapCamera->Update();
+		//カメラの更新処理
+		if (m_pCamera[Cnt] != nullptr)
+		{
+			m_pCamera[Cnt]->Update();
+		}
 	}
 	//全てのオブジェクトの更新処理
 	CObject::UpdateAll();
@@ -190,6 +183,81 @@ void CRenderer::Update()
 //=============================================================================
 void CRenderer::Draw()
 {
+	for (int Cnt = 0; Cnt < 2; Cnt++)
+	{
+		if (m_pCamera[Cnt] != nullptr)		//プレイヤーカメラ
+		{
+			if (Cnt == 0)//メインカメラ
+			{
+				if (m_pCamera[0] != nullptr)
+				{
+					m_pCamera[0]->SetCamera(true, true);		//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)
+				}
+				D3DVIEWPORT9 gameview = m_pCamera[0]->GetViewPort();	//ビューポートの設定
+
+				//ビューポート構成の保存
+				gameview.X = 0;
+				gameview.Y = 0;
+				gameview.Width = 1280;
+				gameview.Height = 720;
+				gameview.MaxZ = 1.0f;
+				gameview.MinZ = 0.0f;
+				m_pCamera[0]->SetViewPort(gameview);
+
+				int mode = CApplication::Getinstnce()->GetMode();
+				if (mode == CApplication::MODE_RANKING)
+				{
+					D3DXVECTOR3 CamV = m_pCamera[0]->GetPosV();
+					CamV = D3DXVECTOR3(0.0f, 100.0f, -100.0f);	//マップ上から見下ろすため高めに設定
+					m_pCamera[0]->SetPosV(CamV);
+
+					D3DXVECTOR3 Rot = m_pCamera[0]->GetRot();
+					Rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+					m_pCamera[0]->SetRot(Rot);
+				}
+				else
+				{
+					m_pCamera[0]->SetPosV(D3DXVECTOR3(0.0f, 100.0f, -200.0f));	//元の値を入れる
+				}
+
+			}
+
+			if (Cnt == 1)//マップカメラ
+			{
+				if (m_pCamera[1] != nullptr)
+				{
+					m_pCamera[1]->SetCamera(true, true);		//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)
+				}
+				D3DVIEWPORT9 mapview = m_pCamera[1]->GetViewPort();		//ビューポートの設定
+
+				if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME || CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
+				{
+					//ビューポート構成の保存
+					mapview.X = 1020;
+					mapview.Y = 25;
+					mapview.Width = 240;
+					mapview.Height = 200;
+					mapview.MaxZ = 1.0f;
+					mapview.MinZ = 0.0f;
+					m_pCamera[1]->SetViewPort(mapview);
+
+					D3DXVECTOR3 MapCamV = m_pCamera[1]->GetPosV();
+					MapCamV = D3DXVECTOR3(0.0f, 500.0f, -10.0f);	//マップ上から見下ろすため高めに設定
+					m_pCamera[1]->SetPosV(MapCamV);
+				}
+				else
+				{
+					//ビューポート構成の保存
+					mapview.X = 1020;
+					mapview.Y = 25;
+					mapview.Width = 0;
+					mapview.Height = 0;
+					mapview.MaxZ = 1.0f;
+					mapview.MinZ = 0.0f;
+					m_pCamera[1]->SetViewPort(mapview);
+				}
+			}
+
 		// バックバッファ＆Ｚバッファのクリア
 		m_pD3DDevice->Clear(0, NULL,
 			(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER),
@@ -198,18 +266,6 @@ void CRenderer::Draw()
 		// Direct3Dによる描画の開始
 		if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 		{
-			//カメラのセット処理
-			if (m_pMapCamera != nullptr)		//プレイヤーカメラ
-			{
-				m_pMapCamera->SetCamera(true, true);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)
-				//全てのオブジェクトの描画処理
-				CObject::DrawAll();
-			}
-			//カメラのセット処理
-			if (m_pCamera != nullptr)		//プレイヤーカメラ
-			{
-				m_pCamera->SetCamera(true, true);	//引数1 カメラ移動(true 固定,false フリー) 引数2 投影方法(true 通常投影,false 並行投影)
-				
 				//全てのオブジェクトの描画処理
 				CObject::DrawAll();
 #ifdef _DEBUG
@@ -219,13 +275,14 @@ void CRenderer::Draw()
 				// デバック表示
 				CDebugProc::Draw();
 #endif // _DEBUG
+
 			}
 			CApplication::Getinstnce()->GetImgui()->Draw();
 
 			// Direct3Dによる描画の終了
 			m_pD3DDevice->EndScene();
 		}
-
+	}
 	// バックバッファとフロントバッファの入れ替え
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }

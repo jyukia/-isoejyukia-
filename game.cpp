@@ -31,16 +31,18 @@
 #include"Timer.h"
 #include "Particle.h"
 #include"2dParticle.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
 CMeshfield *CGame::m_pMeshField = nullptr;
 CLight *CGame::m_pLight = nullptr;
-CScore* CGame::pScore = nullptr;
 CMovelife* CGame::pMovelife = nullptr;
 CGoal* CGame::m_pGoal = nullptr;
 CItem* CGame::m_pItem = nullptr;
+CItem* CGame::m_pItemCoin = nullptr;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -65,6 +67,8 @@ HRESULT CGame::Init(void)
 	//ライトの生成
 	m_pLight = CLight::Create();
 	{//初期化
+		returnflg = false;
+		Goalflg = false;
 		m_rot = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	}
 
@@ -105,16 +109,15 @@ HRESULT CGame::Init(void)
 	}
 
 	//コンパス生成
-	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1140.0f, 120.0f, 0.0f), D3DXVECTOR3(200.0f, 200.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 	
-	m_pTime_Lope_Ui = CObject2D::Create("KEDAMA_Lope_UI", D3DXVECTOR3(SCREEN_WIDTH - 270, SCREEN_HEIGHT - 90, 0.0f), D3DXVECTOR3(900.0f, 800.0f, 0.0f), CObject::PRIORITY_LEVEL4);
-
+	//タイムのUI
+	m_pTime_Lope_Ui = CObject2D::Create("KEDAMA_Lope_UI", D3DXVECTOR3(SCREEN_WIDTH - 250, SCREEN_HEIGHT - 90, 0.0f), D3DXVECTOR3(900.0f, 800.0f, 0.0f), CObject::PRIORITY_LEVEL4);
 	m_pTimeUi = CObject2D::Create("KEDAMA_UI", D3DXVECTOR3(SCREEN_WIDTH-80, SCREEN_HEIGHT-90, 0.0f), D3DXVECTOR3(1500.0f, 1000.0f, 0.0f), CObject::PRIORITY_LEVEL4);
-
-
-	pScore = CScore::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f));
-
 	m_Timer = CTimer::Create(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0),3);
+
+	//スコア
+	CApplication::Getinstnce()->GetpMode()->SetScore(CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f)));
 
 	//CMovelife::Create(D3DXVECTOR3(150,200,0),3);
 
@@ -127,8 +130,11 @@ HRESULT CGame::Init(void)
 	m_pGoal->LoadModel("BSKET");	//1890.0f, 605.0f, -2300.0f
 	m_pGoal->Setstring("GOAL");
 
-	m_pItem = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SIZ_UP);
+	m_pItem = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_MOVE_SPEED_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItem->LoadModel("BOOTS");
+
+	m_pItemCoin = CItem::Create(D3DXVECTOR3(550.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SCORE_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItemCoin->LoadModel("COIN");
 
 	CObjectX* obje= CObjectX::Create("BOTTLE",D3DXVECTOR3(700,605,-880),3);
 	CObjectX* obje1 = CObjectX::Create("BOTTLE", D3DXVECTOR3(400, 605, -880), 3);
@@ -151,7 +157,7 @@ HRESULT CGame::Init(void)
 	}
 	for (int Cnt = 0; Cnt < 3; Cnt++)
 	{
-		CObjectX* obje5 = CObjectX::Create("TEAPOT", D3DXVECTOR3(1200 + 150 * Cnt, 605, -1400 - 150 * Cnt), 3);
+		CObjectX* obje5 = CObjectX::Create("TEAPOT", D3DXVECTOR3(1200 + 150 * Cnt, 605, -1400 ), 3);
 	}
 	for (int Cnt = 0; Cnt < 3; Cnt++)
 	{
@@ -171,6 +177,9 @@ HRESULT CGame::Init(void)
 
 	//CLoadStage::SaveAll();
 
+	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GAME);
+
+
 	return S_OK;
 }
 
@@ -186,6 +195,7 @@ void CGame::Uninit(void)
 		delete m_pLight;
 		m_pLight = nullptr;
 	}
+
 
 	//インスタンスの解放処理
 	CObject::Release();
@@ -208,9 +218,24 @@ void CGame::Update(void)
 		}
 	}
 
-	//時間を分かりやすくするために糸をずらしている
-	m_pTime_Lope_Ui->SetMove(D3DXVECTOR3(0.11f,0.f,0.f));
+	bool goalflg = CMode::GetGoal()->GetGoalFlg();
+	if (goalflg)
+	{
+		CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GAME);
 
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GOAL);
+
+		Goalflg = true;
+	}
+	if (Goalflg)
+	{
+		GoalCnt++;
+
+		if (GoalCnt > 120)
+		{
+			CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GOAL);
+		}
+	}
 	//コンパス処理
 	{
 		m_rot = CCamera::GetRot();
@@ -227,8 +252,29 @@ void CGame::Update(void)
 		m_pCompass->SetRot(m_rot);
 	}
 
-	m_particle2d = CParticle2D::Create("INIESUTA", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+	//ゴールしたときのフラグ
+	bool flg = CApplication::Getinstnce()->GetpMode()->GetGoal()->GetGoalFlg();
+	if (flg)		//ゴールとプレイヤーが触れたら
+	{
+		returnflg = true;
+	}
+	if (!flg)
+	{
+		if (returnflg)
+		{
+			//移動削除
+			m_pTime_Lope_Ui->SetMove(D3DXVECTOR3(0.0f, 0.f, 0.f));
 
+			return;
+		}
+		//エフェクト
+		m_particle2d = CParticle2D::Create("EFFECT", D3DXVECTOR3(SCREEN_WIDTH_HALF + 50, SCREEN_HEIGHT_HALF + 330, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+		Xslide += 0.11f;
+		m_particle2d->SetPos(D3DXVECTOR3(SCREEN_WIDTH_HALF + 50 + Xslide, SCREEN_HEIGHT_HALF + 320, 0.0f));
+
+		//時間を分かりやすくするために糸をずらしている
+		m_pTime_Lope_Ui->SetMove(D3DXVECTOR3(0.11f, 0.f, 0.f));
+	}
 }
 
 //=============================================================================

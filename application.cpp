@@ -36,9 +36,9 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pMapCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr)
+CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr), m_Item(nullptr)
 {
-	CApplication::m_mode = MODE_TITLE;//MODE_TITLE
+	CApplication::m_mode = MODE_GAME1;//MODE_TITLE
 }
 
 //=============================================================================
@@ -54,6 +54,7 @@ CApplication::~CApplication()
 //=============================================================================
 HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
+
 	Hwnd = hWnd;
 
 	//乱数の初期化
@@ -85,9 +86,6 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// 初期化
 	assert(m_Imgui != nullptr);
 	m_Imgui->Init(hWnd, pDevice);
-
-	// カメラの初期化
-	m_pMapCamera = new CMapcamera;
 
 	// カメラの初期化
 	m_pCamera = new CCamera;
@@ -134,7 +132,6 @@ void CApplication::Uninit(void)
 		delete m_pDebugProc;
 		m_pDebugProc = nullptr;
 	}
-
 	// サウンドの削除
 	if (m_pSound != nullptr)
 	{
@@ -142,7 +139,6 @@ void CApplication::Uninit(void)
 		delete m_pSound;
 		m_pSound = nullptr;
 	}
-
 	// Xモデルの削除
 	if (m_pObjectXGroup != nullptr)
 	{
@@ -150,7 +146,6 @@ void CApplication::Uninit(void)
 		delete m_pObjectXGroup;
 		m_pObjectXGroup = nullptr;
 	}
-
 	//レンダリングの解放・削除
 	if (m_pRenderer != nullptr)
 	{
@@ -158,7 +153,6 @@ void CApplication::Uninit(void)
 		delete m_pRenderer;
 		m_pRenderer = nullptr;
 	}
-
 	//インプットの解放・削除
 	if (m_pInput != nullptr)
 	{
@@ -166,7 +160,6 @@ void CApplication::Uninit(void)
 		delete m_pInput;
 		m_pInput = nullptr;
 	}
-
 	//カメラの解放・削除
 	if (m_pCamera != nullptr)
 	{
@@ -174,14 +167,6 @@ void CApplication::Uninit(void)
 		delete m_pCamera;
 		m_pCamera = nullptr;
 	}
-	//カメラの解放・削除
-	if (m_pMapCamera != nullptr)
-	{
-		m_pMapCamera->Uninit();
-		delete m_pMapCamera;
-		m_pMapCamera = nullptr;
-	}
-
 	//imguiの解放
 	if (m_Imgui != nullptr)
 	{
@@ -213,11 +198,6 @@ void CApplication::Update(void)
 	if (m_pRenderer != nullptr)
 	{
 		m_pRenderer->Update();
-	}
-	//カメラの更新処理
-	if (m_pMapCamera != nullptr)
-	{
-		m_pMapCamera->Update();
 	}
 	//カメラの更新処理
 	if (m_pCamera != nullptr)
@@ -276,8 +256,6 @@ void CApplication::SetMode(MODE mode)
 	}
 
 	CObject::ModeRelease();
-
-	m_pMapCamera->Init();
 
 	m_pCamera->Init();
 

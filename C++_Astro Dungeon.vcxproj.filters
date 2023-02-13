@@ -34,6 +34,15 @@
     <Filter Include="ソース ファイル\camera">
       <UniqueIdentifier>{c1085479-6507-4f8f-ba51-c15bbdcf0a85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\title">
+      <UniqueIdentifier>{136b7b81-88fc-4608-aa05-3fe73b8284b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\tutorial">
+      <UniqueIdentifier>{0f47479d-1c91-4ce8-a6c2-f9bd1e28a098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ranking">
+      <UniqueIdentifier>{ec154c68-72c7-4635-841c-098ff3bc66ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -72,16 +81,10 @@
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ranking.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="renderer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="shadow.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="inputjoypad.cpp">
@@ -91,9 +94,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DirectInput.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="tutorial.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="objectX_group.cpp">
@@ -215,6 +215,15 @@
     </ClCompile>
     <ClCompile Include="2dParticle.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\title</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソース ファイル\tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>ソース ファイル\ranking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

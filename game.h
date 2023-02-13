@@ -25,6 +25,7 @@ class Cpreparation;
 class CBillboard;
 class CTimer;
 class CParticle2D;
+class CSound;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -56,7 +57,11 @@ private:
 	static CLight *m_pLight;				// ライトのポインタ
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
 	static CGoal *m_pGoal;				//ゴールポインタ
+	
+	//移動力アップ
 	static CItem *m_pItem;
+
+	static CItem *m_pItemCoin;	//COIN
 
 	CTimer *m_Timer;
 
@@ -72,18 +77,22 @@ private:
 
 	D3DXVECTOR3 m_rot;
 
-	//スコア
-	static CScore* GetScore() { return pScore; }
-	static CScore* pScore;
-
 	//移動可能距離
 	static CMovelife* GetMovelife() { return pMovelife; }
 	static CMovelife* pMovelife;
+
+	float Xslide;
 
 	int CntTime;
 	//メッシュライン
 	CMeshLine *m_pMeshLine;
 
 	CParticle2D* m_particle2d;
+
+	bool returnflg;
+
+	bool Goalflg;
+
+	int GoalCnt;
 };
 #endif

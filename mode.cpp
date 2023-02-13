@@ -13,6 +13,7 @@ CMeshLine *CMode::m_pMeshLine = nullptr;
 CMovelife *CMode::m_MoveLife = nullptr;
 CGoal *CMode::m_Goal = nullptr;
 CItem *CMode::m_Item = nullptr;
+CScore *CMode::m_GameScore = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================

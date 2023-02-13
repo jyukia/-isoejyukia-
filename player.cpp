@@ -42,7 +42,8 @@ CPlayer::CPlayer(int nPriority) :
 	m_inertia(0.0f),
 	bScale(false),
 	bMoveFlg(true),
-	redycheckflg(false)
+	redycheckflg(false),
+	moverot(false)
 {
 	//オブジェクトのタイプセット処理
 	CObject::SetType(OBJTYPE_PLAYER);
@@ -62,6 +63,9 @@ HRESULT CPlayer::Init()
 {
 	{//初期化 
 		redycheckflg = false;
+
+		moverot = false;
+
 		m_inertia = 0.05f;	//慣性
 
 		m_nSpeed = 5.0f;	//移動スピード
@@ -104,6 +108,9 @@ HRESULT CPlayer::Init()
 
 	SetScale(D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 
+	//CApplication::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
+
+
 	return S_OK;
 }
 //=============================================================================
@@ -128,6 +135,7 @@ void CPlayer::Update()
 	// 座標取得
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 posOld = GetPosOld();
+
 	//メッシュエフェクト
 	//D3DXVECTOR3 ofsetpos = m_MeshEffect->GetOfSetPos();
 	//ofsetpos.x = 0.0f;
@@ -170,23 +178,7 @@ void CPlayer::Update()
 	//CDebugProc::Print("カメラの情報       (pCameraRot)       | X : %.2f | Y : %.2f | Z : %.2f |\n", pCameraRot.x, pCameraRot.y, pCameraRot.z);
 
 	//bool flg = CMode::GetMeshLine()->GetMoveFlg();	//移動制限のフラグ
-	//一定サイズまで行くと変更しないよう
-	if (Scale.x <= 0.2f || Scale.y <= 0.2f || Scale.z <= 0.2f)
-	{
-		//flg = true;	//移動しないようフラグで設定
-		Scale.x = 0.2f;
-		Scale.y = 0.2f;
-		Scale.z = 0.2f;
-		//CMode::GetMeshLine()->SetMoveFlg(flg);
-	}
-	if (Scale.x >= 1.1f || Scale.y >= 1.1f || Scale.z >= 1.1f)
-	{
-		//flg = true;	//移動しないようフラグで設定
-		Scale.x = 1.1f;
-		Scale.y = 1.1f;
-		Scale.z = 1.1f;
-		//CMode::GetMeshLine()->SetMoveFlg(flg);
-	}
+
 	switch (eScaleType)
 	{
 	case CPlayer::TypeScaleNone:
@@ -211,11 +203,32 @@ void CPlayer::Update()
 
 	//ゴールして時のフラグ
 	bool goalflg = CApplication::Getinstnce()->GetpMode()->GetGoal()->Getflg();
-	if (goalflg)
+	//一定サイズまで行くと変更しないよう
+	if (Scale.x <= 0.6f || Scale.y <= 0.6f || Scale.z <= 0.6f)
 	{
+		moverot = true;	//クォータニオンフラグ
+		Scale.x = 0.6f;
+		Scale.y = 0.6f;
+		Scale.z = 0.6f;
+		//CMode::GetMeshLine()->SetMoveFlg(flg);
 	}
 	else
 	{
+		moverot = false;	//クォータニオンフラグ
+	}
+	if (Scale.x >= 1.1f || Scale.y >= 1.1f || Scale.z >= 1.1f)
+	{
+		Scale.x = 1.1f;
+		Scale.y = 1.1f;
+		Scale.z = 1.1f;
+		//CMode::GetMeshLine()->SetMoveFlg(flg);
+	}
+	if (goalflg)	//ゴールしたとき
+	{
+	}
+	else	//ゴールしてないとき
+	{
+
 		if (redycheckflg)	//よーいドンで開始のためのフラグ
 		{
 			//移動全般
@@ -295,6 +308,22 @@ void CPlayer::Update()
 				move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
 				m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
 			}
+		
+			//メッシュ回収の為戻る処理
+			if (pInputKeyboard->Press(DIK_R))	//戻る処理
+			{
+				pos = m_logPos.back();	//戻る
+
+				m_logPos.pop_back();//保存した値を削除
+			}
+			else 	//メッシュを配置しているとき
+			{
+				//メッシュの当たり判定
+				m_pMeshLine->CollisionReturn(&pos);
+
+				m_logPos.push_back(pos);//座標を動的に確保
+			}
+		
 		}
 	}
 
@@ -314,6 +343,10 @@ void CPlayer::Update()
 	{
 		pos.y = 30;
 	}
+	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_RANKING)
+	{
+		pos.y = 600;
+	}
 	else
 	{
 		// 重力設定
@@ -326,15 +359,6 @@ void CPlayer::Update()
 	//	m_bJumpFlag = true;
 	//	move.y = 0.0f;
 	//	move.y += 14.0f;
-	//}
-	//bool SizUpflg = CApplication::Getinstnce()->GetpMode()->GetItem()->GetSizupflg();
-	//if (SizUpflg)	//アイテム獲得時
-	//{//効果記載
-	//	int a = 0;
-	//}
-	//bool SizDownflg = CApplication::Getinstnce()->GetpMode()->GetItem()->GetSizdownflg();
-	//if (SizDownflg)	//アイテム獲得時
-	//{//効果記載
 	//}
 
 	// 角度の正規化(現在の角度)
@@ -352,34 +376,32 @@ void CPlayer::Update()
 	{
 		pos += move;
 
-		//メッシュの当たり判定
-		m_pMeshLine->CollisionReturn(&pos);
 	}
-	else 	//移動できないとき
-	{
-		D3DXVECTOR3 nextPos = pos;
+	//else 	//移動できないとき
+	//{
+	//	D3DXVECTOR3 nextPos = pos;
 
-		nextPos += move;
-		bool breturnflg_nextPos = m_pMeshLine->CollisionReturn(&nextPos);
-		if (breturnflg_nextPos)
-		{
-			pos += move;
-		}
-		CObjectX::SetPos(pos);
-		CObjectX::SetMove(nextPos);
-
-	}
+	//	nextPos += move;
+	//	bool breturnflg_nextPos = m_pMeshLine->CollisionReturn(&nextPos);
+	//	if (breturnflg_nextPos)
+	//	{
+	//		pos += move;
+	//	}
+	//	CObjectX::SetPos(pos);
+	//	CObjectX::SetMove(nextPos);
+	//}
 
 	CDebugProc::Print("プレイヤー移動の情報       (move)       | X : %.2f | Y : %.2f | Z : %.2f |\n", move.x, move.y, move.z);
 
-
-	//クォータニオン計算
-	move.x += (0.0f - move.x)* m_inertia;
-	move.y += (0.0f - move.y)* m_inertia;
-	move.z += (0.0f - move.z)* m_inertia;
-	QuaternionCalculation(*Scale, &move, &fst);
-	SetQuaternion(fst);
-
+	if (!moverot)
+	{
+		//クォータニオン計算
+		move.x += (0.0f - move.x)* m_inertia;
+		move.y += (0.0f - move.y)* m_inertia;
+		move.z += (0.0f - move.z)* m_inertia;
+		QuaternionCalculation(*Scale, &move, &fst);
+		SetQuaternion(fst);
+	}
 	move.x *= 0.5f;
 	move.z *= 0.5f;
 
@@ -415,7 +437,6 @@ void CPlayer::Update()
 		pObject = pObject->GetNext();
 	}
 
-
 	// メッシュフィールドのポインタを取得
 	//CMeshfield *pMeshField = CGame::GetMeshfield();
 	//// プレイヤーのposとrotの設定
@@ -434,7 +455,7 @@ void CPlayer::Update()
 		move.y = 0.0f;
 	}
 
-	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME)
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME || CApplication::Getinstnce()->GetMode() == CApplication::MODE_RANKING)
 	{
 		OutSide(pos);
 	}

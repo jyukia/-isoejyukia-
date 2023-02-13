@@ -17,8 +17,9 @@ public:
 	{
 		ITEM_NONE = 0,
 
-		ITEM_SIZ_UP,
-		ITEM_SIZ_DOWN,
+		ITEM_MOVE_SPEED_UP,
+		ITEM_MOVELIFE_UP,
+		ITEM_SCORE_UP,
 
 		ITEM_MAX
 	};
@@ -41,13 +42,13 @@ public:
 
 	void SetType(TypeItem type) { typeItem = type; }
 
-
 	static CItem *Create(const D3DXVECTOR3 pos, int nPriority, TypeItem type);    // ê∂ê¨èàóù
 
 	 bool GetHitFlg(void) { return HitFlg; }
 
-	 bool GetSizupflg(void) { return sizupflg; }
-	 bool GetSizdownflg(void) { return sizdownflg; }
+	 bool GetMoveSpeedUpflg(void) { return MoveSpeedUp; }
+	 bool GetSizdownflg(void) { return MoveLifeUpflg; }
+	 bool GetScoreUpflg(void) { return ScoreUpflg; }
 
 private:
 	CShadow *m_shadow;					// âeÇÃÉ|ÉCÉìÉ^
@@ -58,8 +59,10 @@ private:
 
 	 bool HitFlg;
 
-	 bool sizupflg;
-	 bool sizdownflg;
+	 bool MoveSpeedUp;
+	 bool MoveLifeUpflg;
+	 bool ScoreUpflg;
+
 };
 
 

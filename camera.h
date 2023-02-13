@@ -34,20 +34,21 @@ public:
 	static CCamera *Create();		// ê∂ê¨èàóù
 
 	void SetTarget();
-	void SetCameraType();
 
 	void SetSIz_Camera(D3DXVECTOR2 siz);
 	void SetPos_Camera(D3DXVECTOR2 pos);
 
+	D3DXVECTOR3 GetPosV() { return m_posV; }	//à íuÅ@ãóó£ìô
 	void SetPosV(D3DXVECTOR3 posv) { m_posV = posv; }
-	D3DXVECTOR3 GetPosV() { return m_posV; }
 
+	D3DXVECTOR3 GetPosR() { return m_posR; }	//íÜéxìXÅ@å©ÇÈï˚å¸
 	void SetPosR(D3DXVECTOR3 posr) { m_posR = posr; }
-	D3DXVECTOR3 GetPosR() { return m_posR; }
-	
+
 	static D3DXVECTOR3 GetRot() { return m_rot; }
+	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 
-
+	D3DVIEWPORT9 GetViewPort() { return m_game_viewport; }
+	void SetViewPort(D3DVIEWPORT9 view) { m_game_viewport = view; }
 
 	static D3DXMATRIX GetMtxView() { return m_mtxView; }
 	static D3DXMATRIX GetProjection() { return m_mtxProjection; }

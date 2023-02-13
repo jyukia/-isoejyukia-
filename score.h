@@ -32,7 +32,6 @@ public:
 
 	void SubScore(int nscore);
 
-
 	void SetScore(int nScore);
 
 	static CScore* Create(D3DXVECTOR3 pos);

@@ -79,12 +79,11 @@ void CGoal::Update()
 			pObject = pObject->GetNext();
 		}
 		//ゴールとプレイヤーが触れたら
-		if (GoalFlg)	
+		if (GoalFlg)
 		{
 			flg = true;
 		}
 	}
-
 	if (flg)	//ゴールとプレイヤーが触れたら
 	{
 		Cnt++;

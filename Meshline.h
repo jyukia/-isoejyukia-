@@ -14,7 +14,7 @@ class CMeshLine : public CObject
 {
 public:
 	//生成ライン回数
-	const int MaxLine = 1000;
+	int MaxLine = 1000;
 	//生成ライン回数	title
 	const int MaxLineTitle = 900;
 
@@ -46,12 +46,9 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_rot; }		// 向き取得処理
 	D3DXCOLOR GetCol(void) { return m_col; }			// 色取得処理
 
-
-	
-
 	bool GetbIsLanding() { return bIsLanding; }
 	
-	int SetVtxCount(int vtxcount) { m_pVtxMax = vtxcount; }
+	void SetVtxCount(int vtxcount) { m_pVtxMax = vtxcount; }
 
 	bool GetbUseflg() { return bUseflg; }
 
@@ -60,10 +57,10 @@ public:
 
 	bool CollisionReturn(D3DXVECTOR3 * PlayerPos);
 
+	int GetVtxcount() {return m_Vtxcount;}
+
 	float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2);
 	float Vec2Dot(D3DXVECTOR3* v1, D3DXVECTOR3* v2);
-
-
 private:
 	D3DXMATRIX *m_pMtxParent;	//軌跡の親モデルのマトリックス
 
@@ -87,6 +84,8 @@ private:
 	int m_Vtxcount;
 
 	static bool bIsLanding;	//増やす変数
+
+	int m_Game_PlayerMove;
 };
 
 #endif

@@ -57,13 +57,16 @@ HRESULT CCamera::Init(void)
 		m_CamPosV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		m_CamPosR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-		//ビューポート構成の保存
-		m_game_viewport.X = 0;
-		m_game_viewport.Y = 0;
-		m_game_viewport.Width = 1280;
-		m_game_viewport.Height = 720;
-		m_game_viewport.MaxZ = 1.0f;
-		m_game_viewport.MinZ = 0.0f;
+		//{
+		//	////ビューポート構成の保存
+		//	//m_game_viewport.X = 0;
+		//	//m_game_viewport.Y = 0;
+		//	//m_game_viewport.Width = 1280;
+		//	//m_game_viewport.Height = 720;
+		//	//m_game_viewport.MaxZ = 1.0f;
+		//	//m_game_viewport.MinZ = 0.0f;
+		//}
+
 	}
 
 	float fLength1 = (m_posV.x - m_posR.x);									//視点から注視点のX軸の距離
@@ -143,7 +146,6 @@ void CCamera::Update(void)
 				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
 				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
 			}
-
 			//視点の旋回
 			if (pInputKeyboard->Press(DIK_E))
 			{//左に旋回
@@ -153,11 +155,8 @@ void CCamera::Update(void)
 			{//右に旋回
 				m_rot.y -= 0.05f;
 			}
-
 		}
 	}
-
-
 
 	if (mode == CApplication::MODE_SELECT_STAGE)
 	{
@@ -192,7 +191,7 @@ void CCamera::Update(void)
 		D3DXVec3TransformCoord(&m_CamPosV, &m_posV, &m_mtxView);	//ワールド変換行列
 		D3DXVec3TransformCoord(&m_CamPosR, &m_posR, &m_mtxView);	//ワールド変換行列
 	}
-	else if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1 || mode == CApplication::MODE_TITLE)
+	else if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1 || mode == CApplication::MODE_TITLE || mode == CApplication::MODE_RANKING)
 	{
 		SetTarget();
 	}
@@ -205,6 +204,9 @@ void CCamera::SetCamera(bool bfixed, bool btypecom)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
+
+	//ビューマトリックスを初期化
+	D3DXMatrixIdentity(&m_mtxView);
 
 	pDevice->SetViewport(&m_game_viewport);
 

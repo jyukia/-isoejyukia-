@@ -100,8 +100,9 @@ HWND CImguiProperty::Init(HWND hWnd, LPDIRECT3DDEVICE9 pDevice)
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX9_Init(pDevice);
 
-	return S_OK;
 #endif // _DEBUG
+	return S_OK;
+
 }
 
 //--------------------------------------------------

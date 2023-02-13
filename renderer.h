@@ -38,7 +38,7 @@ private:
 	// メンバー変数
 	//-------------------------------------------------------------------------
 
-	CCamera *m_pCamera;				// カメラのポインタ
+	CCamera *m_pCamera[2];				// カメラのポインタ
 	CMapcamera *m_pMapCamera;
 
 	LPDIRECT3D9 m_pD3D;								// Direct3Dオブジェクト

@@ -9,8 +9,10 @@
 //*****************************************************************************
 #include "Number.h"
 #include "score.h"
+#include "application.h"
 
 #include"input.h"
+#include "Item.h"
 
 
 //コンストラクタ
@@ -48,10 +50,14 @@ void CScore::Update()
 
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
-	if (pInputKeyboard->Trigger(DIK_F))
-	{
-		AddScore(1);
-	}
+
+	//bool bScoreAdd = CApplication::Getinstnce()->GetItem()->GetScoreUpflg();
+
+	//if (bScoreAdd)
+	//{
+	//	AddScore(100);
+	//}
+	
 
 	CObject2D::SetPos(pos);
 

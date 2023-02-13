@@ -189,14 +189,12 @@ void CMeshfield::Uninit()
 		m_pTexture->Release();
 		m_pTexture = NULL;
 	}
-
 	//頂点バッファの破棄
 	if (m_pVtxBuff != NULL)
 	{
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
-
 	//インデックスバッファの解放
 	if (m_pIdxBuff != NULL)
 	{

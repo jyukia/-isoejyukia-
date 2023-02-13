@@ -116,8 +116,9 @@ bool CStageImgui::Update()
 		funcFileLoad(wnd);
 	}
 	ImGui::End();
-	return false;
 #endif // _DEBUG
+	return false;
+
 }
 
 //--------------------------------------------------

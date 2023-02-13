@@ -12,6 +12,8 @@
 #include "player.h"
 #include "mode.h"
 
+#include "sound.h"
+
 //コンストラクタ
 Cpreparation::Cpreparation(int nPriority):ChangeCount(0)
 {
@@ -32,6 +34,8 @@ HRESULT Cpreparation::Init()
 
 	}
 	CObject2D::Init();
+
+	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_REDY_SOUND);
 
 	return S_OK;
 }
@@ -59,7 +63,10 @@ void Cpreparation::Update()
 		}
 		if (ChangeCount >= 120)
 		{
+			CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_REDY_SOUND);
+
 			BindTexture("GO");
+			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_START_SOUND);
 
 			CApplication::Getinstnce()->GetpMode()->GetPlayer()->Setbredycheck(true);
 		}
@@ -67,7 +74,10 @@ void Cpreparation::Update()
 		{
 			//SetCol(col);
 			Cpreparation::Release();
+			CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_START_SOUND);
+
 		}
+
 	}
 	else		//画面半分まで進みきっていないとき
 	{

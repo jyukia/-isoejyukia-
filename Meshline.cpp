@@ -9,6 +9,7 @@
 #include "movelife.h"
 #include "input.h"
 #include "camera.h"
+#include "Item.h"
 
 #include"DebugProc.h"
 
@@ -38,6 +39,7 @@ void CMeshLine::LoadTexture(const char * aFileName)
 }
 HRESULT CMeshLine::Init()
 {
+
 	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 	{
 		m_pVtxMax = MaxLineTitle;	//頂点数最大数
@@ -58,6 +60,10 @@ HRESULT CMeshLine::Init()
 	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 	{
 		m_pos = D3DXVECTOR3(1850.0f, 20.0f, -600.0f);
+	}
+	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_RANKING)
+	{
+		m_pos = D3DXVECTOR3(1100.0f, 610.0f, -2600.0f);
 	}
 
 	LoadTexture("Data/TEXTURE/kedama.png");
@@ -96,7 +102,7 @@ HRESULT CMeshLine::Init()
 		pVtx[Cnt].tex = D3DXVECTOR2(0.0f, 1.0f);
 
 
-		float Y = Cnt / 2;
+		float Y = (float)Cnt / 2;
 		pVtx[Cnt].tex = D3DXVECTOR2((float)X, Y);
 		X++;
 		if (X >= 2)	//テクスチャ
@@ -126,6 +132,7 @@ void CMeshLine::Update()
 	bUseflg = false;
 
 	D3DXVECTOR3 axis = CObjectX::GetAxis();
+
 	//プレイヤー情報
 	if (CApplication::Getinstnce()->GetpMode()->GetPlayer() != nullptr)
 	{
@@ -140,7 +147,7 @@ void CMeshLine::Update()
 
 		if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
 		{
-			for (int Cnt = m_pVtxMax - 3; Cnt >= 0; Cnt--)
+			for (int Cnt = m_pVtxMax + - 3; Cnt >= 0; Cnt--)
 			{
 				pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
 			}

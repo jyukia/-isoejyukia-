@@ -1,3 +1,10 @@
+//**************************************************
+// 
+// application.cpp
+// Author  : katsuki mizuki
+// 
+//**************************************************
+
 //==================================================
 // インクルード
 //==================================================
@@ -9,25 +16,14 @@
 //==================================================
 const CSound::SParam CSound::PARAM[] =
 {// 各音素材のパラメータ
-	{ "Data/SOUND/BGM/GAME_01.wav", -1 },		// タイトル
-	{ "Data/SOUND/BGM/GAME_02.wav", -1 },		// ゲーム
-	{ "Data/SOUND/BGM/GAME_02.wav", -1 },		// リザルト
-	{ "Data/SOUND/SE/chakuchi_01.wav", 0 },		// 着地音_01
-	{ "Data/SOUND/SE/chakuchi_02.wav", 0 },		// 着地音_02
-	{ "Data/SOUND/SE/COUNTDOWN.wav", -1 },		// カウントダウン
-	{ "Data/SOUND/SE/ENTER_KEY_01.wav", 0 },	// 決定音_01
-	{ "Data/SOUND/SE/ENTER_KEY_02.wav", 0 },	// 決定音_02
-	{ "Data/SOUND/SE/ENTER_KEY_03.wav", 0 },	// 決定音_03
-	{ "Data/SOUND/SE/GAMECLEAR.wav", -1 },		// ゲームクリア音
-	{ "Data/SOUND/SE/gimikku_clear.wav", -1 },	// ギミッククリア音
-	{ "Data/SOUND/SE/haguruma_kaiten.wav", -1 },// 歯車と回転音
-	{ "Data/SOUND/SE/hashiri.wav", -1 },		// 走る音
-	{ "Data/SOUND/SE/hikizuri.wav", -1 },		// 引きずり音
-	{ "Data/SOUND/SE/JUMP_01.wav", 0 },			// ジャンプ_01
-	{ "Data/SOUND/SE/JUMP_02.wav", 0 },			// ジャンプ_02
-	{ "Data/SOUND/SE/negimakioto.wav", -1 },	// ねじ巻き音
-	{ "Data/SOUND/SE/rakka.wav", -1 },			// 落下音
-	{ "Data/SOUND/SE/respawn.wav", -1 },		// リスポーン音
+	{ "Data/SOUND/IMG_2860.wav", -1 },		// よーい
+	{ "Data/SOUND/IMG_2860_1.wav", -1 },		// ドン
+	{ "Data/SOUND/00015_heaven-and-hell.wav", -1 },		// game
+	{ "Data/SOUND/omedetou.wav", -1 },		// game
+	{ "Data/SOUND/coin001.wav", 0 },		// コイン
+	{ "Data/SOUND/Wind.wav", 0 },		// コイン
+	
+
 };
 
 static_assert(sizeof(CSound::PARAM) / sizeof(CSound::PARAM[0]) == CSound::LABEL_MAX, "aho");
@@ -83,7 +79,7 @@ HRESULT CSound::Init(HWND hWnd)
 
 		if (m_pXAudio2 != nullptr)
 		{// nullチェック
-			// XAudio2オブジェクトの開放
+		 // XAudio2オブジェクトの開放
 			m_pXAudio2->Release();
 			m_pXAudio2 = nullptr;
 		}
@@ -237,7 +233,7 @@ void CSound::Uninit()
 
 	if (m_pXAudio2 != nullptr)
 	{// nullチェック
-		// XAudio2オブジェクトの開放
+	 // XAudio2オブジェクトの開放
 		m_pXAudio2->Release();
 		m_pXAudio2 = nullptr;
 	}
@@ -284,7 +280,7 @@ void CSound::Stop(CSound::ELabel label)
 
 	if (xa2state.BuffersQueued != 0)
 	{// 再生中
-		// 一時停止
+	 // 一時停止
 		m_pSourceVoice[label]->Stop(0);
 
 		// オーディオバッファの削除

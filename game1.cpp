@@ -71,9 +71,63 @@ HRESULT CGame1::Init(void)
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(2600.0f, 20.0f, -3100.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
-	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
-	m_pGoal->LoadModel("Kedama");
+	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 0.0f, -600.0f), CObject::PRIORITY_LEVEL3);
+	m_pGoal->LoadModel("BSKET");
 	m_pGoal->Setstring("GOAL");
+
+	CObjectX* obje = CObjectX::Create("CONE", D3DXVECTOR3(1680.0f ,0.0f ,- 2600.0f), 3);
+
+	for (int Cnt = 0; Cnt < 4;Cnt++)
+	{
+		CObjectX* obje1 = CObjectX::Create("CONE", D3DXVECTOR3(1730.0f + -300 * Cnt, 0.0f, -2250.0f), 3);
+	}
+	for (int Cnt = 0; Cnt < 4; Cnt++)
+	{
+		CObjectX* obje2 = CObjectX::Create("BOTTLE", D3DXVECTOR3(2525.0f + -100 * Cnt, 0.0f, -1800.0f), 3);
+	}
+	
+	for (int Cnt = 0; Cnt < 4; Cnt++)
+	{
+		CObjectX* obje2 = CObjectX::Create("BOTTLE", D3DXVECTOR3(2553.0f, 0.0f, -1630.0f + 100 * Cnt), 3);
+	}
+	for (int Cnt = 0; Cnt < 4; Cnt++)
+	{
+		CObjectX* obje2 = CObjectX::Create("BOTTLE", D3DXVECTOR3(2470 - 100 * Cnt, 0.0f, - 1200.0f), 3);
+	}
+	for (int Cnt = 0; Cnt < 4; Cnt++)
+	{
+		CObjectX* obje2 = CObjectX::Create("BOTTLE", D3DXVECTOR3(2170.0f, 0.0f, -1080.0f + 100 * Cnt), 3);
+	}
+	for (int cont = 0; cont < 6; cont++)
+	{
+		CObjectX* botle = CObjectX::CObjectX::Create("BEERBOTTLE", D3DXVECTOR3(1100.0f - 100 * cont, 0.0f, -1450.0f), 3);
+	}
+	for (int cont = 0; cont < 3; cont++)
+	{
+		CObjectX* botle = CObjectX::CObjectX::Create("BEERMUG", D3DXVECTOR3(1450.0f, 0.0f, -3330.0f + 100 * cont), 3);
+	}
+
+	for (int cont = 0; cont < 3; cont++)
+	{
+		CObjectX* botle = CObjectX::CObjectX::Create("BEERMUG", D3DXVECTOR3(1250.0f + 100 * cont, 0.0f, -2800.0f), 3);
+	}
+
+	for (int cont = 0; cont < 2; cont++)
+	{
+		CObjectX* botle = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(890.0f, 0.0f, -3300.0f + 230 * cont), 3);
+	}
+
+	CObjectX* botle = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(630.0f, 0.0f, -3070.0f), 3);
+
+	for (int cont = 0; cont < 3; cont++)
+	{
+		CObjectX* botle = CObjectX::CObjectX::Create("BEERMUG", D3DXVECTOR3(860.0f, 0.0f, -2500.0f - 100 * cont), 3);
+	}
+
+	for (int cont = 0; cont < 3; cont++)
+	{
+		CObjectX* botle = CObjectX::CObjectX::Create("BOTTLE", D3DXVECTOR3(1200.0f, 0.0f, -2050.0f + 100 * cont), 3);
+	}
 
 	{//•Ç
 		for (int cont = 0; cont < 5; cont++)

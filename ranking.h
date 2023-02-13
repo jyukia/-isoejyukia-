@@ -12,7 +12,8 @@
 class CObject2D;
 class CFade;
 class CNumber;
-
+class CLight;
+class CGoal;
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -47,6 +48,9 @@ private:
 	static CNumber * m_apNumber[MAX_RANKINGRANK][MAX_RANKING]; 
 	static int m_nRanking;
 	static int aData[MAX_RANKINGRANK];
+	static CLight *m_pLight;				// ライトのポインタ
+	static CGoal *m_pGoal;				//ゴールポインタ
+	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
 
 	bool m_bmodeflg;
 	CFade *m_pFade;

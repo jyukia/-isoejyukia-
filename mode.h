@@ -22,6 +22,7 @@ class CTexture;
 class CItem;
 class Cpreparation;
 class CGoal;
+class CScore;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -53,24 +54,36 @@ public:
 	D3DXVECTOR3 GetRot(void) override { return D3DXVECTOR3(); }			// 向き取得処理
 	D3DXCOLOR GetCol(void) override { return D3DXCOLOR(); }			// 色取得処理
 
+	//プレイヤー
 	static CPlayer *GetPlayer() { return m_pPlayer; }
 	static void SetPlayer(CPlayer* player) { m_pPlayer = player; }
 
+	//空
 	static CSkyField *GetSkyField() { return m_SkyField; }
 	static void SetSkyField(CSkyField* skyfield) { m_SkyField = skyfield; }
 
+	//テクスチャ
 	static CTexture *GetTexture() { return m_Texture; }
 	static void SetTexture(CTexture* texture) { m_Texture = texture; }
 
+	//プレイヤー移動量
 	static CMeshLine *GetMeshLine() { return m_pMeshLine; }
 
+	//プレイヤー移動量	ナンバー
 	static CMovelife *GetMoveLife() {return m_MoveLife;}
 
+	//アイテム
 	static CItem* GetItem() { return m_Item; }
 
+	//ゲーム開始のためのカウント
 	static 	Cpreparation * GetPreparation() { return m_preparation; }
 
+	//ゴール
 	static 	CGoal* GetGoal() { return m_Goal; }
+
+	//スコア
+	static CScore* GetScore() { return m_GameScore; }
+	static void SetScore(CScore* score) {  m_GameScore= score; }
 
 private:
 	//-------------------------------------------------------------------------
@@ -93,6 +106,7 @@ private:
 
 	static 	CGoal *m_Goal;
 
+	static CScore *m_GameScore;
 };
 
 #endif

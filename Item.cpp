@@ -14,11 +14,15 @@
 #include "player.h"
 #include "mode.h"
 #include "particle.h"
+#include "Meshline.h"
+#include"DebugProc.h"
+#include "score.h"
+#include "sound.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CItem::CItem(int nPriority)
+CItem::CItem(int nPriority):HitFlg(false), MoveSpeedUp(false), MoveLifeUpflg(false)
 {
 }
 
@@ -37,8 +41,8 @@ HRESULT CItem::Init()
 	{
 		HitFlg = false;
 
-		sizupflg = false;	//使用なし
-		sizdownflg = false;
+		MoveSpeedUp = false;	//使用なし
+		MoveLifeUpflg = false;
 	}
 	D3DXVECTOR3 pos = CObjectX::GetPos();
 
@@ -66,6 +70,9 @@ void CItem::Update()
 		D3DXVECTOR3 pPlayerPos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
 		D3DXVECTOR3 pPlayerPosOld = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPosOld();
 		D3DXVECTOR3 pSize = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetSize();
+		
+		D3DXVECTOR3 rot = GetRot();
+
 		// 座標取得
 		D3DXVECTOR3 pos = GetPos();
 
@@ -94,22 +101,38 @@ void CItem::Update()
 				D3DXVECTOR3 size = D3DXVECTOR3(100, 100, 100);
 				HitFlg = Collision(&pPlayerPos, &pPlayerPosOld, &size, false);
 			}
+
 			//ポインタを次に進める
 			pObject = pObject->GetNext();
 		}
 		if (HitFlg)	//ゴールとプレイヤーが触れたら
 		{
+			float Speed = CApplication::Getinstnce()->GetpMode()->GetPlayer()->Getnspeed();
 
 			switch (typeItem)
 			{
-			case CItem::ITEM_SIZ_UP:
+			case CItem::ITEM_MOVE_SPEED_UP:
 
-				sizupflg = true;
+			Speed = 7;
+			CApplication::Getinstnce()->GetpMode()->GetPlayer()->Setspeed(Speed);
 
+			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_WIND);	//風きる音
+
+			MoveSpeedUp = true;
 				break;
-			case CItem::ITEM_SIZ_DOWN:
+			case CItem::ITEM_MOVELIFE_UP:
 
-				sizdownflg = true;
+
+
+			MoveLifeUpflg = true;
+				break;
+			case CItem::ITEM_SCORE_UP:
+
+			CApplication::Getinstnce()->GetpMode() ->GetScore()->AddScore(100);
+
+			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_COIN);	//コイン音
+
+			ScoreUpflg = true;
 				break;
 			default:
 				break;
@@ -117,13 +140,28 @@ void CItem::Update()
 		}
 		else
 		{
-			Cnt++;
-			pos.y += (float)(sinf(D3DXToRadian(Cnt * 3)) * 1.5f);
-			SetPos(pos);
+			//更新 アイテム管理
+			switch (typeItem)
+			{
+			case CItem::ITEM_MOVE_SPEED_UP:
+				Cnt++;
+				pos.y += (float)(sinf(D3DXToRadian(Cnt * 3)) * 1.5f);
+				SetPos(pos);
+				break;
+			case CItem::ITEM_MOVELIFE_UP:
+
+
+
+				break;
+			case CItem::ITEM_SCORE_UP:
+				rot.y += 0.1f;	//コインの回転
+				break;
+			default:
+				break;
+			}
 		}
-
+		SetRot(rot);
 	}
-
 }
 void CItem::Uninit()
 {
