@@ -63,21 +63,23 @@ void CTimer::Update()
 	}
 	else			//G‚ê‚¢‚Ä‚¢‚È‚¢‚Æ‚«
 	{
-		if (returnflg)
+		bool flg = CApplication::Getinstnce()->GetpMode()->GetPlayer()->Getbredycheck();
+		if (flg)
 		{
-			return;
-		}
-		TimeCnt++;
-		//‚P•bŒo‚Á‚½‚ç
-		if (TimeCnt >= 60)
-		{
-			TimeCnt = 0;
-
-			//Œ¸‚éˆ—
-			Sublife(1);
+			if (returnflg)
+			{
+				return;
+			}
+			TimeCnt++;
+			//‚P•bŒo‚Á‚½‚ç
+			if (TimeCnt >= 60)
+			{
+				TimeCnt = 0;
+				//Œ¸‚éˆ—
+				Sublife(1);
+			}
 		}
 	}
-
 	CObject2D::SetPos(pos);
 }
 //-----------------------------------------

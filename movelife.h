@@ -15,6 +15,18 @@ class CMeshLine;
 class CMovelife : public CObject2D
 {
 public:
+
+	enum MOVETYPE
+	{
+		MOVE_NONE = 0,	//移動なし
+
+		MOVE,	//移動あり
+		RETURN,	//戻り
+
+		MOVE_MAX
+	};
+
+
 	//コンストラクタ
 	explicit CMovelife(int nPriority);
 	//デストラクタ
@@ -41,9 +53,13 @@ private:
 
 	CMeshLine *m_meshline;
 
-	CNumber* pNumber[3];
+	CNumber* pNumber[5];
 	int m_Life;	//情報保存
 
+	bool m_bmoveflg;
+
+	MOVETYPE type;
+	int a = 0;
 };
 
 #endif

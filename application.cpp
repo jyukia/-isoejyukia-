@@ -38,7 +38,7 @@ CApplication *CApplication::m_pApplication = nullptr;
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr), m_Item(nullptr)
 {
-	CApplication::m_mode = MODE_GAME1;//MODE_TITLE
+	CApplication::m_mode = MODE_SELECT_STAGE;//MODE_GAME
 }
 
 //=============================================================================
@@ -48,7 +48,6 @@ CApplication::~CApplication()
 {
 
 }
-
 //=============================================================================
 // èâä˙âªèàóù
 //=============================================================================

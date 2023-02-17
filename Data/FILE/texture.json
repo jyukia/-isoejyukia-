@@ -8,6 +8,10 @@
     [ "WOOD", "Data\/TEXTURE\/wood.png" ],
     [ "SMOKE", "Data\/TEXTURE\/smoke.jpg" ],
     [ "EFFECT", "Data\/TEXTURE\/effect000.jpg" ],
+
+    [ "SELECTSTAGE", "Data\/TEXTURE\/select.png" ],
+    [ "STAGENAME", "Data\/TEXTURE\/stagename.png" ],
+    [ "STAGENAME1", "Data\/TEXTURE\/stagename1.png" ],
     
 
     [ "KEDAMA_UI","Data\/TEXTURE\/UI_Kedama.png" ],

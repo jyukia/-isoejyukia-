@@ -43,6 +43,7 @@
     <ClCompile Include="inputjoypad.cpp" />
     <ClCompile Include="inputkeyboard.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="joypad.cpp" />
     <ClCompile Include="letter.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="line.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="inputkeydata.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="joypad.h" />
     <ClInclude Include="letter.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="line.h" />

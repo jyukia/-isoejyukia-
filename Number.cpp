@@ -40,7 +40,7 @@ CNumber * CNumber::Create(const char *aFileName,D3DXVECTOR3 pos, D3DXVECTOR3 siz
 		//サイズ変更
 		pNumber->SetSize(size);
 		pNumber->SetCol(col);
-		pNumber->AnimVtx(8, 0);
+		pNumber->AnimVtx(10, 0);
 		pNumber->BindTexture(aFileName);
 
 	}

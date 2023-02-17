@@ -14,9 +14,9 @@ class CMeshLine : public CObject
 {
 public:
 	//生成ライン回数
-	int MaxLine = 1000;
+	const int MaxLine = 10000;
 	//生成ライン回数	title
-	const int MaxLineTitle = 900;
+	const int MaxLineTitle = 9000;
 
 public:
 
@@ -58,6 +58,16 @@ public:
 	bool CollisionReturn(D3DXVECTOR3 * PlayerPos);
 
 	int GetVtxcount() {return m_Vtxcount;}
+	void AddVtxCount(int count) {	//頂点の増加
+		m_Vtxcount += count;
+
+		if (m_Vtxcount < 2)
+		{
+			m_Vtxcount = 2;
+		}
+	}
+
+	D3DXVECTOR3 GetCenterVtx();
 
 	float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2);
 	float Vec2Dot(D3DXVECTOR3* v1, D3DXVECTOR3* v2);
@@ -72,6 +82,8 @@ private:
 	D3DXVECTOR3 m_pos;
 	D3DXCOLOR m_col;
 	D3DXVECTOR3 OfSetPos;	//	縦座標の変換 サイズ変更可能
+
+	D3DXVECTOR3 m_returnpos;
 
 	D3DXVECTOR3 m_buckpos;
 

@@ -43,12 +43,21 @@ HRESULT CSelectStage::Init(void)
 	//ライトの生成
 	m_pLight = CLight::Create();
 
-	D3DXVECTOR3 pos = D3DXVECTOR3(700.0f, 10.0f, 0.0f);
-	D3DXVECTOR3 pos1 = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
+	//ステージ選択
+	CObject2D* selectstage = CObject2D::Create("SELECTSTAGE", D3DXVECTOR3(1070.0f, 40.0f, 0.0f), D3DXVECTOR3(600.0f, 400.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
+	//1つ目のステージ名
+	stagename = CObject2D::Create("STAGENAME", D3DXVECTOR3(300.0f, 600.0f, 0.0f), D3DXVECTOR3(600.0f, 400.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	//2つ目のステージ名
+	stagename1 = CObject2D::Create("STAGENAME1", D3DXVECTOR3(300.0f, 600.0f, 0.0f), D3DXVECTOR3(600.0f, 400.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+
+	//ステージ位置
+	D3DXVECTOR3 pos = D3DXVECTOR3(730.0f, 10.0f, 0.0f);
+	D3DXVECTOR3 pos1 = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
+	//ステージ1
 	pStage = CObjectX::Create(pos, CObject::PRIORITY_LEVEL3);
 	pStage->LoadModel("MAP1");
-
+	//ステージ2
 	pStage1 = CObjectX::Create(pos1, CObject::PRIORITY_LEVEL3);
 	pStage1->LoadModel("MAP2");
 
@@ -105,6 +114,11 @@ void CSelectStage::Update(void)
 	{
 		//モデルの回転変更無し
 		rot.y += 0.01f;
+
+		//1つ目のステージ名
+		stagename->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		//2つ目のステージ名
+		stagename1->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
 
@@ -119,6 +133,12 @@ void CSelectStage::Update(void)
 	{
 		//モデルの回転変更無し
 		rot1.y += 0.01f;
+
+		//1つ目のステージ名
+		stagename->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+		//2つ目のステージ名
+		stagename1->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
 			if (pInput->Trigger(DIK_RETURN))

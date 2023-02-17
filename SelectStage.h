@@ -62,9 +62,12 @@ private:
 	static bool m_bSelectEnter;				// Enterを押したかのフラグ
 
 	CObject2D* m_pTex;
-	CObjectX* pStage;
-	CObjectX* pStage1;
 
+	CObjectX* pStage;		//ステージモデル
+	CObjectX* pStage1;		//ステージモデル
+
+	CObject2D* stagename;		//ステージ名前
+	CObject2D* stagename1;		//ステージ名前１つ目
 
 	static CLight *m_pLight;				// ライトのポインタ
 	CFade *m_pFade;							// フェードのポインタ

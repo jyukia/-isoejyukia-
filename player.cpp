@@ -20,7 +20,7 @@
 #include"Item.h"
 #include "Preparation.h"
 #include "goal.h"
-
+#include"joypad.h"
 //=============================================================================
 // 定数定義
 //=============================================================================
@@ -66,7 +66,7 @@ HRESULT CPlayer::Init()
 
 		moverot = false;
 
-		m_inertia = 0.05f;	//慣性
+		m_inertia = 0.5f;	//慣性
 
 		m_nSpeed = 5.0f;	//移動スピード
 	}
@@ -135,6 +135,7 @@ void CPlayer::Update()
 	// 座標取得
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 posOld = GetPosOld();
+
 
 	//メッシュエフェクト
 	//D3DXVECTOR3 ofsetpos = m_MeshEffect->GetOfSetPos();
@@ -206,7 +207,6 @@ void CPlayer::Update()
 	//一定サイズまで行くと変更しないよう
 	if (Scale.x <= 0.6f || Scale.y <= 0.6f || Scale.z <= 0.6f)
 	{
-		moverot = true;	//クォータニオンフラグ
 		Scale.x = 0.6f;
 		Scale.y = 0.6f;
 		Scale.z = 0.6f;
@@ -228,7 +228,6 @@ void CPlayer::Update()
 	}
 	else	//ゴールしてないとき
 	{
-
 		if (redycheckflg)	//よーいドンで開始のためのフラグ
 		{
 			//移動全般
@@ -308,22 +307,72 @@ void CPlayer::Update()
 				move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
 				m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
 			}
-		
+
+			////コントローラー
+			//CJoypad *pJoy = CApplication::Getinstnce()->GetpMode()->GetJoy();
+			//if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0)		//w
+			//	|| pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0)	//a
+			//	|| pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0)	//s 
+			//	|| pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))	//d 
+			//{// 移動キーが押された
+			//	if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0))
+			//	{// [W]キーが押された時
+			//		if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+			//		{// [A]キーが押された時
+			//		 // 移動方向の更新
+			//			m_rotDest.y = D3DX_PI * -0.25f;
+			//		}
+			//		else if (pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))
+			//		{// [D]キーが押された時
+			//		 // 移動方向の更新
+			//			m_rotDest.y = D3DX_PI * 0.25f;
+			//		}
+			//		else
+			//		{// 移動方向の更新
+			//			m_rotDest.y = D3DX_PI * 0.0f;
+			//		}
+			//	}
+			//	else if (pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))
+			//	{// [S]キーが押された時
+			//		if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+			//		{// [A]キーが押された時
+			//		 // 移動方向の更新
+			//			m_rotDest.y = D3DX_PI * -0.75f;
+			//		}
+			//		else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+			//		{// [D]キーが押された時
+			//		 // 移動方向の更新
+			//			m_rotDest.y = D3DX_PI * 0.75f;
+			//		}
+			//		else
+			//		{// 移動方向の更新q
+			//			m_rotDest.y = D3DX_PI;
+			//		}
+			//	}
+			//	else if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+			//	{// [A]キーが押された時
+			//	 // 移動方向の更新
+			//		m_rotDest.y = D3DX_PI * -0.5f;
+			//	}
+			//	else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+			//	{// [D]キーが押された時
+			//	 // 移動方向の更新
+			//		m_rotDest.y = D3DX_PI * 0.5f;
+			//	}
+			//}
+
 			//メッシュ回収の為戻る処理
 			if (pInputKeyboard->Press(DIK_R))	//戻る処理
 			{
-				pos = m_logPos.back();	//戻る
+					m_pMeshLine->AddVtxCount(-2);//戻る
 
-				m_logPos.pop_back();//保存した値を削除
+					D3DXVECTOR3 Center = m_pMeshLine->GetCenterVtx(); //中心点
+
+					pos = Center;
 			}
 			else 	//メッシュを配置しているとき
 			{
-				//メッシュの当たり判定
-				m_pMeshLine->CollisionReturn(&pos);
-
-				m_logPos.push_back(pos);//座標を動的に確保
 			}
-		
 		}
 	}
 
@@ -343,9 +392,13 @@ void CPlayer::Update()
 	{
 		pos.y = 30;
 	}
-	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_RANKING)
+	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_RANKING || CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME)
 	{
 		pos.y = 600;
+	}
+	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
+	{
+		pos.y = 0;
 	}
 	else
 	{
@@ -380,7 +433,6 @@ void CPlayer::Update()
 	//else 	//移動できないとき
 	//{
 	//	D3DXVECTOR3 nextPos = pos;
-
 	//	nextPos += move;
 	//	bool breturnflg_nextPos = m_pMeshLine->CollisionReturn(&nextPos);
 	//	if (breturnflg_nextPos)
@@ -396,14 +448,14 @@ void CPlayer::Update()
 	if (!moverot)
 	{
 		//クォータニオン計算
-		move.x += (0.0f - move.x)* m_inertia;
-		move.y += (0.0f - move.y)* m_inertia;
-		move.z += (0.0f - move.z)* m_inertia;
+		//move.x += (0.0f - move.x)* m_inertia;
+		//move.y += (0.0f - move.y)* m_inertia;
+		//move.z += (0.0f - move.z)* m_inertia;
 		QuaternionCalculation(*Scale, &move, &fst);
 		SetQuaternion(fst);
 	}
-	move.x *= 0.5f;
-	move.z *= 0.5f;
+	move.x *= 0.0f;
+	move.z *= 0.0f;
 
 	// ポインタ宣言
 	CObject *pObject = CObject::GetTop(PRIORITY_LEVEL3);
@@ -432,7 +484,6 @@ void CPlayer::Update()
 			m_bIsLanding = pObjectX->Collision(&pos, &posOld, &Size, true);
 			m_bIsLandingUp = pObjectX->UpCollision(&pos, &posOld, &Size, &move, true);
 		}
-
 		//ポインタを次に進める
 		pObject = pObject->GetNext();
 	}

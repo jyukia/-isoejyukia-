@@ -137,8 +137,6 @@ public:
 	CCamera *GetCamera() { return m_pCamera; }
 	CMapcamera*GetMapCamera() { return m_pMapCamera; }
 
-	CMeshLine* Getmeshline() { return m_meshline; }
-
 	CTexture *GetTexture() { return m_pTexture; }
 	CObjectXGroup *GetObjectXGroup() { return m_pObjectXGroup; }
 	CSound *GetSound() { return m_pSound; }
@@ -163,7 +161,6 @@ private:
 	MODE m_mode;
 	VALUE_INT m_calculation;
 	CMode *m_pMode;
-	CMeshLine *m_meshline;
 	CCamera *m_pCamera;
 	CMapcamera *m_pMapCamera;
 

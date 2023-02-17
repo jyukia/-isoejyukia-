@@ -37,9 +37,10 @@ void CMeshLine::LoadTexture(const char * aFileName)
 		aFileName,
 		&m_pTexture);
 }
+
+//初期化
 HRESULT CMeshLine::Init()
 {
-
 	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 	{
 		m_pVtxMax = MaxLineTitle;	//頂点数最大数
@@ -129,7 +130,6 @@ void CMeshLine::Uninit()
 
 void CMeshLine::Update()
 {
-	bUseflg = false;
 
 	D3DXVECTOR3 axis = CObjectX::GetAxis();
 
@@ -147,17 +147,18 @@ void CMeshLine::Update()
 
 		if (pPlayerPosOld != pPlayerPos && !(axis.x == 0 && axis.y == 0 && axis.z == 0))	//動いてるとき実行
 		{
-			for (int Cnt = m_pVtxMax + - 3; Cnt >= 0; Cnt--)
-			{
-				pVtx[Cnt + 2].pos = pVtx[Cnt].pos;	//配置
-			}
-			pVtx[1].pos = pPlayerPos + axis * 5.0f;			//高さ変更
-			pVtx[0].pos = pPlayerPos - axis * 5.0f;			//原点
+			pVtx[m_Vtxcount + 2].pos = pPlayerPos + axis * 5.0f;			//高さ変更
+			pVtx[m_Vtxcount + 1].pos = pPlayerPos - axis * 5.0f;			//原点
 			m_Vtxcount += 2;
 		}
+
+		//頂点バッファをアンロックする
+		m_pVtxBuff->Unlock();
+
+		//移動を止める計算
 		if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 		{
-			if (m_Vtxcount >= MaxLineTitle)	//最大移動量に達した場合	プレイヤーの移動を制限
+			if (m_Vtxcount >= 900)	//最大移動量に達した場合	プレイヤーの移動を制限
 			{
 				CMode::GetPlayer()->SetbMoveFlg(false);
 			}
@@ -168,11 +169,12 @@ void CMeshLine::Update()
 			{
 				CMode::GetPlayer()->SetbMoveFlg(false);
 			}
+			else
+			{
+				CMode::GetPlayer()->SetbMoveFlg(true);
+			}
 		}
 
-
-		//頂点バッファをアンロックする
-		m_pVtxBuff->Unlock();
 #ifdef _DEBUG
 		CDebugProc::Print("プレイヤーの進行方向       (axis)       | X : %.2f | Y : %.2f | Z : %.2f |\n", axis.x, axis.y, axis.z);
 
@@ -220,7 +222,7 @@ void CMeshLine::Draw()
 	pDevice->SetTexture(0, m_pTexture);
 
 	//ポリゴンの描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, m_pVtxMax - 2);
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, m_Vtxcount - 2/*m_pVtxMax - 2*/);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -368,6 +370,22 @@ bool CMeshLine::CollisionReturn(D3DXVECTOR3 * PlayerPos)
 	return bIsLanding;
 }
 
+//中心を求める
+D3DXVECTOR3 CMeshLine::GetCenterVtx()
+{
+	//頂点情報へのポインタ
+	VERTEX_3D*pVtx;
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//真ん中を求めるため作成
+	m_returnpos = pVtx[m_Vtxcount].pos + (pVtx[m_Vtxcount - 1].pos - pVtx[m_Vtxcount].pos) / 2;
+
+	//頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
+
+return  m_returnpos; } 
 
 //=========================================
 // 2Dベクトルの外積

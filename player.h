@@ -76,7 +76,7 @@ public:
 
 	//よーいドンまではプレイヤーを動かさないフラグ
 	void Setbredycheck(bool bredycheckflg) { redycheckflg = bredycheckflg; }
-
+	bool Getbredycheck() { return redycheckflg; }
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数

@@ -73,7 +73,7 @@ HRESULT CGame::Init(void)
 	}
 
 	//モデル読み込み一番上に配置
-//	OutputStatus();
+	//	OutputStatus();
 
 	//メッシュフィールドの生成
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
@@ -119,7 +119,7 @@ HRESULT CGame::Init(void)
 	//スコア
 	CApplication::Getinstnce()->GetpMode()->SetScore(CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f)));
 
-	//CMovelife::Create(D3DXVECTOR3(150,200,0),3);
+	CMovelife::Create(D3DXVECTOR3(150,200,0),3);
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
@@ -195,7 +195,6 @@ void CGame::Uninit(void)
 		delete m_pLight;
 		m_pLight = nullptr;
 	}
-
 
 	//インスタンスの解放処理
 	CObject::Release();

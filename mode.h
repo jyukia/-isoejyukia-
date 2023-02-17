@@ -23,6 +23,8 @@ class CItem;
 class Cpreparation;
 class CGoal;
 class CScore;
+class CJoypad;
+class CInputJoyPad;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -39,7 +41,7 @@ public:
 	// メンバー関数
 	//-------------------------------------------------------------------------
 	HRESULT Init() override { return S_OK; };		// 初期化処理
-	void Uninit() override {};						// 終了処理						
+	void Uninit() override {};						// 終了処理
 	void Update() override {};						// 更新処理
 	void Draw() override {};						// 描画処理
 	void VtxUpdate() override {};					// 頂点座標更新処理
@@ -85,6 +87,8 @@ public:
 	static CScore* GetScore() { return m_GameScore; }
 	static void SetScore(CScore* score) {  m_GameScore= score; }
 
+	static CJoypad* GetJoy() { return m_joypad; }
+	static CInputJoyPad* GetInpuJoy() { return m_Inputjoypad; }
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -107,6 +111,10 @@ private:
 	static 	CGoal *m_Goal;
 
 	static CScore *m_GameScore;
+
+	static CInputJoyPad* m_Inputjoypad;
+	static CJoypad* m_joypad;
+
 };
 
 #endif
