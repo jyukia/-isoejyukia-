@@ -124,6 +124,9 @@ HRESULT CRanking::Init(void)
 		m_pMovelife1[Cnt] = CMovelife::Create(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400, 250 + 70.0f* Cnt, 0.0f), CObject::PRIORITY_LEVEL4);
 	}
 
+	CObject2D* UI_B = CObject2D::Create("B", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 480, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_BG1 = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 550, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_Modoru = CObject2D::Create("MODORU", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 550, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
 
 	{//•Ç
 		D3DXVECTOR3 WallSize(3050, 0.0f, 1000.0f);

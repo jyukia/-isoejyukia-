@@ -117,8 +117,7 @@ HRESULT CGame::Init(void)
 	m_Timer = CTimer::Create(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0),3);
 
 	//スコア
-	CApplication::Getinstnce()->GetpMode()->SetScore(CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f)));
-
+	//CApplication::Getinstnce()->GetpMode()->SetScore(CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f)));
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
@@ -135,8 +134,8 @@ HRESULT CGame::Init(void)
 	m_pItemTimeUp = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2000.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItemTimeUp->LoadModel("ITEMTIME");
 
-	m_pItemCoin = CItem::Create(D3DXVECTOR3(550.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SCORE_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
-	m_pItemCoin->LoadModel("COIN");
+	//m_pItemCoin = CItem::Create(D3DXVECTOR3(550.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SCORE_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	//m_pItemCoin->LoadModel("COIN");
 
 	CObjectX* obje= CObjectX::Create("BOTTLE",D3DXVECTOR3(700,605,-880),3);
 	CObjectX* obje1 = CObjectX::Create("BOTTLE", D3DXVECTOR3(400, 605, -880), 3);
@@ -178,7 +177,11 @@ HRESULT CGame::Init(void)
 	//Load();
 	//CLoadStage::SaveAll();
 
-	m_Movelife->Create(D3DXVECTOR3(150, 200, 0), 3);
+
+	//
+	CObject2D* lifeui = CObject2D::Create("LIFE_UI", D3DXVECTOR3(150, 50, 0), D3DXVECTOR3(400, 200, 0),CObject::PRIORITY_LEVEL3);
+	CObject2D* lifeBG = CObject2D::Create("CHABG", D3DXVECTOR3(150, 104, 0), D3DXVECTOR3(300, 80, 0), CObject::PRIORITY_LEVEL3);
+	m_Movelife->Create(D3DXVECTOR3(70, 100, 0), 3);
 
 	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GAME);
 

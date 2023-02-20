@@ -7,7 +7,7 @@
 #include "object2D.h"
 #include "application.h"
 
-
+#include"resource.h"
 #include"imgui_property.h"
 #include"stage_imgui.h"
 
@@ -40,12 +40,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 		0,
 		0,
 		hInstance,
-		NULL,
+		LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1)),	//アイコンテクスチャ指定	タスクバーアイコン
 		LoadCursor(NULL, IDC_ARROW),
 		(HBRUSH)(COLOR_WINDOW + 1),
 		NULL,
 		CLASS_NAME,
-		NULL
+		LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON1))	//アイコンテクスチャ指定	画面左上アイコン
 	};
 
 	// ウィンドウクラスの登録

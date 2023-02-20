@@ -95,12 +95,23 @@ HRESULT CTitle::Init(void)
 	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-150.0f,0.0f), D3DXVECTOR3(800.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
 	//プレイヤー入力選択
-	m_pGame = CObject2D::Create("GAMEPLAY", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, -350.0f, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pGame = CObject2D::Create("GAMEPLAY", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, (int)SCREEN_HEIGHT_HALF + 110, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
-	m_pRanking = CObject2D::Create("RANKING", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, -350.0f, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pRanking = CObject2D::Create("RANKING", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, (int)SCREEN_HEIGHT_HALF + 110, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
+
+	CObject2D* UI_A = CObject2D::Create("A", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_BG = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 380, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_Kxtutei = CObject2D::Create("KEXTUTEI", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 380, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+
+	//CObject2D* UI_B = CObject2D::Create("B", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 480, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+	//CObject2D* UI_BG1 = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 550, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
+	//CObject2D* UI_Modoru = CObject2D::Create("MODORU", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 550, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+
+	CObject2D* UI_JYU = CObject2D::Create("JYUUJI", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 130, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_BG2 = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 200, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_Idou = CObject2D::Create("IDOU", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 200, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
 
 	CSkyField::Create();
-
 
 	CRanking::GetRanking(0);	//スコアとなる値
 	CRanking::GetRanking1(0);	//スコアとなる値
@@ -168,21 +179,21 @@ void CTitle::Update(void)
 	{
 		m_pTitle->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
 	}
-	//タイトル止まる処理
-	if (Gamepos.y >= stop1)
-	{
-		m_pGame->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		m_pRanking->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	}
-	else
-	{
-		m_pGame->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
-		m_pRanking->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
-	}
+
+	////タイトル止まる処理
+	//if (Gamepos.y >= stop1)
+	//{
+	//	m_pGame->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//	m_pRanking->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//}
+	//else
+	//{
+	//	m_pGame->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
+	//	m_pRanking->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
+	//}
 
 	//コントローラー
 	CJoypad *pJoy = CApplication::GetJoy();
-
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 	if (pInputKeyboard->Trigger(DIK_A) || pJoy->GetTrigger(CJoypad::JOYKEY_LEFT, 0))
@@ -195,28 +206,18 @@ void CTitle::Update(void)
 	}
 	if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))		//選択シーン実行
 	{
-		m_bmodeflg = true;
-		m_pTitle->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF, (float)stop, 0.0f));
-		m_pGame->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF - 300.0f, (float)stop1, 0.0f));
-		m_pRanking->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300.0f, (float)stop1, 0.0f));
-	}
-	if (m_bmodeflg)
-	{
-		if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))		//選択シーン実行
+		D3DXVECTOR3 posV = CApplication::Getinstnce()->GetCamera()->GetPosV();
+		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
-			D3DXVECTOR3 posV = CApplication::Getinstnce()->GetCamera()->GetPosV();
-			if (m_pFade->GetFade() == CFade::FADE_NONE)
+			if (m_modecount == 1)
 			{
-				if (m_modecount == 1)
-				{
-					//遷移
-					CFade::SetFade(CApplication::MODE_SELECT_STAGE);	//ゲーム遷移
-				}
-				if (m_modecount == 2)
-				{
-					//遷移
-					CFade::SetFade(CApplication::MODE_RANKING); //ランキング遷移
-				}
+				//遷移
+				CFade::SetFade(CApplication::MODE_SELECT_STAGE);	//ゲーム遷移
+			}
+			if (m_modecount == 2)
+			{
+				//遷移
+				CFade::SetFade(CApplication::MODE_RANKING); //ランキング遷移
 			}
 		}
 	}
@@ -243,7 +244,6 @@ void CTitle::Update(void)
 		m_pGame->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
-
 }
 //=============================================================================
 // 描画処理

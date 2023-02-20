@@ -137,6 +137,7 @@
     <ClInclude Include="Preparation.h" />
     <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="SelectStage.h" />
     <ClInclude Include="shadow.h" />
@@ -150,6 +151,12 @@
   <ItemGroup>
     <None Include="Data\FILE\model.json" />
     <None Include="Data\FILE\texture.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C++_3D.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A68318AE-9317-4F81-A7B1-687D4A727919}</ProjectGuid>

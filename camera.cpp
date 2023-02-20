@@ -161,11 +161,11 @@ void CCamera::Update(void)
 			//‹“_‚Ìù‰ñ
 			if (pInputKeyboard->Press(DIK_E))
 			{//¶‚Éù‰ñ
-				m_rot.y += 0.05f;
+				m_rot.y += 0.03f;
 			}
 			else if (pInputKeyboard->Press(DIK_Q))
 			{//‰E‚Éù‰ñ
-				m_rot.y -= 0.05f;
+				m_rot.y -= 0.03f;
 			}
 		}
 	}

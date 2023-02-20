@@ -10,7 +10,6 @@
 #include "Number.h"
 #include "score.h"
 #include "application.h"
-
 #include"input.h"
 #include "Item.h"
 
@@ -23,7 +22,6 @@ CScore::CScore(int nPriority)
 //デストラクタ
 CScore::~CScore()
 {
-
 }
 //-----------------------------------------
 //初期化

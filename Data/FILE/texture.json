@@ -17,9 +17,19 @@
     [ "KEDAMA_UI","Data\/TEXTURE\/UI_Kedama.png" ],
     [ "KEDAMA_Lope_UI","Data\/TEXTURE\/UI_KedamaLope.png" ],
 
+    [ "LIFE_UI","Data\/TEXTURE\/Life.png" ],
+    [ "CHABG", "Data\/TEXTURE\/chaBG.png" ],
+    [ "JYUUJI", "Data\/TEXTURE\/jyuuji.png" ],
+    [ "IDOU", "Data\/TEXTURE\/idou.png" ],
 
 
-    
+    [ "MODORU", "Data\/TEXTURE\/modoru.png" ],
+    [ "KEXTUTEI", "Data\/TEXTURE\/kextutei.png" ],
+
+    [ "A", "Data\/TEXTURE\/A.png" ],
+    [ "B", "Data\/TEXTURE\/B.png" ],
+
+
     [ "RANKINGBG","Data\/TEXTURE\/rankingBG.png" ],
     [ "RANKING","Data\/TEXTURE\/rankingUI.png" ],
     [ "GAMEPLAY","Data\/TEXTURE\/gameplay.png" ],
