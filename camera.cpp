@@ -10,6 +10,7 @@
 #include"DebugProc.h"
 #include"SelectStage.h"
 #include "goal.h"
+#include"joypad.h"
 
 #include <math.h>
 
@@ -104,47 +105,58 @@ void CCamera::Update(void)
 		if (mode == CApplication::MODE_GAME || mode == CApplication::MODE_GAME1)
 		{
 			//カメラの移動
-			if (pInputKeyboard->Press(DIK_DOWN))
-			{//上に移動
-				m_posV.x -= sinf(m_rot.y) * CAMERA_SPEED;
-				m_posV.z -= cosf(m_rot.y) * CAMERA_SPEED;
-				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-			}
-			if (pInputKeyboard->Press(DIK_UP))
-			{//下に移動
-				m_posV.x += sinf(m_rot.y) * CAMERA_SPEED;
-				m_posV.z += cosf(m_rot.y) * CAMERA_SPEED;
-				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-			}
-			if (pInputKeyboard->Press(DIK_RIGHT))
-			{//左に移動
-				m_posV.x += sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-				m_posV.z += cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-			}
-			if (pInputKeyboard->Press(DIK_LEFT))
-			{//右に移動
-				m_posV.x -= sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-				m_posV.z -= cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
-				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-			}
+			//if (pInputKeyboard->Press(DIK_DOWN))
+			//{//上に移動
+			//	m_posV.x -= sinf(m_rot.y) * CAMERA_SPEED;
+			//	m_posV.z -= cosf(m_rot.y) * CAMERA_SPEED;
+			//	m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+			//	m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			//}
+			//if (pInputKeyboard->Press(DIK_UP))
+			//{//下に移動
+			//	m_posV.x += sinf(m_rot.y) * CAMERA_SPEED;
+			//	m_posV.z += cosf(m_rot.y) * CAMERA_SPEED;
+			//	m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+			//	m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			//}
+			//if (pInputKeyboard->Press(DIK_RIGHT))
+			//{//左に移動
+			//	m_posV.x += sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+			//	m_posV.z += cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+			//	m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+			//	m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			//}
+			//if (pInputKeyboard->Press(DIK_LEFT))
+			//{//右に移動
+			//	m_posV.x -= sinf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+			//	m_posV.z -= cosf(D3DX_PI * 0.5f + m_rot.y) * CAMERA_SPEED;
+			//	m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+			//	m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			//}
 
 			//注視点の旋回
-			if (pInputKeyboard->Press(DIK_C))
-			{//左に旋回
-				m_rot.y += 0.05f;
-				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
-			}
-			else if (pInputKeyboard->Press(DIK_Z))
-			{//右に旋回
+			//if (pInputKeyboard->Press(DIK_C))
+			//{//左に旋回
+			//	m_rot.y += 0.05f;
+			//	m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+			//	m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			//}
+			//else if (pInputKeyboard->Press(DIK_Z))
+			//{//右に旋回
+			//	m_rot.y -= 0.05f;
+			//	m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
+			//	m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			//}
+
+			//コントローラー
+			CJoypad *pJoy = CApplication::GetJoy();
+			if (pJoy->GetTriggerPedal(CJoypad::JOYKEY_LEFT_TRIGGER, 0))
+			{
 				m_rot.y -= 0.05f;
-				m_posR.x = m_posV.x + sinf(m_rot.y) * m_fDistance;
-				m_posR.z = m_posV.z + cosf(m_rot.y) * m_fDistance;
+			}
+			if (pJoy->GetTriggerPedal(CJoypad::JOYKEY_RIGHT_TRIGGER, 0))
+			{
+				m_rot.y += 0.05f;
 			}
 			//視点の旋回
 			if (pInputKeyboard->Press(DIK_E))

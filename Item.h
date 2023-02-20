@@ -18,7 +18,7 @@ public:
 		ITEM_NONE = 0,
 
 		ITEM_MOVE_SPEED_UP,
-		ITEM_MOVELIFE_UP,
+		ITEM_GAMETIME_UP,
 		ITEM_SCORE_UP,
 
 		ITEM_MAX
@@ -47,22 +47,23 @@ public:
 	 bool GetHitFlg(void) { return HitFlg; }
 
 	 bool GetMoveSpeedUpflg(void) { return MoveSpeedUp; }
-	 bool GetSizdownflg(void) { return MoveLifeUpflg; }
+	 static bool GetSizdownflg(void) { return MoveLifeUpflg; }
+	static void SetSizdownflg(bool flg) { MoveLifeUpflg = flg; }
+
 	 bool GetScoreUpflg(void) { return ScoreUpflg; }
 
 private:
 	CShadow *m_shadow;					// ‰e‚Ìƒ|ƒCƒ“ƒ^
 
 	TypeItem typeItem;
-	
+
 	int Cnt;
 
 	 bool HitFlg;
 
 	 bool MoveSpeedUp;
-	 bool MoveLifeUpflg;
+	static bool MoveLifeUpflg;
 	 bool ScoreUpflg;
-
 };
 
 

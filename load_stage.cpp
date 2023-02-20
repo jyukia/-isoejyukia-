@@ -141,9 +141,9 @@ void CLoadStage::LoadAllTest(int select_stage)
 
 		if (modelname == "GOAL")
 		{
-			pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL3);
+			pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 6000.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 			pGoal->LoadModel("Kedama");
-			pGoal->Setstring("GOAL");
+			//pGoal->Setstring("GOAL");
 		}
 		else
 		{

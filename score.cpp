@@ -14,6 +14,7 @@
 #include"input.h"
 #include "Item.h"
 
+int CScore::m_Score;
 
 //コンストラクタ
 CScore::CScore(int nPriority)

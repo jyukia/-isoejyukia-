@@ -22,6 +22,7 @@
 #include "sound.h"
 #include"DebugProc.h"
 #include"SelectStage.h"
+#include "joypad.h"
 
 #include"stage_imgui.h"
 
@@ -33,12 +34,14 @@
 // 静的メンバ変数宣言
 //=============================================================================
 CApplication *CApplication::m_pApplication = nullptr;
+CJoypad *CApplication::m_pJoy = {};
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr), m_Item(nullptr)
 {
-	CApplication::m_mode = MODE_SELECT_STAGE;//MODE_GAME
+	CApplication::m_mode = MODE_GAME;//MODE_RANKING
 }
 
 //=============================================================================
@@ -53,7 +56,6 @@ CApplication::~CApplication()
 //=============================================================================
 HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
-
 	Hwnd = hWnd;
 
 	//乱数の初期化
@@ -73,6 +75,11 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	if (FAILED(m_pInput->Init(hInstance, hWnd)))
 	{ //初期化処理が失敗した場合
 		return -1;
+	}
+	m_pJoy = new CJoypad;
+	if (FAILED(m_pJoy->Init(1)))
+	{
+		return E_FAIL;
 	}
 
 	m_pDebugProc = new CDebugProc;
@@ -159,6 +166,13 @@ void CApplication::Uninit(void)
 		delete m_pInput;
 		m_pInput = nullptr;
 	}
+	if (m_pJoy != nullptr)
+	{
+		m_pJoy->Uninit();
+		delete m_pJoy;
+		m_pJoy = nullptr;
+	}
+
 	//カメラの解放・削除
 	if (m_pCamera != nullptr)
 	{
@@ -187,6 +201,8 @@ void CApplication::Update(void)
 
 	CDebugProc::Print("現在の画面遷移番号 : [%d] \n", m_mode);
 #endif // _DEBUG
+
+	m_pJoy->Update();
 
 	//インプットの更新処理
 	if (m_pInput != nullptr)
@@ -275,7 +291,6 @@ void CApplication::SetMode(MODE mode)
 		break;
 	case MODE_RANKING:
 		m_pMode = CRanking::Create();			//
-		CRanking::SetRankingScore();
 		break;
 	case MODE_TUTORIAL:			//
 		m_pMode = CTutorial::Create();

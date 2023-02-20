@@ -87,22 +87,22 @@ void CGoal::Update()
 	if (flg)	//ゴールとプレイヤーが触れたら
 	{
 		Cnt++;
-		if (Cnt >= 540)
+		if (Cnt >= 480)
 		{
 			if (m_pFade->GetFade() == CFade::FADE_NONE)
 			{
 				// 遷移
 				CFade::SetFade(CApplication::MODE_RANKING);
-
-				flg = false;
-
 			}
 		}
+		if (Cnt >= 720)
+		{
+			flg = false;
+		}
+
 		CDebugProc::Print("\n GOAL %d", Cnt);
 	}
-
 }
-
 //=============================================================================
 // 当たり判定 (左右,奥,手前)
 //=============================================================================

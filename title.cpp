@@ -22,6 +22,8 @@
 #include"DebugProc.h"
 #include "load_stage.h"
 #include"skyfield.h"
+#include"joypad.h"
+#include "ranking.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -90,14 +92,19 @@ HRESULT CTitle::Init(void)
 	m_pMeshField->LoadTexture("Data\\TEXTURE\\shiba.png");
 
 	//タイトル配置
-	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-150.0f,0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-150.0f,0.0f), D3DXVECTOR3(800.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
 	//プレイヤー入力選択
-	m_pGame = CObject2D::Create("OMOIDE", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, -350.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pGame = CObject2D::Create("GAMEPLAY", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, -350.0f, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
-	m_pRanking = CObject2D::Create("INIESUTA", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, -350.0f, 0.0f), D3DXVECTOR3(300.0f, 300.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pRanking = CObject2D::Create("RANKING", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, -350.0f, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
 	CSkyField::Create();
+
+
+	CRanking::GetRanking(0);	//スコアとなる値
+	CRanking::GetRanking1(0);	//スコアとなる値
+
 
 	return S_OK;
 }
@@ -173,17 +180,20 @@ void CTitle::Update(void)
 		m_pRanking->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
 	}
 
+	//コントローラー
+	CJoypad *pJoy = CApplication::GetJoy();
+
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
-	if (pInputKeyboard->Trigger(DIK_A))
+	if (pInputKeyboard->Trigger(DIK_A) || pJoy->GetTrigger(CJoypad::JOYKEY_LEFT, 0))
 	{// 上に移動
 		m_modecount++;
 	}
-	if (pInputKeyboard->Trigger(DIK_D))
+	if (pInputKeyboard->Trigger(DIK_D) || pJoy->GetTrigger(CJoypad::JOYKEY_RIGHT, 0))
 	{// 下に移動
 		m_modecount--;
 	}
-	if (pInputKeyboard->Trigger(DIK_RETURN))		//選択シーン実行
+	if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))		//選択シーン実行
 	{
 		m_bmodeflg = true;
 		m_pTitle->SetPos(D3DXVECTOR3((float)SCREEN_WIDTH_HALF, (float)stop, 0.0f));
@@ -192,7 +202,7 @@ void CTitle::Update(void)
 	}
 	if (m_bmodeflg)
 	{
-		if (pInputKeyboard->Trigger(DIK_RETURN))		//選択シーン実行
+		if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))		//選択シーン実行
 		{
 			D3DXVECTOR3 posV = CApplication::Getinstnce()->GetCamera()->GetPosV();
 			if (m_pFade->GetFade() == CFade::FADE_NONE)

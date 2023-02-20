@@ -25,6 +25,9 @@ class CMode;
 class CMeshLine;
 class CItem;
 class Cpreparation;
+class CTimer;
+class CJoypad;
+
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -150,12 +153,19 @@ public:
 
 	HWND GetHWnd() { return Hwnd; }
 
+	CTimer *GetTimer() {return m_Timer;}
+	
+	static CJoypad *GetJoy() { return m_pJoy; }											// ジョイパッドのゲッター
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
+	static CJoypad *m_pJoy;
+
+
 	HWND Hwnd;
-	
+
 	CRenderer *m_pRenderer;
 	CInput *m_pInput;
 	MODE m_mode;
@@ -173,6 +183,7 @@ private:
 	CLight *m_Light;
 	CItem *m_Item;
 	Cpreparation *m_preparation;
+	CTimer * m_Timer;
 };
 
 

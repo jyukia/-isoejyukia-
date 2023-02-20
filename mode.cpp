@@ -18,6 +18,8 @@ CScore *CMode::m_GameScore = nullptr;
 CInputJoyPad* CMode::m_Inputjoypad = nullptr;
 CJoypad* CMode::m_joypad = nullptr;
 
+CTimer* CMode::m_Timer = nullptr;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================

@@ -24,6 +24,7 @@
 #include "movelife.h"
 #include "Preparation.h"
 #include "load_stage.h"
+#include"Timer.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -176,6 +177,14 @@ HRESULT CGame1::Init(void)
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+
+	CMovelife::Create(D3DXVECTOR3(150, 200, 0), 3);
+
+	//タイムのUI
+	m_pTime_Lope_Ui = CObject2D::Create("KEDAMA_Lope_UI", D3DXVECTOR3(SCREEN_WIDTH - 250, SCREEN_HEIGHT - 90, 0.0f), D3DXVECTOR3(900.0f, 800.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+	m_pTimeUi = CObject2D::Create("KEDAMA_UI", D3DXVECTOR3(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 90, 0.0f), D3DXVECTOR3(1500.0f, 1000.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+	m_Timer = CTimer::Create(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0), 3);
+
 
 	CSkyField::Create();
 

@@ -25,6 +25,7 @@ class CGoal;
 class CScore;
 class CJoypad;
 class CInputJoyPad;
+class CTimer;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -89,6 +90,8 @@ public:
 
 	static CJoypad* GetJoy() { return m_joypad; }
 	static CInputJoyPad* GetInpuJoy() { return m_Inputjoypad; }
+
+	static CTimer* GetTimer() {return m_Timer;}
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -115,6 +118,7 @@ private:
 	static CInputJoyPad* m_Inputjoypad;
 	static CJoypad* m_joypad;
 
+	static CTimer* m_Timer;
 };
 
 #endif

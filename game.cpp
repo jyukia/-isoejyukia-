@@ -42,7 +42,7 @@ CMovelife* CGame::pMovelife = nullptr;
 CGoal* CGame::m_pGoal = nullptr;
 CItem* CGame::m_pItem = nullptr;
 CItem* CGame::m_pItemCoin = nullptr;
-
+CItem* CGame::m_pItemTimeUp = nullptr;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -119,7 +119,6 @@ HRESULT CGame::Init(void)
 	//スコア
 	CApplication::Getinstnce()->GetpMode()->SetScore(CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f)));
 
-	CMovelife::Create(D3DXVECTOR3(150,200,0),3);
 
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
@@ -132,6 +131,9 @@ HRESULT CGame::Init(void)
 
 	m_pItem = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_MOVE_SPEED_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItem->LoadModel("BOOTS");
+
+	m_pItemTimeUp = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2000.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItemTimeUp->LoadModel("ITEMTIME");
 
 	m_pItemCoin = CItem::Create(D3DXVECTOR3(550.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SCORE_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItemCoin->LoadModel("COIN");
@@ -169,13 +171,14 @@ HRESULT CGame::Init(void)
 		obje6->SetRot(D3DXVECTOR3(0.0f,0.0f + 300 * Cnt,0.0f));
 	}
 
-	//CObject3D* i = CObject3D::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(100, 0.0f, 150.0f), 3);
+	//CObject3D* i = CObject3D::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 150.0f), 3);
 	//i->LoadTexture("Data/TEXTURE/01.png");
 	//i->SetBillboard(true);
 
 	//Load();
-
 	//CLoadStage::SaveAll();
+
+	m_Movelife->Create(D3DXVECTOR3(150, 200, 0), 3);
 
 	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GAME);
 

@@ -36,10 +36,12 @@ public:
 
 	static CScore* Create(D3DXVECTOR3 pos);
 
+	static int GetScore() {return m_Score;}
+
 private:
 
 	CNumber* pNumber[10];
-	int m_Score;	//î•ñ•Û‘¶
+	static int m_Score;	//î•ñ•Û‘¶
 	int m_Remaining;	//î•ñ•Û‘¶
 
 };

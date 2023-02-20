@@ -63,6 +63,10 @@ private:
 	CObject2D* m_pCompass;
 	D3DXVECTOR3 m_rot;
 
+	CObject2D* m_pTimeUi;
+	CObject2D* m_pTime_Lope_Ui;
+	CTimer *m_Timer;
+
 	//ÉXÉRÉA
 	static CScore* GetScore() { return pScore; }
 	static CScore* pScore;

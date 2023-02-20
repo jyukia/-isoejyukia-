@@ -10,6 +10,7 @@
 #include "input.h"
 #include "camera.h"
 #include "Item.h"
+#include "ranking.h"
 
 #include"DebugProc.h"
 
@@ -173,7 +174,10 @@ void CMeshLine::Update()
 			{
 				CMode::GetPlayer()->SetbMoveFlg(true);
 			}
+
 		}
+
+
 
 #ifdef _DEBUG
 		CDebugProc::Print("プレイヤーの進行方向       (axis)       | X : %.2f | Y : %.2f | Z : %.2f |\n", axis.x, axis.y, axis.z);

@@ -13,6 +13,11 @@
 #include "mode.h"
 #include"Meshline.h"
 #include"player.h"
+#include "ranking.h"
+#include "goal.h"
+#include "score.h"
+#include"joypad.h"
+
 //コンストラクタ
 CMovelife::CMovelife(int nPriority)
 {
@@ -26,10 +31,11 @@ CMovelife::~CMovelife()
 //-----------------------------------------
 HRESULT CMovelife::Init()
 {
+	D3DXVECTOR3 pos = CObject2D::GetPos();
 
-	for (int numberCnt = 0; numberCnt <5; numberCnt++)
+	for (int numberCnt = 0; numberCnt <5; numberCnt++)	
 	{
-		pNumber[numberCnt] = CNumber::Create("NUMBER", D3DXVECTOR3(50.0f + numberCnt *45.0f, 360.0f, 0.0f), D3DXVECTOR3(35.0f, 40.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3);
+		pNumber[numberCnt] = CNumber::Create("NUMBER", D3DXVECTOR3(pos.x + numberCnt *45.0f, pos.y, pos.z), D3DXVECTOR3(35.0f, 40.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3);
 	}
 
 	Setlife(10000);
@@ -54,54 +60,58 @@ void CMovelife::Update()
 	D3DXVECTOR3 PlayerposOld = CMode::GetPlayer()->GetPosOld();
 	bool flg =CApplication::Getinstnce()->GetpMode()->GetMeshLine()->GetbIsLanding();
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
+	//コントローラー
+	CJoypad *pJoy = CApplication::GetJoy();
 
-	//減る処理
-	if (pInputKeyboard->Press(DIK_R))
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME || CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
 	{
-		type = RETURN;
-	}
-	else if (Playerpos != PlayerposOld)	//動いていたら　移動ライフを減らす
-	{
-		type = MOVE;
-	}
-	else
-	{
-		type = MOVE_NONE;
-	}
+		//ゴールして時のフラグ
+		bool goalflg = CApplication::Getinstnce()->GetpMode()->GetGoal()->Getflg();
 
-	switch (type)
-	{
-	case CMovelife::MOVE_NONE:
-		a = 1;
-		break;
-	case CMovelife::MOVE:
-		Sublife(2);
-		break;
-	case CMovelife::RETURN:
+		if (goalflg)	//ゴールしたとき
 		{
-			//増える処理
-			Addlife(2);
+			if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME)
+			{
+				CRanking::GetRanking(m_Life);	//スコアとなる値
+			}
+			else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
+			{
+				CRanking::GetRanking1(m_Life);	//スコアとなる値
+			}
 		}
-		break;
-	default:
-		break;
+		else
+		{
+			//減る処理
+			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(CJoypad::JOYKEY_B, 0))
+			{
+				type = RETURN;
+			}
+			else if (Playerpos != PlayerposOld)	//動いていたら　移動ライフを減らす
+			{
+				type = MOVE;
+			}
+			else
+			{
+				type = MOVE_NONE;
+			}
+			switch (type)
+			{
+			case CMovelife::MOVE_NONE:
+				a = 1;
+				break;
+			case CMovelife::MOVE:
+				Sublife(2);
+				break;
+			case CMovelife::RETURN:
+				//増える処理
+				Addlife(2);
+				break;
+			default:
+				break;
+			}
+		}
 	}
-
-	//// キーボードの情報取得
-	//CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
-	//if (pInputKeyboard->Trigger(DIK_B))
-	//{
-	//	//増える処理
-	//	Addlife(1);
-	//}
-	//if (pInputKeyboard->Trigger(DIK_N))
-	//{
-	//	//減る処理
-	//	Sublife(1);
-	//}
-
 	CObject2D::SetPos(pos);
-
 }
 //-----------------------------------------
 //描画
@@ -198,10 +208,10 @@ CMovelife * CMovelife::Create(D3DXVECTOR3 pos,int nPriority)
 
 	if (pLife != nullptr)
 	{
-		pLife->Init();
-
 		//位置情報
 		pLife->SetPos(pos);
+
+		pLife->Init();
 
 	}
 	else

@@ -9,6 +9,8 @@
 #include "object2D.h"
 #include "light.h"
 #include"DebugProc.h"
+#include"joypad.h"
+
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
@@ -44,7 +46,7 @@ HRESULT CSelectStage::Init(void)
 	m_pLight = CLight::Create();
 
 	//ステージ選択
-	CObject2D* selectstage = CObject2D::Create("SELECTSTAGE", D3DXVECTOR3(1070.0f, 40.0f, 0.0f), D3DXVECTOR3(600.0f, 400.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	CObject2D* selectstage = CObject2D::Create("SELECTSTAGE", D3DXVECTOR3(1000.0f, 40.0f, 0.0f), D3DXVECTOR3(600.0f, 400.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	//1つ目のステージ名
 	stagename = CObject2D::Create("STAGENAME", D3DXVECTOR3(300.0f, 600.0f, 0.0f), D3DXVECTOR3(600.0f, 400.0f, 0.0f), CObject::PRIORITY_LEVEL3);
@@ -109,6 +111,8 @@ void CSelectStage::Update(void)
 
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
+	//コントローラー
+	CJoypad *pJoy = CApplication::GetJoy();
 
 	if (m_modeSelectcount == 1)
 	{
@@ -122,7 +126,7 @@ void CSelectStage::Update(void)
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
 
-			if (pInput->Trigger(DIK_RETURN))
+			if (pInput->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))
 			{
 				//遷移
 				CFade::SetFade(CApplication::MODE_GAME);	//ゲーム遷移
@@ -141,14 +145,21 @@ void CSelectStage::Update(void)
 
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
-			if (pInput->Trigger(DIK_RETURN))
+			if (pInput->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))
 			{
 				//遷移
 				CFade::SetFade(CApplication::MODE_GAME1);	//ゲーム遷移
 			}
 		}
 	}
-
+	if (m_pFade->GetFade() == CFade::FADE_NONE)	//　タイトルに戻る処理
+	{
+		if (pInput->Trigger(DIK_ESCAPE) || pJoy->GetTrigger(CJoypad::JOYKEY_B, 0))
+		{
+			//遷移
+			CFade::SetFade(CApplication::MODE_TITLE);	//ゲーム遷移
+		}
+	}
 	//=====================================
 	pStage->SetPos(pos);
 	pStage->SetRot(rot);
@@ -167,11 +178,12 @@ void CSelectStage::Update(void)
 		m_modeSelectcount = m_modeMax;
 	}
 
-	if (pInput->Trigger(DIK_D))
+	//セレクトの移動
+	if (pInput->Trigger(DIK_D) || pJoy->GetTrigger(CJoypad::JOYKEY_RIGHT, 0))
 	{
 		m_modeSelectcount++;
 	}
-	if (pInput->Trigger(DIK_A))
+	if (pInput->Trigger(DIK_A) || pJoy->GetTrigger(CJoypad::JOYKEY_LEFT, 0))
 	{
 		m_modeSelectcount--;
 	}

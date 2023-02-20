@@ -90,8 +90,9 @@ HRESULT CPlayer::Init()
 	CShadow::Create(pos, size, CObject::PRIORITY_LEVEL3);
 
 	//メッシュエフェクト
-	//m_MeshEffect = CMeshOrbit::Create(D3DXCOLOR(0.0f,1.0f,0.0f,0.7f));
+	//m_MeshEffect = CMeshOrbit::Create(D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.7f));
 	//m_MeshEffect->SetMtxParent(GetMtxWorld());
+
 
 	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 	{
@@ -123,6 +124,8 @@ void CPlayer::Update()
 
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
+	//コントローラー
+	CJoypad *pJoy = CApplication::GetJoy();
 
 	// 向き取得
 	D3DXVECTOR3 rot = GetRot();
@@ -135,7 +138,6 @@ void CPlayer::Update()
 	// 座標取得
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 posOld = GetPosOld();
-
 
 	//メッシュエフェクト
 	//D3DXVECTOR3 ofsetpos = m_MeshEffect->GetOfSetPos();
@@ -225,146 +227,18 @@ void CPlayer::Update()
 	}
 	if (goalflg)	//ゴールしたとき
 	{
+		redycheckflg = false;	//移動できないように
 	}
 	else	//ゴールしてないとき
 	{
 		if (redycheckflg)	//よーいドンで開始のためのフラグ
 		{
-			//移動全般
-			if (pInputKeyboard->Press(DIK_W) || pInputKeyboard->Press(DIK_A) || pInputKeyboard->Press(DIK_S) || pInputKeyboard->Press(DIK_D))
-			{
-				eScaleType = TypeScaleDown;
-			}
-			if (pInputKeyboard->Press(DIK_W))
-			{// 上に移動
-				if (pInputKeyboard->Press(DIK_A))
-				{
-					keyCnt++;
-
-					move.x += sinf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
-					move.z += cosf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
-					m_rotDest.y = pCameraRot.y + D3DX_PI * 0.75f;
-				}
-				else if (pInputKeyboard->Press(DIK_D))
-				{
-					keyCnt++;
-
-					move.x += sinf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
-					move.z += cosf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
-					m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.75f;
-				}
-				else
-				{
-					keyCnt++;
-
-					move.x += sinf(pCameraRot.y) * m_nSpeed;
-					move.z += cosf(pCameraRot.y) * m_nSpeed;
-					m_rotDest.y = pCameraRot.y + D3DX_PI;
-				}
-			}
-			if (pInputKeyboard->Press(DIK_S))
-			{// 下に移動
-				if (pInputKeyboard->Press(DIK_A))
-				{
-					keyCnt++;
-
-					move.x += sinf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
-					move.z += cosf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
-
-					m_rotDest.y = pCameraRot.y + D3DX_PI * 0.25f;
-				}
-				else if (pInputKeyboard->Press(DIK_D))
-				{
-					keyCnt++;
-
-					move.x += sinf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
-					move.z += cosf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
-
-					m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.25f;
-				}
-				else
-				{
-					keyCnt++;
-
-					move.x -= sinf(pCameraRot.y) * m_nSpeed;
-					move.z -= cosf(pCameraRot.y) * m_nSpeed;
-					m_rotDest.y = pCameraRot.y + 0.0f;
-				}
-			}
-			else if (pInputKeyboard->Press(DIK_A))
-			{// 左に移動
-				keyCnt++;
-
-				move.x -= sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-				move.z -= cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-				m_rotDest.y = pCameraRot.y + D3DX_PI * 0.5f;
-			}
-			else if (pInputKeyboard->Press(DIK_D))
-			{// 右に移動
-				keyCnt++;
-
-				move.x += sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-				move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
-				m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
-			}
-
-			////コントローラー
-			//CJoypad *pJoy = CApplication::Getinstnce()->GetpMode()->GetJoy();
-			//if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0)		//w
-			//	|| pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0)	//a
-			//	|| pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0)	//s 
-			//	|| pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))	//d 
-			//{// 移動キーが押された
-			//	if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0))
-			//	{// [W]キーが押された時
-			//		if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
-			//		{// [A]キーが押された時
-			//		 // 移動方向の更新
-			//			m_rotDest.y = D3DX_PI * -0.25f;
-			//		}
-			//		else if (pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))
-			//		{// [D]キーが押された時
-			//		 // 移動方向の更新
-			//			m_rotDest.y = D3DX_PI * 0.25f;
-			//		}
-			//		else
-			//		{// 移動方向の更新
-			//			m_rotDest.y = D3DX_PI * 0.0f;
-			//		}
-			//	}
-			//	else if (pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))
-			//	{// [S]キーが押された時
-			//		if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
-			//		{// [A]キーが押された時
-			//		 // 移動方向の更新
-			//			m_rotDest.y = D3DX_PI * -0.75f;
-			//		}
-			//		else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
-			//		{// [D]キーが押された時
-			//		 // 移動方向の更新
-			//			m_rotDest.y = D3DX_PI * 0.75f;
-			//		}
-			//		else
-			//		{// 移動方向の更新q
-			//			m_rotDest.y = D3DX_PI;
-			//		}
-			//	}
-			//	else if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
-			//	{// [A]キーが押された時
-			//	 // 移動方向の更新
-			//		m_rotDest.y = D3DX_PI * -0.5f;
-			//	}
-			//	else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
-			//	{// [D]キーが押された時
-			//	 // 移動方向の更新
-			//		m_rotDest.y = D3DX_PI * 0.5f;
-			//	}
-			//}
-
 			//メッシュ回収の為戻る処理
-			if (pInputKeyboard->Press(DIK_R))	//戻る処理
+			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(CJoypad::JOYKEY_B, 0))	//戻る処理
 			{
 					m_pMeshLine->AddVtxCount(-2);//戻る
+
+					eScaleType = TypeScaleUp;
 
 					D3DXVECTOR3 Center = m_pMeshLine->GetCenterVtx(); //中心点
 
@@ -372,6 +246,174 @@ void CPlayer::Update()
 			}
 			else 	//メッシュを配置しているとき
 			{
+				//移動全般
+				if (pInputKeyboard->Press(DIK_W) || pInputKeyboard->Press(DIK_A) || pInputKeyboard->Press(DIK_S) || pInputKeyboard->Press(DIK_D))
+				{
+					eScaleType = TypeScaleDown;
+				}
+				if (pInputKeyboard->Press(DIK_W))
+				{// 上に移動
+					if (pInputKeyboard->Press(DIK_A))
+					{
+						keyCnt++;
+
+						move.x += sinf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
+						move.z += cosf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
+
+						m_rotDest.y = pCameraRot.y + D3DX_PI * 0.75f;
+					}
+					else if (pInputKeyboard->Press(DIK_D))
+					{
+						keyCnt++;
+
+						move.x += sinf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
+						move.z += cosf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
+
+						m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.75f;
+					}
+					else
+					{
+						keyCnt++;
+
+						move.x += sinf(pCameraRot.y) * m_nSpeed;
+						move.z += cosf(pCameraRot.y) * m_nSpeed;
+						m_rotDest.y = pCameraRot.y + D3DX_PI;
+					}
+				}
+				if (pInputKeyboard->Press(DIK_S))
+				{// 下に移動
+					if (pInputKeyboard->Press(DIK_A))
+					{
+						keyCnt++;
+
+						move.x += sinf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
+						move.z += cosf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
+
+						m_rotDest.y = pCameraRot.y + D3DX_PI * 0.25f;
+					}
+					else if (pInputKeyboard->Press(DIK_D))
+					{
+						keyCnt++;
+
+						move.x += sinf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
+						move.z += cosf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
+
+						m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.25f;
+					}
+					else
+					{
+						keyCnt++;
+
+						move.x -= sinf(pCameraRot.y) * m_nSpeed;
+						move.z -= cosf(pCameraRot.y) * m_nSpeed;
+						m_rotDest.y = pCameraRot.y + 0.0f;
+					}
+				}
+				else if (pInputKeyboard->Press(DIK_A))
+				{// 左に移動
+					keyCnt++;
+
+					move.x -= sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+					move.z -= cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+					m_rotDest.y = pCameraRot.y + D3DX_PI * 0.5f;
+				}
+				else if (pInputKeyboard->Press(DIK_D))
+				{// 右に移動
+					keyCnt++;
+
+					move.x += sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+					move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+					m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
+				}
+
+				if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0)		//w
+					|| pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0)	//a
+					|| pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0)	//s 
+					|| pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))	//d 
+				{// 移動キーが押された
+
+					eScaleType = TypeScaleDown;
+
+					if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0))
+					{// [W]キーが押された時
+						if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+						{// [A]キーが押された時
+						 // 移動方向の更新
+							keyCnt++;
+							move.x += sinf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
+							move.z += cosf(D3DX_PI * -0.25f + pCameraRot.y) * m_nSpeed;
+
+							m_rotDest.y = pCameraRot.y + D3DX_PI * 0.75f;
+						}
+						else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+						{// [D]キーが押された時
+						 // 移動方向の更新
+							keyCnt++;
+
+							move.x += sinf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
+							move.z += cosf(D3DX_PI * 0.25f + pCameraRot.y) * m_nSpeed;
+
+							m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.75f;
+						}
+						else
+						{// 移動方向の更新
+							keyCnt++;
+
+							move.x += sinf(pCameraRot.y) * m_nSpeed;
+							move.z += cosf(pCameraRot.y) * m_nSpeed;
+							m_rotDest.y = pCameraRot.y + D3DX_PI;
+						}
+					}
+					else if (pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))
+					{// [S]キーが押された時
+						if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+						{// [A]キーが押された時
+						 // 移動方向の更新
+							keyCnt++;
+
+							move.x += sinf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
+							move.z += cosf(D3DX_PI * -0.75f + pCameraRot.y) * m_nSpeed;
+
+							m_rotDest.y = pCameraRot.y + D3DX_PI * 0.25f;
+						}
+						else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+						{// [D]キーが押された時
+						 // 移動方向の更新
+							keyCnt++;
+
+							move.x += sinf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
+							move.z += cosf(D3DX_PI * 0.75f + pCameraRot.y) * m_nSpeed;
+
+							m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.25f;
+						}
+						else
+						{// 移動方向の更新
+							keyCnt++;
+
+							move.x -= sinf(pCameraRot.y) * m_nSpeed;
+							move.z -= cosf(pCameraRot.y) * m_nSpeed;
+							m_rotDest.y = pCameraRot.y + 0.0f;
+						}
+					}
+					else if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+					{// [A]キーが押された時
+					 // 移動方向の更新
+						keyCnt++;
+
+						move.x -= sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+						move.z -= cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+						m_rotDest.y = pCameraRot.y + D3DX_PI * 0.5f;
+					}
+					else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+					{// [D]キーが押された時
+					 // 移動方向の更新
+						keyCnt++;
+
+						move.x += sinf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+						move.z += cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
+						m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
+					}
+				}
 			}
 		}
 	}
@@ -514,10 +556,6 @@ void CPlayer::Update()
 	{
 		OutSide1(pos);
 	}
-	//for (int nCnt = 0; nCnt < 12; nCnt++)
-	//{
-	//	m_Line[nCnt]->SetPos(GetPos());
-	//}
 
 	CObjectX::SetScale(Scale);
 	// プレイヤーのposとrotとmoveの設定

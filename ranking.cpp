@@ -15,13 +15,24 @@
 #include "player.h"
 #include "meshfield.h"
 #include "object3D.h"
+#include"Number.h"
+#include"movelife.h"
+#include "Meshline.h"
+#include"joypad.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-CNumber *CRanking::m_apNumber[MAX_RANKINGRANK][MAX_RANKING] = {};
+//CNumber *CRanking::m_apNumber[MAX_RANKINGRANK][MAX_RANKING] = {};
+
+CMovelife *CRanking::m_pMovelife[MAX_RANKING] = {};
+CMovelife *CRanking::m_pMovelife1[MAX_RANKING] = {};
+
 int CRanking::aData[MAX_RANKINGRANK] = {};
+int CRanking::bData[MAX_RANKINGRANK] = {};
+
 int CRanking::m_nRanking = 0;
+int CRanking::m_nRanking1 = 0;
 CLight *CRanking::m_pLight = nullptr;
 CGoal* CRanking::m_pGoal = nullptr;
 CMeshfield *CRanking::m_pMeshField = nullptr;
@@ -45,6 +56,11 @@ CRanking::~CRanking()
 //=============================================================================
 HRESULT CRanking::Init(void)
 {
+	//ファイル書き出し処理
+	Save();
+	Save1();
+
+
 	//ライトの生成
 	m_pLight = CLight::Create();
 
@@ -86,9 +102,28 @@ HRESULT CRanking::Init(void)
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 	m_pMeshField->LoadTexture("Data\\TEXTURE\\wood.png");
 
-	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3);
-	m_pGoal->LoadModel("BSKET");	//1890.0f, 605.0f, -2300.0f
-	m_pGoal->Setstring("GOAL");
+	CObject2D* stagename;	//背景
+	stagename->Create("STAGENAME1", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
+	CObject2D* stagename1;	//背景
+	stagename1->Create("STAGENAME", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
+
+
+	CObject2D* bg;	//背景
+	bg->Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
+	CObject2D* bg1;//背景
+	bg1->Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
+	
+	for (int Cnt = 0; Cnt < MAX_RANKING; Cnt++)
+	{
+		m_pMovelife[Cnt] = nullptr;
+		m_pMovelife[Cnt] = CMovelife::Create(D3DXVECTOR3(SCREEN_WIDTH / 2 +200, 250 + 70.0f* Cnt, 0.0f), CObject::PRIORITY_LEVEL4);
+	}
+	for (int Cnt = 0; Cnt < MAX_RANKING; Cnt++)
+	{
+		m_pMovelife1[Cnt] = nullptr;
+		m_pMovelife1[Cnt] = CMovelife::Create(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400, 250 + 70.0f* Cnt, 0.0f), CObject::PRIORITY_LEVEL4);
+	}
+
 
 	{//壁
 		D3DXVECTOR3 WallSize(3050, 0.0f, 1000.0f);
@@ -112,6 +147,9 @@ HRESULT CRanking::Init(void)
 	//ファイル読み込み処理
 	CLoadStage::LoadAllTest(0);
 
+	//ファイル読み込み処理
+	Load();
+	Load1();
 	return S_OK;
 }
 
@@ -131,6 +169,8 @@ void CRanking::Update(void)
 {
 	//入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
+	//コントローラー
+	CJoypad *pJoy = CApplication::GetJoy();
 
 	if (!m_bmodeflg)
 	{
@@ -139,29 +179,11 @@ void CRanking::Update(void)
 			m_bmodeflg = true;
 		}
 	}
-	if (pInput->Trigger(DIK_RETURN) && m_pFade->GetFade() == CFade::FADE_NONE)
+	if (pInput->Trigger(DIK_RETURN) || pJoy->GetPress(CJoypad::JOYKEY_B, 0) && m_pFade->GetFade() == CFade::FADE_NONE)
 	{// ENTERキーが押されたら実行
-		//ファイル書き出し処理
-		Save();
-
 		//モード設定
 		CFade::SetFade(CApplication::MODE_TITLE);
 	}
-
-	//D3DXVECTOR3 pos = m_pObject2D[0]->GetPos();
-	//if (pos.y >= SCREEN_HEIGHT_HALF)
-	//{
-	//	m_pObject2D[0]->SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//}
-	//else
-	//{
-	//	m_pObject2D[0]->SetMove(D3DXVECTOR3(0.0f, 2.0f, 0.0f));
-	//}
-	//if (m_bmodeflg)
-	//{
-	//	m_pObject2D[0]->SetPos(D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f));
-	//}
-
 }
 
 //=============================================================================
@@ -188,6 +210,8 @@ void CRanking::Load(void)
 		{
 			//ファイルに数値を書き出す
 			fscanf(pFile, "%d\n", &aData[nCntData]);
+
+			m_pMovelife[nCntData]->Setlife(aData[nCntData]);
 		}
 		//ファイルを閉じる
 		fclose(pFile);
@@ -225,6 +249,57 @@ void CRanking::Save(void)
 	}
 }
 
+void CRanking::Load1(void)
+{
+	//ファイルポインタ宣言
+	FILE*pFile;
+
+	//ファイルを開く
+	pFile = fopen("Data\\SAVE\\ranking1.txt", "r");
+
+	if (pFile != NULL)
+	{//ファイルが開けた場合
+		for (int nCntData = 0; nCntData < MAX_RANKINGRANK; nCntData++)
+		{
+			//ファイルに数値を書き出す
+			fscanf(pFile, "%d\n", &bData[nCntData]);
+
+			m_pMovelife1[nCntData]->Setlife(bData[nCntData]);
+		}
+		//ファイルを閉じる
+		fclose(pFile);
+	}
+	else
+	{//ファイルが開かなかった場合
+		printf("***ファイルが開けませんでした***");
+	}
+
+}
+
+void CRanking::Save1(void)
+{
+	//ファイルポインタ宣言
+	FILE*pFile;
+
+	//ファイルを開く
+	pFile = fopen("data\\ranking1.txt", "w");
+
+	if (pFile != NULL)
+	{//ファイルが開けた場合
+		for (int nCnt = 0; nCnt < MAX_RANKINGRANK; nCnt++)
+		{
+			//ファイルに数値を書き出す
+			fprintf(pFile, "%d\n", bData[nCnt]);
+		}
+		//ファイルを閉じる
+		fclose(pFile);
+	}
+	else
+	{//ファイルが開かなかった場合
+		printf("***ファイルが開けませんでした***");
+	}
+}
+
 //=============================================================================
 // スコアの設定処理
 //=============================================================================
@@ -250,32 +325,59 @@ void CRanking::SetRankingScore()
 		}
 	}
 
-	for (int nCntScore = 0; nCntScore < MAX_RANKINGRANK; nCntScore++)
-	{
-		aPosTexU[nCntScore][0] = aData[nCntScore] % 100000 / 10000;
-		aPosTexU[nCntScore][1] = aData[nCntScore] % 10000 / 1000;
-		aPosTexU[nCntScore][2] = aData[nCntScore] % 1000 / 100;
-		aPosTexU[nCntScore][3] = aData[nCntScore] % 100 / 10;
-		aPosTexU[nCntScore][4] = aData[nCntScore] % 10 / 1;
-	}
-
+	//for (int nCntScore = 0; nCntScore < MAX_RANKINGRANK; nCntScore++)
+	//{
+	//	aPosTexU[nCntScore][0] = aData[nCntScore] % 100000 / 10000;
+	//	aPosTexU[nCntScore][1] = aData[nCntScore] % 10000 / 1000;
+	//	aPosTexU[nCntScore][2] = aData[nCntScore] % 1000 / 100;
+	//	aPosTexU[nCntScore][3] = aData[nCntScore] % 100 / 10;
+	//	aPosTexU[nCntScore][4] = aData[nCntScore] % 10 / 1;
+	//}
 	////テクスチャ座標の設定
 	//for (int nCnt = 0; nCnt < MAX_RANKINGRANK; nCnt++)
 	//{
 	//	for (int nCntScore = 0; nCntScore < MAX_RANKING; nCntScore++)
 	//	{
 	//		float fShiftWidth = 1.0f / 10;
-	//		m_apNumber[nCnt][nCntScore]->SetUV((float)aPosTexU[nCnt][nCntScore] * fShiftWidth, (fShiftWidth + (float)aPosTexU[nCnt][nCntScore] * fShiftWidth), 0.0f, 1.0f);
+	//		//m_apNumber[nCnt][nCntScore]->SetUV((float)aPosTexU[nCnt][nCntScore] * fShiftWidth, (fShiftWidth + (float)aPosTexU[nCnt][nCntScore] * fShiftWidth), 0.0f, 1.0f);
 	//	}
 	//}
 }
-
 //=============================================================================
 // 情報の取得
 //=============================================================================
 void CRanking::GetRanking(int Ranking)
 {
 	m_nRanking = Ranking;
+}
+
+
+void CRanking::SetRankingScore1()
+{
+	int aPosTexU[MAX_RANKINGRANK][MAX_RANKING];
+
+	if (m_nRanking1 > bData[MAX_RANKINGRANK - 1])
+	{
+		bData[MAX_RANKINGRANK - 1] = m_nRanking1;
+	}
+
+	for (int nCount = 0; nCount < MAX_RANKINGRANK - 1; nCount++)
+	{
+		for (int nCount2 = nCount + 1; nCount2 < MAX_RANKINGRANK; nCount2++)
+		{
+			if (bData[nCount] < bData[nCount2])
+			{
+				int nMin = bData[nCount];
+				bData[nCount] = bData[nCount2];
+				bData[nCount2] = nMin;
+			}
+		}
+	}
+
+}
+void CRanking::GetRanking1(int Ranking)
+{
+	m_nRanking1 = Ranking;
 }
 
 //=============================================================================
@@ -287,7 +389,10 @@ CRanking * CRanking::Create()
 
 	if (pRanking != nullptr)
 	{
+		SetRankingScore();	//数値の整列
+		SetRankingScore1();
 		pRanking->Init();
+
 	}
 
 	return pRanking;

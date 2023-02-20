@@ -14,6 +14,7 @@ class CFade;
 class CNumber;
 class CLight;
 class CGoal;
+class CMovelife;
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -35,19 +36,37 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	void Load(void);
 	void Save(void);
+
+	void Load1(void);
+	void Save1(void);
+
+
 	static void SetRankingScore();
 	static void GetRanking(int Ranking);
+
+	static void SetRankingScore1();
+	static void GetRanking1(int Ranking);
 
 	static CRanking * Create();
 
 private:
 	LPDIRECT3DTEXTURE9 m_pTexture[MAX_TEXTURE] = {};
 	CObject2D * m_pObject2D[3];
-	static CNumber * m_apNumber[MAX_RANKINGRANK][MAX_RANKING]; 
+
+	static CMovelife *m_pMovelife[MAX_RANKING];			//スコアになる物
+	static CMovelife *m_pMovelife1[MAX_RANKING];			//スコアになる物
+
+
+	static int m_nRanking1;
 	static int m_nRanking;
+
 	static int aData[MAX_RANKINGRANK];
+	static int bData[MAX_RANKINGRANK];
+
+
 	static CLight *m_pLight;				// ライトのポインタ
 	static CGoal *m_pGoal;				//ゴールポインタ
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	

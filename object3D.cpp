@@ -131,7 +131,7 @@ void CObject3D::Draw()
 	LPDIRECT3DDEVICE9 pDevice = CApplication::Getinstnce()->GetRenderer()->GetDevice();
 
 	//計算用マトリックス
-	D3DXMATRIX mtxRot, mtxTrans;
+	D3DXMATRIX mtxRot, mtxTrans, mtxView;
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);			//行列初期化関数(第一引数の行列を単位行列に初期化)
@@ -139,20 +139,17 @@ void CObject3D::Draw()
 	//カメラの逆行列を設定
 	if (m_bBillboard)
 	{
+		// ライトを無効
+		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 		// ビューマトリックスの設定
-		pDevice->GetTransform(D3DTS_VIEW, &mtxRot);
+		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 
-
-		// カメラの逆行列を設定
-		m_mtxWorld._11 = mtxRot._11;
-		m_mtxWorld._12 = mtxRot._21;
-		m_mtxWorld._13 = mtxRot._31;
-		m_mtxWorld._21 = mtxRot._12;
-		m_mtxWorld._22 = mtxRot._22;
-		m_mtxWorld._23 = mtxRot._32;
-		m_mtxWorld._31 = mtxRot._13;
-		m_mtxWorld._32 = mtxRot._23;
-		m_mtxWorld._33 = mtxRot._33;
+		// カメラ逆行列を設定
+		D3DXMatrixInverse(&m_mtxWorld, NULL, &mtxView);
+		m_mtxWorld._41 = 0.0f;
+		m_mtxWorld._42 = 0.0f;
+		m_mtxWorld._43 = 0.0f;
 	}
 	else
 	{
@@ -208,6 +205,7 @@ void CObject3D::VtxUpdate()
 		pVtx[1].col = m_col;
 		pVtx[2].col = m_col;
 		pVtx[3].col = m_col;
+
 
 		//頂点バッファをアンロックする
 		m_pVtxBuff->Unlock();
@@ -324,9 +322,10 @@ CObject3D * CObject3D::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size
 	{//ポインタが存在したら実行
 		pObject3D->SetPos(pos);
 		pObject3D->SetRot(rot);
-		pObject3D->SetSize(size);
 		pObject3D->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		pObject3D->Init();
+		pObject3D->SetSize(size);
+
 	}
 	else
 	{//ポインタが虚無だったら実行

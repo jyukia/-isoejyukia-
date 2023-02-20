@@ -67,6 +67,9 @@ public:
 		}
 	}
 
+
+	void SetVtx(int vtx) {m_Vtxcount = vtx;}
+
 	D3DXVECTOR3 GetCenterVtx();
 
 	float Vec2Cross(D3DXVECTOR3* v1, D3DXVECTOR3* v2);

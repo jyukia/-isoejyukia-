@@ -18,11 +18,14 @@
 #include"DebugProc.h"
 #include "score.h"
 #include "sound.h"
+#include"Timer.h"
+
+bool CItem::MoveLifeUpflg = false;
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CItem::CItem(int nPriority):HitFlg(false), MoveSpeedUp(false), MoveLifeUpflg(false)
+CItem::CItem(int nPriority):HitFlg(false), MoveSpeedUp(false)
 {
 }
 
@@ -40,7 +43,6 @@ HRESULT CItem::Init()
 {
 	{
 		HitFlg = false;
-
 		MoveSpeedUp = false;	//使用なし
 		MoveLifeUpflg = false;
 	}
@@ -115,14 +117,13 @@ void CItem::Update()
 
 			Speed = 7;
 			CApplication::Getinstnce()->GetpMode()->GetPlayer()->Setspeed(Speed);
-
 			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_WIND);	//風きる音
 
 			MoveSpeedUp = true;
 				break;
-			case CItem::ITEM_MOVELIFE_UP:
+			case CItem::ITEM_GAMETIME_UP:
 
-
+			//CApplication::Getinstnce()->GetpMode()->GetTimer()->Addlife(5);	//５秒加算
 
 			MoveLifeUpflg = true;
 				break;
@@ -146,12 +147,10 @@ void CItem::Update()
 			case CItem::ITEM_MOVE_SPEED_UP:
 				Cnt++;
 				pos.y += (float)(sinf(D3DXToRadian(Cnt * 3)) * 1.5f);
-				SetPos(pos);
 				break;
-			case CItem::ITEM_MOVELIFE_UP:
-
-
-
+			case CItem::ITEM_GAMETIME_UP:
+				Cnt++;
+				pos.y += (float)(sinf(D3DXToRadian(Cnt * 3)) * 1.5f);
 				break;
 			case CItem::ITEM_SCORE_UP:
 				rot.y += 0.1f;	//コインの回転
@@ -160,6 +159,7 @@ void CItem::Update()
 				break;
 			}
 		}
+		SetPos(pos);
 		SetRot(rot);
 	}
 }

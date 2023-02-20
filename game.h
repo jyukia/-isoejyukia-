@@ -61,6 +61,8 @@ private:
 	//移動力アップ
 	static CItem *m_pItem;
 
+	static CItem *m_pItemTimeUp;
+
 	static CItem *m_pItemCoin;	//COIN
 
 	CTimer *m_Timer;
@@ -75,6 +77,8 @@ private:
 	CObject2D* m_pTimeUi;
 	CObject2D* m_pTime_Lope_Ui;
 
+	CMovelife* m_Movelife;
+
 	D3DXVECTOR3 m_rot;
 
 	//移動可能距離
@@ -88,6 +92,8 @@ private:
 	CMeshLine *m_pMeshLine;
 
 	CParticle2D* m_particle2d;
+
+	CBillboard* m_Billboard;
 
 	bool returnflg;
 

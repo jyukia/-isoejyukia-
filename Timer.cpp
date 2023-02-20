@@ -16,6 +16,9 @@
 #include "fade.h"
 #include "goal.h"
 #include "sound.h"
+#include"Timer.h"
+#include "application.h"
+#include "Item.h"
 
 CFade *m_pFadeTime;
 
@@ -55,6 +58,20 @@ void CTimer::Uninit()
 void CTimer::Update()
 {
 	D3DXVECTOR3 pos = CObject2D::GetPos();
+
+	//// キーボードの情報取得
+	//CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
+
+	//if (pInputKeyboard->Press(DIK_T))
+	//{// 下に移動
+	//}
+
+	bool bflg =CItem::GetSizdownflg();	//フラグを取得時間を増やす
+	if (bflg)	
+	{
+			Addlife(5);
+			CItem::SetSizdownflg(false);
+	}
 
 	bool flg = CApplication::Getinstnce()->GetpMode()->GetGoal()->GetGoalFlg();
 	if (flg)		//ゴールとプレイヤーが触れたら
