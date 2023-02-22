@@ -251,7 +251,7 @@ void CCamera::SetCamera(bool bfixed, bool btypecom)
 			D3DXToRadian(90.0f),							//視野角
 			(float)m_game_viewport.Width / (float)m_game_viewport.Height,		//アスペクト比
 			10.0f,											//ニア（どこからどこまでカメラで表示するか設定）
-			5000.0f);										//ファー
+			8000.0f);										//ファー
 	}
 	else
 	{

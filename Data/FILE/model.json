@@ -31,7 +31,6 @@
     [ "COIN", "Data\/MODEL\/coin.x" ],
     [ "ITEMTIME", "Data\/MODEL\/ItemTime.x" ],
 
-
     [ "BUCKET", "Data\/MODEL\/Bucket.x" ],
     [ "FENCE", "Data\/MODEL\/fence.x" ],
     [ "FENCEROT", "Data\/MODEL\/fenceRot.x" ],

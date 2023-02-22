@@ -122,7 +122,6 @@ void CLoadStage::LoadAllTest(int select_stage)
 
 	CGoal* pGoal;				//ゴールポインタ
 
-
 	for (int Count = 0;Count < nIndex;Count++)
 	{
 		std::string name = "OBJECTX";

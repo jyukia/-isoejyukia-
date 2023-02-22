@@ -21,6 +21,8 @@ class CMovelife;
 class CMeshLine;
 class CGoal;
 class Cpreparation;
+class CParticle2D;
+
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -77,6 +79,14 @@ private:
 
 	//メッシュライン
 	CMeshLine *m_pMeshLine;
+
+	CParticle2D* m_particle2d;
+
+	float Xslide;
+
+	bool returnflg;
+
+	bool Goalflg;
 
 };
 #endif

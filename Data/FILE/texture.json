@@ -8,6 +8,9 @@
     [ "WOOD", "Data\/TEXTURE\/wood.png" ],
     [ "SMOKE", "Data\/TEXTURE\/smoke.jpg" ],
     [ "EFFECT", "Data\/TEXTURE\/effect000.jpg" ],
+    [ "FLAG", "Data\/TEXTURE\/GOALUI.png" ],
+
+    
 
     [ "SELECTSTAGE", "Data\/TEXTURE\/select.png" ],
     [ "STAGENAME", "Data\/TEXTURE\/stagename.png" ],

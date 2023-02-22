@@ -19,12 +19,13 @@
 class CParticle : public CObject3D
 {
 private:
+	float Particle_Size = 10.0f;
 	//移動速さ
 	const float m_fmaxmove = 20.0f;
 	//ライフ
 	int m_nLife = 15;
 	//サイズ
-	D3DXVECTOR3 size = D3DXVECTOR3(20, 20, 20);
+	float size = Particle_Size;
 
 public:
 	//コンストラクタ
@@ -42,7 +43,7 @@ public:
 	//描画
 	void Draw() override;
 
-	static CParticle* Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);
+	static CParticle* Create(const char *aFileName,D3DXVECTOR3 pos, D3DXVECTOR3 size, int nPriority);
 
 private:
 	void move();

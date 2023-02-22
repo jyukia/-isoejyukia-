@@ -72,6 +72,7 @@ HRESULT CGame::Init(void)
 		m_rot = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	}
 
+
 	//モデル読み込み一番上に配置
 	//	OutputStatus();
 
@@ -99,15 +100,6 @@ HRESULT CGame::Init(void)
 		wallX3->LoadTexture("Data/TEXTURE/Background_6.png");
 	}
 
-	{//写真
-		float lch = -2600;
-		CObject3D* me = CObject3D::Create(D3DXVECTOR3(100.0f, 500.0f, -1680.0f + lch), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 200.0f), 3);
-		me->LoadTexture("Data/TEXTURE/01.png");
-
-		CObject3D* memory = CObject3D::Create(D3DXVECTOR3(1250.0f, 680.0f, -1098.0f), D3DXVECTOR3(-D3DX_PI / 1.83f, D3DX_PI, D3DX_PI), D3DXVECTOR3(50, 0.0f, 70.0f), 3);
-		memory->LoadTexture("Data/TEXTURE/omoide.png");
-	}
-
 	//コンパス生成
 	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1140.0f, 120.0f, 0.0f), D3DXVECTOR3(200.0f, 200.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 	
@@ -122,9 +114,13 @@ HRESULT CGame::Init(void)
 	//ゲーム開始の合図
 	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
 
-	CLoadStage::LoadAllTest(0);
+	//CLoadStage::LoadAllTest(0);
 
-	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3);
+	CObject3D* goalui = CObject3D::Create(D3DXVECTOR3(1890.0f, 1000.0f, -2300.0f), D3DXVECTOR3(0.f,0.f,0.f), D3DXVECTOR3(350, 350.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+	goalui->LoadTexture("Data/TEXTURE/GOALUI.png");//1890.0f, 605.0f, -2300.0f
+	goalui->SetBillboard(true);
+
+	m_pGoal = CGoal::Create(D3DXVECTOR3(1890.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL4);
 	m_pGoal->LoadModel("BSKET");	//1890.0f, 605.0f, -2300.0f
 	m_pGoal->Setstring("GOAL");
 
@@ -134,13 +130,86 @@ HRESULT CGame::Init(void)
 	m_pItemTimeUp = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2000.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItemTimeUp->LoadModel("ITEMTIME");
 
+	CObjectX* i[30];
+	//必須
+	 i[0]= CObjectX::Create("CHAIR", D3DXVECTOR3(-500.0f, 0.0f, -1500.0f),  CObject::PRIORITY_LEVEL3);
+	 i[1] = CObjectX::Create("CHAIR", D3DXVECTOR3(2300.0f, 0.0f, -1500.0f), CObject::PRIORITY_LEVEL3);
+	 i[2] = CObjectX::Create("CHAIR", D3DXVECTOR3(1000.0f, 0.0f, -3000.0f), CObject::PRIORITY_LEVEL3);
+	 i[3] = CObjectX::Create("CHAIR", D3DXVECTOR3(1000.0f, 0.0f, -200.0f),  CObject::PRIORITY_LEVEL3);
+	 i[4] = CObjectX::Create("DOOR", D3DXVECTOR3(-1150.0f, 0.0f, 1700.0f),  CObject::PRIORITY_LEVEL3);
+	 i[5] = CObjectX::Create("TABLE", D3DXVECTOR3(1000.0f, 0.0f, -1500.0f), CObject::PRIORITY_LEVEL3);
+	 //--------
+	 i[6] = CObjectX::Create("BOOKSHELF", D3DXVECTOR3(-1500.0f, 0.0f, -3700.0f), CObject::PRIORITY_LEVEL3);
+	 i[6]->SetRot(D3DXVECTOR3(0.f,-1.5707963705062866f,0.f));
+
+	 i[7] = CObjectX::Create("CHEST", D3DXVECTOR3(4000.0f, 0.0f, -3700.0f), CObject::PRIORITY_LEVEL3);
+	 i[7]->SetRot(D3DXVECTOR3(0.f, 1.5707963705062866f, 0.f));
+
+	 i[8] = CObjectX::Create("SCISSORS", D3DXVECTOR3(1100.0f, 600.0f, -1500.0f), CObject::PRIORITY_LEVEL3);
+
+	// SCISSORS
+
+	 for (int Cnt = 0;Cnt <3;Cnt++)
+	 {
+		 CObjectX* n = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f, 600.0f, -550.0f - 100 *Cnt ), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <10; Cnt++)
+	 {
+		 CObjectX* v = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f + 100 * Cnt, 600.0f, -850.0f), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <9; Cnt++)
+	 {
+		 CObjectX* z = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f, 600.0f, -1200.0f - 100 * Cnt), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <5; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f + 100 * Cnt, 600.0f, -1200.0f), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <15; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(820.0f, 600.0f, -1200.0f - 90 * Cnt), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <15; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1450.0f, 600.0f, -830.0f - 100 * Cnt), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1450.0f + 100 * Cnt, 600.0f, -1830.0f), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1350.0f - 100 * Cnt, 600.0f, -1830.0f), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1050.0f , 600.0f, -2450.0f + 100 * Cnt), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <5; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1700.0f, 600.0f, -2450.0f + 100 * Cnt), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(2000.0f - 100 * Cnt, 600.0f, -830.0f), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <6; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1700.0f, 600.0f, -930.0f - 100 * Cnt), CObject::PRIORITY_LEVEL3);
+	 }
+	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 {
+		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(2000.0f - 100 * Cnt, 600.0f, -1630.0f), CObject::PRIORITY_LEVEL3);
+	 }
+
+
 	//m_pItemCoin = CItem::Create(D3DXVECTOR3(550.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SCORE_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	//m_pItemCoin->LoadModel("COIN");
 
-	CObjectX* obje= CObjectX::Create("BOTTLE",D3DXVECTOR3(700,605,-880),3);
-	CObjectX* obje1 = CObjectX::Create("BOTTLE", D3DXVECTOR3(400, 605, -880), 3);
+	//CObjectX* obje= CObjectX::Create("BOTTLE",D3DXVECTOR3(700,605,-880),3);
+	//CObjectX* obje1 = CObjectX::Create("BOTTLE", D3DXVECTOR3(400, 605, -880), 3);
 
-	for (int Cnt = 0; Cnt < 4; Cnt++)
+	/*for (int Cnt = 0; Cnt < 4; Cnt++)
 	{
 		CObjectX* obje2 = CObjectX::Create("BOTTLE", D3DXVECTOR3(300, 605, -880 +100 * Cnt), 3);
 	}
@@ -168,23 +237,23 @@ HRESULT CGame::Init(void)
 	{
 		CObjectX* obje6 = CObjectX::Create("TEAPOT", D3DXVECTOR3(1625, 605, -700 - 200 * Cnt), 3);
 		obje6->SetRot(D3DXVECTOR3(0.0f,0.0f + 300 * Cnt,0.0f));
-	}
+	}*/
 
-	//CObject3D* i = CObject3D::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), D3DXVECTOR3(-D3DX_PI / 2.0f, 0.0f, D3DX_PI), D3DXVECTOR3(150, 0.0f, 150.0f), 3);
-	//i->LoadTexture("Data/TEXTURE/01.png");
+	//CObject3D* i = CObject3D::Create(D3DXVECTOR3(110.0f, 610.0f, -600.0f), D3DXVECTOR3(0.f,0.f,0.f), D3DXVECTOR3(150, 150.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	//i->LoadTexture("Data/TEXTURE/01.png");//-D3DX_PI / 2.0f, 0.0f, D3DX_PI
 	//i->SetBillboard(true);
 
 	//Load();
 	//CLoadStage::SaveAll();
 
-
+	//CBillboard* bill = CBillboard::Create("EFFECT", D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL4);
+	
 	//
 	CObject2D* lifeui = CObject2D::Create("LIFE_UI", D3DXVECTOR3(150, 50, 0), D3DXVECTOR3(400, 200, 0),CObject::PRIORITY_LEVEL3);
 	CObject2D* lifeBG = CObject2D::Create("CHABG", D3DXVECTOR3(150, 104, 0), D3DXVECTOR3(300, 80, 0), CObject::PRIORITY_LEVEL3);
-	m_Movelife->Create(D3DXVECTOR3(70, 100, 0), 3);
+	m_Movelife->Create(D3DXVECTOR3(70, 100, 0), CObject::PRIORITY_LEVEL3);
 
 	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GAME);
-
 
 	return S_OK;
 }
@@ -211,6 +280,7 @@ void CGame::Uninit(void)
 //=============================================================================
 void CGame::Update(void)
 {
+
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
 

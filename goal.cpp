@@ -6,6 +6,7 @@
 #include"DebugProc.h"
 #include "player.h"
 #include "fade.h"
+#include "Particle.h"
 
 bool CGoal::GoalFlg;
 bool CGoal::flg;
@@ -47,11 +48,17 @@ void CGoal::Update()
 {
 	if (CApplication::Getinstnce()->GetpMode()->GetPlayer() != nullptr)
 	{
+		//プレイヤー情報
 		D3DXVECTOR3 pPlayerPos = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPos();
 		D3DXVECTOR3 pPlayerPosOld = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetPosOld();
 		D3DXVECTOR3 pSize = CApplication::Getinstnce()->GetpMode()->GetPlayer()->GetSize();
 		// 座標取得
 		D3DXVECTOR3 pos = GetPos();
+
+		//ゴール表示の為のパーティクル
+		//CParticle* particle = CParticle::Create("Data/TEXTURE/effect000.jpg", D3DXVECTOR3(pos), D3DXVECTOR3(50.0f, 50.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+		//particle->SetBillboard(true);
+
 		// ポインタ宣言
 		CObject *pObject = CObject::GetTop(PRIORITY_LEVEL3);
 		// プレイヤーとモデルの当たり判定
@@ -72,7 +79,7 @@ void CGoal::Update()
 			{
 				CObjectX *pObjectX = (CObjectX*)pObject;
 
-				D3DXVECTOR3 size = 	D3DXVECTOR3(150,100,100);
+				D3DXVECTOR3 size = 	D3DXVECTOR3(250,100,200);
 				GoalFlg = Collision(&pPlayerPos, &pPlayerPosOld, &size, false);
 			}
 			//ポインタを次に進める

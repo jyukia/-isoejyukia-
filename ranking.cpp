@@ -102,16 +102,12 @@ HRESULT CRanking::Init(void)
 	m_pMeshField = CMeshfield::Create(D3DXVECTOR3(-1500.0f, 0.0f, 1500.0f), CObject::PRIORITY_LEVEL3);
 	m_pMeshField->LoadTexture("Data\\TEXTURE\\wood.png");
 
-	CObject2D* stagename;	//îwåi
-	stagename->Create("STAGENAME1", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
-	CObject2D* stagename1;	//îwåi
-	stagename1->Create("STAGENAME", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
+	CObject2D* stagename = CObject2D::Create("STAGENAME1", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);	//îwåi
+	CObject2D* stagename1 = CObject2D::Create("STAGENAME", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);	//îwåi
 
 
-	CObject2D* bg;	//îwåi
-	bg->Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
-	CObject2D* bg1;//îwåi
-	bg1->Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);
+	CObject2D* bg = CObject2D::Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);//îwåi
+	CObject2D* bg1 = CObject2D::Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);//îwåi
 	
 	for (int Cnt = 0; Cnt < MAX_RANKING; Cnt++)
 	{
@@ -184,8 +180,11 @@ void CRanking::Update(void)
 	}
 	if (pInput->Trigger(DIK_RETURN) || pJoy->GetPress(CJoypad::JOYKEY_B, 0) && m_pFade->GetFade() == CFade::FADE_NONE)
 	{// ENTERÉLÅ[Ç™âüÇ≥ÇÍÇΩÇÁé¿çs
-		//ÉÇÅ[Éhê›íË
-		CFade::SetFade(CApplication::MODE_TITLE);
+		if (m_pFade->GetFade() == CFade::FADE_NONE)
+		{
+			//ÉÇÅ[Éhê›íË
+			CFade::SetFade(CApplication::MODE_TITLE);
+		}
 	}
 }
 
@@ -308,7 +307,6 @@ void CRanking::Save1(void)
 //=============================================================================
 void CRanking::SetRankingScore()
 {
-	int aPosTexU[MAX_RANKINGRANK][MAX_RANKING];
 
 	if (m_nRanking > aData[MAX_RANKINGRANK - 1])
 	{
@@ -357,7 +355,6 @@ void CRanking::GetRanking(int Ranking)
 
 void CRanking::SetRankingScore1()
 {
-	int aPosTexU[MAX_RANKINGRANK][MAX_RANKING];
 
 	if (m_nRanking1 > bData[MAX_RANKINGRANK - 1])
 	{

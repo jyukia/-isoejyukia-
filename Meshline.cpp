@@ -57,7 +57,7 @@ HRESULT CMeshLine::Init()
 	}
 	else if(CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
 	{
-		m_pos = D3DXVECTOR3(2600.0f, 20.0f, -3100.0f);
+		m_pos = D3DXVECTOR3(2300.0f, 20.0f, -2900.0f);
 	}
 	else if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_TITLE)
 	{

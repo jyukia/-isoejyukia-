@@ -194,12 +194,22 @@ void CObject3D::VtxUpdate()
 		//頂点バッファをロックし、頂点情報へのポインタを取得
 		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-		//頂点座標の更新
-		pVtx[0].pos = D3DXVECTOR3(-m_size.x, m_size.y, m_size.z);
-		pVtx[1].pos = D3DXVECTOR3(m_size.x, m_size.y, m_size.z);
-		pVtx[2].pos = D3DXVECTOR3(-m_size.x, m_size.y, -m_size.z);
-		pVtx[3].pos = D3DXVECTOR3(m_size.x, m_size.y, -m_size.z);
-
+		if (m_bBillboard)	//ビルボード時
+		{
+			//頂点座標の更新
+			pVtx[0].pos = D3DXVECTOR3(-m_size.x, m_size.y, 0.0f);
+			pVtx[1].pos = D3DXVECTOR3(m_size.x,  m_size.y,  0.0f);
+			pVtx[2].pos = D3DXVECTOR3(-m_size.x, -m_size.y, 0.0f);
+			pVtx[3].pos = D3DXVECTOR3(m_size.x,  -m_size.y,  0.0f);
+		}
+		else
+		{	
+			//頂点座標の更新
+			pVtx[0].pos = D3DXVECTOR3(-m_size.x, m_size.y, m_size.z);
+			pVtx[1].pos = D3DXVECTOR3(m_size.x, m_size.y, m_size.z);
+			pVtx[2].pos = D3DXVECTOR3(-m_size.x, m_size.y, -m_size.z);
+			pVtx[3].pos = D3DXVECTOR3(m_size.x, m_size.y, -m_size.z);
+		}
 		//頂点カラーの更新
 		pVtx[0].col = m_col;
 		pVtx[1].col = m_col;
