@@ -9,7 +9,8 @@
 #include "object2D.h"
 #include "light.h"
 #include"DebugProc.h"
-#include"joypad.h"
+#include "inputjoypad.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -75,7 +76,7 @@ HRESULT CSelectStage::Init(void)
 	CObject2D* UI_BG2 = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 200, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
 	CObject2D* UI_Idou = CObject2D::Create("IDOU", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 200, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
 
-
+	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_SELECTSTAGE);
 	return S_OK;
 }
 //=============================================================================
@@ -93,6 +94,8 @@ void CSelectStage::Uninit(void)
 
 	//インスタンスの解放処理
 	CObject::Release();
+
+	CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_SELECTSTAGE);
 }
 //=============================================================================
 // 更新処理
@@ -125,7 +128,7 @@ void CSelectStage::Update(void)
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
 	//コントローラー
-	CJoypad *pJoy = CApplication::GetJoy();
+	CInputJoyPad *pJoy = CApplication::GetJoy();
 
 	if (m_modeSelectcount == 1)
 	{
@@ -138,13 +141,14 @@ void CSelectStage::Update(void)
 		stagename1->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
-
-			if (pInput->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))
+			if (pInput->Trigger(DIK_RETURN) || pJoy->GetTrigger(DirectJoypad::JOYPAD_A, 0))
 			{
 				//遷移
 				CFade::SetFade(CApplication::MODE_GAME);	//ゲーム遷移
+				CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_SELECT);
 			}
 		}
+
 	}
 	if (m_modeSelectcount == 2)
 	{
@@ -158,16 +162,17 @@ void CSelectStage::Update(void)
 
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
-			if (pInput->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))
+			if (pInput->Trigger(DIK_RETURN) || pJoy->GetTrigger(DirectJoypad::JOYPAD_A, 0))
 			{
 				//遷移
 				CFade::SetFade(CApplication::MODE_GAME1);	//ゲーム遷移
+				CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_SELECT);
 			}
 		}
 	}
 	if (m_pFade->GetFade() == CFade::FADE_NONE)	//　タイトルに戻る処理
 	{
-		if (pInput->Trigger(DIK_ESCAPE) || pJoy->GetTrigger(CJoypad::JOYKEY_B, 0))
+		if (pInput->Trigger(DIK_ESCAPE) || pJoy->GetTrigger(DirectJoypad::JOYPAD_B, 0))
 		{
 			//遷移
 			CFade::SetFade(CApplication::MODE_TITLE);	//ゲーム遷移
@@ -192,13 +197,17 @@ void CSelectStage::Update(void)
 	}
 
 	//セレクトの移動
-	if (pInput->Trigger(DIK_D) || pJoy->GetTrigger(CJoypad::JOYKEY_RIGHT, 0))
+	if (pInput->Trigger(DIK_D) || pJoy->GetTrigger(DirectJoypad::JOYPAD_RIGHT, 0))
 	{
 		m_modeSelectcount++;
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_CHANGE);
+
 	}
-	if (pInput->Trigger(DIK_A) || pJoy->GetTrigger(CJoypad::JOYKEY_LEFT, 0))
+	if (pInput->Trigger(DIK_A) || pJoy->GetTrigger(DirectJoypad::JOYPAD_LEFT, 0))
 	{
 		m_modeSelectcount--;
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_CHANGE);
+
 	}
 }
 //=============================================================================

@@ -27,9 +27,16 @@ public:
 		LABEL_REDY_SOUND,	//準備
 		LABEL_START_SOUND,	//スタート
 		LABEL_GAME,	//プレイ中
+		LABEL_RESULT,	//プレイ中
+		LABEL_TITLE,	//タイトル
+		LABEL_SELECTSTAGE,
+		LABEL_CHANGE,
+		LABEL_SELECT,
+
 		LABEL_GOAL,	//ゴール
 		LABEL_COIN,	//コイン
 		LABEL_WIND,	//風をきる音
+		LABEL_CLOCK,	//時計音
 
 		LABEL_MAX,
 	};

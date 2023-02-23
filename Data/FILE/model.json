@@ -22,6 +22,9 @@
     [ "TEAPOT", "Data\/MODEL\/Teapot.x" ],
     [ "SCISSORS", "Data\/MODEL\/scissors.x" ],
     [ "BEERMUG", "Data\/MODEL\/beermug.x" ],
+    [ "BOTTLE1", "Data\/MODEL\/bottle1.x" ],
+
+
     [ "BEERBOTTLE", "Data\/MODEL\/beerbottle.x" ],
     [ "CONE", "Data\/MODEL\/cone.x" ],
 

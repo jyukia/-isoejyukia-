@@ -22,8 +22,9 @@
 #include"DebugProc.h"
 #include "load_stage.h"
 #include"skyfield.h"
-#include"joypad.h"
+#include "inputjoypad.h"
 #include "ranking.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -40,7 +41,6 @@ CMeshLine *m_pMeshLine = nullptr;			//	メッシュライン
 //=============================================================================
 CTitle::CTitle():m_modecount(0), m_bmodeflg(false)
 {
-
 }
 
 //=============================================================================
@@ -48,7 +48,6 @@ CTitle::CTitle():m_modecount(0), m_bmodeflg(false)
 //=============================================================================
 CTitle::~CTitle()
 {
-
 }
 
 //=============================================================================
@@ -95,9 +94,9 @@ HRESULT CTitle::Init(void)
 	m_pTitle = CObject2D::Create("TITLE",D3DXVECTOR3((float)SCREEN_WIDTH_HALF,-150.0f,0.0f), D3DXVECTOR3(800.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
 
 	//プレイヤー入力選択
-	m_pGame = CObject2D::Create("GAMEPLAY", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, (int)SCREEN_HEIGHT_HALF + 110, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
-
-	m_pRanking = CObject2D::Create("RANKING", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, (int)SCREEN_HEIGHT_HALF + 110, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pGame = CObject2D::Create("GAMEPLAY", D3DXVECTOR3((float)SCREEN_WIDTH_HALF -300, (int)SCREEN_HEIGHT_HALF + 150, 0.0f), D3DXVECTOR3(400.0f, 400.0f, 0.0f), PRIORITY_LEVEL4);
+	m_pRanking = CObject2D::Create("RANKING", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, (int)SCREEN_HEIGHT_HALF + 150, 0.0f), D3DXVECTOR3(400.0f, 400.0f, 0.0f), PRIORITY_LEVEL4);
+	m_ptutelial = CObject2D::Create("TUTORIALUI", D3DXVECTOR3((float)SCREEN_WIDTH_HALF , (int)SCREEN_HEIGHT_HALF + 150, 0.0f), D3DXVECTOR3(400.0f, 400.0f, 0.0f), PRIORITY_LEVEL4);
 
 	CObject2D* UI_A = CObject2D::Create("A", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 300, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
 	CObject2D* UI_BG = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 380, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
@@ -116,6 +115,7 @@ HRESULT CTitle::Init(void)
 	CRanking::GetRanking(0);	//スコアとなる値
 	CRanking::GetRanking1(0);	//スコアとなる値
 
+	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_TITLE);
 
 	return S_OK;
 }
@@ -135,6 +135,8 @@ void CTitle::Uninit(void)
 
 	//インスタンスの解放処理
 	CObject::Release();
+
+	CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_TITLE);
 }
 
 //=============================================================================
@@ -193,18 +195,20 @@ void CTitle::Update(void)
 	//}
 
 	//コントローラー
-	CJoypad *pJoy = CApplication::GetJoy();
+	CInputJoyPad *pJoy = CApplication::GetJoy();
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
-	if (pInputKeyboard->Trigger(DIK_A) || pJoy->GetTrigger(CJoypad::JOYKEY_LEFT, 0))
+	if (pInputKeyboard->Trigger(DIK_A) || pJoy->GetCrossTrigger(DirectJoypad::JOYPAD_LEFT, 0))
 	{// 上に移動
 		m_modecount++;
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_CHANGE);
 	}
-	if (pInputKeyboard->Trigger(DIK_D) || pJoy->GetTrigger(CJoypad::JOYKEY_RIGHT, 0))
+	if (pInputKeyboard->Trigger(DIK_D) || pJoy->GetCrossTrigger(DirectJoypad::JOYPAD_RIGHT, 0))
 	{// 下に移動
 		m_modecount--;
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_CHANGE);
 	}
-	if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(CJoypad::JOYKEY_A, 0))		//選択シーン実行
+	if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(DirectJoypad::JOYPAD_A, 0))		//選択シーン実行
 	{
 		D3DXVECTOR3 posV = CApplication::Getinstnce()->GetCamera()->GetPosV();
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
@@ -219,7 +223,13 @@ void CTitle::Update(void)
 				//遷移
 				CFade::SetFade(CApplication::MODE_RANKING); //ランキング遷移
 			}
+			if (m_modecount == 3)
+			{
+				//遷移
+				CFade::SetFade(CApplication::MODE_TUTORIAL); //ランキング遷移
+			}
 		}
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_SELECT);
 	}
 
 	//選択カウントの制限
@@ -237,12 +247,20 @@ void CTitle::Update(void)
 	{
 		m_pGame->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
-
+		m_ptutelial->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 	}
 	if (m_modecount == 2)
 	{
 		m_pGame->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_ptutelial->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+	}
+	if (m_modecount == 3)
+	{
+		m_ptutelial->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pRanking->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+		m_pGame->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+
 	}
 }
 //=============================================================================

@@ -82,8 +82,6 @@ private:
 
 protected:
 	static D3DXVECTOR3 m_rot;		//Œü‚«
-
-	CRenderer * m_prenderer;
 };
 
 #endif

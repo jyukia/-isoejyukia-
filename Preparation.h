@@ -30,7 +30,7 @@ public:
 private:
 
 	int ChangeCount;
-
+	int count;
 };
 
 #endif

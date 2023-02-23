@@ -114,7 +114,7 @@ private:
 	int m_nPriority;											// プライオリティの保存
 	EObjType m_objType;											// オブジェクトの種類
 
-																// リスト構造
+	// リスト構造
 	static CObject *m_pTop[PRIORITY_LEVELMAX];					// 先頭のオブジェクトへのポインタ
 	static CObject *m_pCurrent[PRIORITY_LEVELMAX];				// 現在(一番後ろ)のオブジェクトへのポインタ
 	CObject *m_pPrev;											// 前のオブジェクトへのポインタ

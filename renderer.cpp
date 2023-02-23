@@ -8,9 +8,11 @@
 #include "application.h"
 #include"DebugProc.h"
 #include "camera.h"
-#include"stage_imgui.h"
+//#include"stage_imgui.h"
 #include"Mapcamera.h"
-
+#include"game.h"
+#include"game1.h"
+#include"pause.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -166,16 +168,43 @@ void CRenderer::Uninit()
 //=============================================================================
 void CRenderer::Update()
 {
-	for(int Cnt = 0; Cnt < 2; Cnt++)
+	//ポーズの処理
+	CPause* pPause = CGame::GetPause();
+
+	if (pPause == nullptr)
 	{
-		//カメラの更新処理
-		if (m_pCamera[Cnt] != nullptr)
+		for (int Cnt = 0; Cnt < 2; Cnt++)
 		{
-			m_pCamera[Cnt]->Update();
+			//カメラの更新処理
+			if (m_pCamera[Cnt] != nullptr)
+			{
+				m_pCamera[Cnt]->Update();
+			}
+		}
+		//全てのオブジェクトの更新処理
+		CObject::UpdateAll();
+	}
+	else
+	{
+		if (pPause->GetPauseFlg())
+		{
+			pPause->Update();
+		}
+		else
+		{
+			for (int Cnt = 0; Cnt < 2; Cnt++)
+			{
+				//カメラの更新処理
+				if (m_pCamera[Cnt] != nullptr)
+				{
+					m_pCamera[Cnt]->Update();
+				}
+			}
+			//全てのオブジェクトの更新処理
+			CObject::UpdateAll();
 		}
 	}
-	//全てのオブジェクトの更新処理
-	CObject::UpdateAll();
+
 }
 
 //=============================================================================
@@ -219,7 +248,6 @@ void CRenderer::Draw()
 				{
 					m_pCamera[0]->SetPosV(D3DXVECTOR3(0.0f, 100.0f, -200.0f));	//元の値を入れる
 				}
-
 			}
 
 			if (Cnt == 1)//マップカメラ
@@ -277,7 +305,7 @@ void CRenderer::Draw()
 #endif // _DEBUG
 
 			}
-			CApplication::Getinstnce()->GetImgui()->Draw();
+			//CApplication::Getinstnce()->GetImgui()->Draw();
 
 			// Direct3Dによる描画の終了
 			m_pD3DDevice->EndScene();

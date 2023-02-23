@@ -22,7 +22,7 @@ class CMeshLine;
 class CGoal;
 class Cpreparation;
 class CParticle2D;
-
+class CObject3D;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -65,9 +65,14 @@ private:
 	CObject2D* m_pCompass;
 	D3DXVECTOR3 m_rot;
 
+	CObject3D* goalui;
 	CObject2D* m_pTimeUi;
 	CObject2D* m_pTime_Lope_Ui;
 	CTimer *m_Timer;
+
+	static CItem *m_pItem;
+
+	static CItem *m_pItemTimeUp;
 
 	//スコア
 	static CScore* GetScore() { return pScore; }

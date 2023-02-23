@@ -32,6 +32,7 @@
 #include "Particle.h"
 #include"2dParticle.h"
 #include "sound.h"
+#include "pause.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -41,8 +42,11 @@ CLight *CGame::m_pLight = nullptr;
 CMovelife* CGame::pMovelife = nullptr;
 CGoal* CGame::m_pGoal = nullptr;
 CItem* CGame::m_pItem = nullptr;
-CItem* CGame::m_pItemCoin = nullptr;
 CItem* CGame::m_pItemTimeUp = nullptr;
+CItem* CGame::m_pItemTimeUp1 = nullptr;
+
+CPause* CGame::pPause;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -66,6 +70,10 @@ HRESULT CGame::Init(void)
 {
 	//ライトの生成
 	m_pLight = CLight::Create();
+
+	//ゲーム開始の合図
+	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+
 	{//初期化
 		returnflg = false;
 		Goalflg = false;
@@ -111,12 +119,10 @@ HRESULT CGame::Init(void)
 	//スコア
 	//CApplication::Getinstnce()->GetpMode()->SetScore(CScore::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f)));
 
-	//ゲーム開始の合図
-	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH+100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CObject::PRIORITY_LEVEL3);
 
 	//CLoadStage::LoadAllTest(0);
 
-	CObject3D* goalui = CObject3D::Create(D3DXVECTOR3(1890.0f, 1000.0f, -2300.0f), D3DXVECTOR3(0.f,0.f,0.f), D3DXVECTOR3(350, 350.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+	goalui = CObject3D::Create(D3DXVECTOR3(1890.0f, 1000.0f, -2300.0f), D3DXVECTOR3(0.f,0.f,0.f), D3DXVECTOR3(350, 350.0f, 0.0f), CObject::PRIORITY_LEVEL4);
 	goalui->LoadTexture("Data/TEXTURE/GOALUI.png");//1890.0f, 605.0f, -2300.0f
 	goalui->SetBillboard(true);
 
@@ -124,13 +130,16 @@ HRESULT CGame::Init(void)
 	m_pGoal->LoadModel("BSKET");	//1890.0f, 605.0f, -2300.0f
 	m_pGoal->Setstring("GOAL");
 
-	m_pItem = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_MOVE_SPEED_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItem = CItem::Create(D3DXVECTOR3(560.0f, 605.0f, -1400.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_MOVE_SPEED_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItem->LoadModel("BOOTS");
 
-	m_pItemTimeUp = CItem::Create(D3DXVECTOR3(850.0f, 605.0f, -2000.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItemTimeUp = CItem::Create(D3DXVECTOR3(560.0f, 605.0f, -660.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
 	m_pItemTimeUp->LoadModel("ITEMTIME");
 
-	CObjectX* i[30];
+	m_pItemTimeUp1 = CItem::Create(D3DXVECTOR3(1900.0f, 605.0f, -1010.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItemTimeUp1->LoadModel("ITEMTIME");
+
+	CObjectX* i[9];
 	//必須
 	 i[0]= CObjectX::Create("CHAIR", D3DXVECTOR3(-500.0f, 0.0f, -1500.0f),  CObject::PRIORITY_LEVEL3);
 	 i[1] = CObjectX::Create("CHAIR", D3DXVECTOR3(2300.0f, 0.0f, -1500.0f), CObject::PRIORITY_LEVEL3);
@@ -151,11 +160,11 @@ HRESULT CGame::Init(void)
 
 	 for (int Cnt = 0;Cnt <3;Cnt++)
 	 {
-		 CObjectX* n = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f, 600.0f, -550.0f - 100 *Cnt ), CObject::PRIORITY_LEVEL3);
+		 CObjectX* n = CObjectX::Create("CUP", D3DXVECTOR3(320.0f, 600.0f, -550.0f - 100 *Cnt ), CObject::PRIORITY_LEVEL3);
 	 }
 	 for (int Cnt = 0; Cnt <10; Cnt++)
 	 {
-		 CObjectX* v = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f + 100 * Cnt, 600.0f, -850.0f), CObject::PRIORITY_LEVEL3);
+		 CObjectX* v = CObjectX::Create("CUP", D3DXVECTOR3(320.0f + 100 * Cnt, 600.0f, -850.0f), CObject::PRIORITY_LEVEL3);
 	 }
 	 for (int Cnt = 0; Cnt <9; Cnt++)
 	 {
@@ -165,7 +174,7 @@ HRESULT CGame::Init(void)
 	 {
 		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(320.0f + 100 * Cnt, 600.0f, -1200.0f), CObject::PRIORITY_LEVEL3);
 	 }
-	 for (int Cnt = 0; Cnt <15; Cnt++)
+	 for (int Cnt = 0; Cnt <13; Cnt++)
 	 {
 		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(820.0f, 600.0f, -1200.0f - 90 * Cnt), CObject::PRIORITY_LEVEL3);
 	 }
@@ -175,15 +184,15 @@ HRESULT CGame::Init(void)
 	 }
 	 for (int Cnt = 0; Cnt <4; Cnt++)
 	 {
-		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1450.0f + 100 * Cnt, 600.0f, -1830.0f), CObject::PRIORITY_LEVEL3);
+		 CObjectX* x = CObjectX::Create("BEERBOTTLE", D3DXVECTOR3(1520.0f + 100 * Cnt, 600.0f, -1830.0f), CObject::PRIORITY_LEVEL3);
 	 }
 	 for (int Cnt = 0; Cnt <4; Cnt++)
 	 {
-		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1350.0f - 100 * Cnt, 600.0f, -1830.0f), CObject::PRIORITY_LEVEL3);
+		 CObjectX* x = CObjectX::Create("BEERMUG", D3DXVECTOR3(1350.0f - 100 * Cnt, 600.0f, -1830.0f), CObject::PRIORITY_LEVEL3);
 	 }
-	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 for (int Cnt = 0; Cnt <5; Cnt++)
 	 {
-		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1050.0f , 600.0f, -2450.0f + 100 * Cnt), CObject::PRIORITY_LEVEL3);
+		 CObjectX* x = CObjectX::Create("BOTTLE1", D3DXVECTOR3(1050.0f , 600.0f, -2450.0f + 90 * Cnt), CObject::PRIORITY_LEVEL3);
 	 }
 	 for (int Cnt = 0; Cnt <5; Cnt++)
 	 {
@@ -197,14 +206,11 @@ HRESULT CGame::Init(void)
 	 {
 		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(1700.0f, 600.0f, -930.0f - 100 * Cnt), CObject::PRIORITY_LEVEL3);
 	 }
-	 for (int Cnt = 0; Cnt <4; Cnt++)
+	 for (int Cnt = 0; Cnt <2; Cnt++)
 	 {
-		 CObjectX* x = CObjectX::Create("BOTTLE", D3DXVECTOR3(2000.0f - 100 * Cnt, 600.0f, -1630.0f), CObject::PRIORITY_LEVEL3);
+		 CObjectX* x = CObjectX::Create("TEAPOT", D3DXVECTOR3(2000.0f - 200 * Cnt, 600.0f, -1630.0f), CObject::PRIORITY_LEVEL3);
+		 x->SetRot(D3DXVECTOR3(0.0f,45.0f + 50 * Cnt,0.0f));
 	 }
-
-
-	//m_pItemCoin = CItem::Create(D3DXVECTOR3(550.0f, 605.0f, -2300.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_SCORE_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
-	//m_pItemCoin->LoadModel("COIN");
 
 	//CObjectX* obje= CObjectX::Create("BOTTLE",D3DXVECTOR3(700,605,-880),3);
 	//CObjectX* obje1 = CObjectX::Create("BOTTLE", D3DXVECTOR3(400, 605, -880), 3);
@@ -247,11 +253,13 @@ HRESULT CGame::Init(void)
 	//CLoadStage::SaveAll();
 
 	//CBillboard* bill = CBillboard::Create("EFFECT", D3DXVECTOR3(110.0f, 610.0f, -600.0f), CObject::PRIORITY_LEVEL4);
-	
+
 	//
 	CObject2D* lifeui = CObject2D::Create("LIFE_UI", D3DXVECTOR3(150, 50, 0), D3DXVECTOR3(400, 200, 0),CObject::PRIORITY_LEVEL3);
 	CObject2D* lifeBG = CObject2D::Create("CHABG", D3DXVECTOR3(150, 104, 0), D3DXVECTOR3(300, 80, 0), CObject::PRIORITY_LEVEL3);
 	m_Movelife->Create(D3DXVECTOR3(70, 100, 0), CObject::PRIORITY_LEVEL3);
+
+	pPause = CPause::Create("INIESUTA", D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f), D3DXVECTOR3((float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2, 0.0f), CObject::PRIORITY_LEVEL4);
 
 	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GAME);
 
@@ -273,6 +281,8 @@ void CGame::Uninit(void)
 
 	//インスタンスの解放処理
 	CObject::Release();
+
+	CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GAME);
 }
 
 //=============================================================================
@@ -284,32 +294,25 @@ void CGame::Update(void)
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
 
-	if (m_pFade->GetFade() == CFade::FADE_NONE)
-	{
-		if (pInput->Trigger(DIK_RETURN))
-		{
-			// 遷移
-			CFade::SetFade(CApplication::MODE_RANKING);
-		}
-	}
+	//if (m_pFade->GetFade() == CFade::FADE_NONE)
+	//{
+	//	if (pInput->Trigger(DIK_RETURN))
+	//	{
+	//		// 遷移
+	//		CFade::SetFade(CApplication::MODE_RANKING);
+	//	}
+	//}
 
 	bool goalflg = CMode::GetGoal()->GetGoalFlg();
 	if (goalflg)
 	{
-		CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GAME);
-
 		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GOAL);
-
+		goalui->SetCol(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 		Goalflg = true;
 	}
 	if (Goalflg)
 	{
 		GoalCnt++;
-
-		if (GoalCnt > 120)
-		{
-			CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GOAL);
-		}
 	}
 	//コンパス処理
 	{

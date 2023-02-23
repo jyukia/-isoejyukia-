@@ -8,6 +8,7 @@
 #include "renderer.h"
 #include"application.h"
 #include"mode.h"
+#include"player.h"
 //‘O•ûéŒ¾
 class CNumber;
 class CFade;
@@ -45,8 +46,11 @@ private:
 	CNumber* pNumber[2];
 	int m_Time;	//î•ñ•Û‘¶
 
+	bool flg = CApplication::Getinstnce()->GetpMode()->GetPlayer()->Getbredycheck();
+
 	int TimeCnt;	//ŠÔæ“¾
 	bool returnflg;
+	int cnt;
 
 };
 

@@ -26,6 +26,8 @@
 #include "load_stage.h"
 #include"Timer.h"
 #include"2dParticle.h"
+#include "Item.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -36,6 +38,9 @@ CLight *CGame1::m_pLight = nullptr;
 CScore* CGame1::pScore = nullptr;
 CMovelife* CGame1::pMovelife = nullptr;
 CGoal* CGame1::m_pGoal = nullptr;
+CItem* CGame1::m_pItemTimeUp = nullptr;
+CItem* CGame1::m_pItem = nullptr;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -57,8 +62,10 @@ CGame1::~CGame1()
 //=============================================================================
 HRESULT CGame1::Init(void)
 {
-	//ライトの生成
+	//ゲーム開始の合図
+	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
+	//ライトの生成
 	m_pLight = CLight::Create();
 
 	{//初期化
@@ -76,9 +83,24 @@ HRESULT CGame1::Init(void)
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(2300.0f, 20.0f, -2900.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
+	//コンパス生成
+	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+
+
+	goalui = CObject3D::Create(D3DXVECTOR3(1100.0f, 400.0f, -600.0f), D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(350, 350.0f, 0.0f), CObject::PRIORITY_LEVEL4);
+	goalui->LoadTexture("Data/TEXTURE/GOALUI.png");//1890.0f, 605.0f, -2300.0f
+	goalui->SetBillboard(true);
+
 	m_pGoal = CGoal::Create(D3DXVECTOR3(1100.0f, 0.0f, -600.0f), CObject::PRIORITY_LEVEL3);
 	m_pGoal->LoadModel("BSKET");
 	m_pGoal->Setstring("GOAL");
+
+	m_pItem = CItem::Create(D3DXVECTOR3(1350.0f, 0.0f, -1900.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_MOVE_SPEED_UP);	//ITEM_MOVELIFE_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItem->LoadModel("BOOTS");
+
+	m_pItemTimeUp = CItem::Create(D3DXVECTOR3(730.0f, 0.0f, -1860.0f), CObject::PRIORITY_LEVEL3, CItem::ITEM_GAMETIME_UP);	//ITEM_GAMETIME_UP  ITEM_MOVE_SPEED_UP ITEM_SCORE_UP
+	m_pItemTimeUp->LoadModel("ITEMTIME");
+
 
 	//CObjectX* obje = CObjectX::Create("CONE", D3DXVECTOR3(1680.0f ,0.0f ,- 2600.0f), CObject::PRIORITY_LEVEL3);
 
@@ -148,7 +170,7 @@ HRESULT CGame1::Init(void)
 	{
 		CObjectX* botle = CObjectX::CObjectX::Create("BOTTLE", D3DXVECTOR3(850.0f - 100 * cont, 0.0f, -950.0f ), CObject::PRIORITY_LEVEL3);
 	}
-	CObjectX* bottle = CObjectX::CObjectX::Create("BOTTLE", D3DXVECTOR3(540.0f, 0.0f, -970.0f), CObject::PRIORITY_LEVEL3);
+	//CObjectX* bottle = CObjectX::CObjectX::Create("BOTTLE", D3DXVECTOR3(540.0f, 0.0f, -970.0f), CObject::PRIORITY_LEVEL3);
 
 	CObjectX* bottle1 = CObjectX::CObjectX::Create("BOTTLE", D3DXVECTOR3(2700.0f, 20.0f, -1700.0f), CObject::PRIORITY_LEVEL3);
 	bottle1->SetRot(D3DXVECTOR3(0.0f,0.0f, D3DX_PI / 2));
@@ -176,7 +198,6 @@ HRESULT CGame1::Init(void)
 	//{
 	//	CObjectX* botle = CObjectX::CObjectX::Create("BEERMUG", D3DXVECTOR3(860.0f, 0.0f, -2500.0f - 100 * cont), CObject::PRIORITY_LEVEL3);
 	//}
-
 
 	{//壁
 		for (int cont = 0; cont < 5; cont++)
@@ -249,19 +270,13 @@ HRESULT CGame1::Init(void)
 		}
 		for (int cont = 0; cont < 2; cont++)
 		{
-			CObjectX* beermug = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(1790.0f - 240 * cont, 0.0f, -750.0f - 220 * cont), CObject::PRIORITY_LEVEL3);
+			CObjectX* beermug = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(1790.0f - 270 * cont, 0.0f, -750.0f - 220 * cont), CObject::PRIORITY_LEVEL3);
 		}
 		for (int cont = 0; cont < 3; cont++)
 		{
 			CObjectX* beermug = CObjectX::CObjectX::Create("CONE", D3DXVECTOR3(2450.0f, 0.0f, -1000.0f + 250 * cont), CObject::PRIORITY_LEVEL3);
 		}
 	}
-
-	//コンパス生成
-	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
-
-	//ゲーム開始の合図
-	m_pPreparation->Create("REDY", D3DXVECTOR3(SCREEN_WIDTH + 100, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 	CObject2D* lifeui = CObject2D::Create("LIFE_UI", D3DXVECTOR3(150, 50, 0), D3DXVECTOR3(400, 200, 0), CObject::PRIORITY_LEVEL3);
 	CObject2D* lifeBG = CObject2D::Create("CHABG", D3DXVECTOR3(150, 104, 0), D3DXVECTOR3(300, 80, 0), CObject::PRIORITY_LEVEL3);
@@ -275,6 +290,8 @@ HRESULT CGame1::Init(void)
 	CSkyField::Create();
 
 	//CLoadStage::LoadAllTest(0);
+
+	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GAME);
 
 	return S_OK;
 }
@@ -294,6 +311,8 @@ void CGame1::Uninit(void)
 
 	//インスタンスの解放処理
 	CObject::Release();
+	
+	CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GAME);
 }
 
 //=============================================================================
@@ -304,14 +323,14 @@ void CGame1::Update(void)
 	// 入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
 
-	if (m_pFade->GetFade() == CFade::FADE_NONE)
-	{
-		if (pInput->Trigger(DIK_RETURN))
-		{
-			// 遷移
-			CFade::SetFade(CApplication::MODE_RANKING);
-		}
-	}
+	//if (m_pFade->GetFade() == CFade::FADE_NONE)
+	//{
+	//	if (pInput->Trigger(DIK_RETURN))
+	//	{
+	//		// 遷移
+	//		CFade::SetFade(CApplication::MODE_RANKING);
+	//	}
+	//}
 
 	//コンパス処理
 	{
@@ -332,6 +351,8 @@ void CGame1::Update(void)
 	bool flg = CApplication::Getinstnce()->GetpMode()->GetGoal()->GetGoalFlg();
 	if (flg)		//ゴールとプレイヤーが触れたら
 	{
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_GOAL);
+		goalui->SetCol(D3DXCOLOR(0.0f,0.0f,0.0f,0.0f));
 		returnflg = true;
 	}
 	if (!flg)

@@ -30,6 +30,14 @@ CObject3D::CObject3D(int nPriority) :
 //=============================================================================
 CObject3D::~CObject3D()
 {
+	if (m_pVtxBuff != nullptr)
+	{
+		m_pVtxBuff->Release();
+		m_pVtxBuff = nullptr;
+	}
+	////バッファが消去されてたら普通に通る(NULLチェック)
+	assert(m_pVtxBuff == nullptr);
+
 }
 
 //=============================================================================
@@ -108,7 +116,11 @@ void CObject3D::Uninit()
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
-
+	if (m_pTexture != NULL)
+	{
+		m_pTexture->Release();
+		m_pTexture = NULL;
+	}
 	//インスタンスの解放処理
 	Release();
 }

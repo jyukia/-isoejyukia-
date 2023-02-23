@@ -132,9 +132,11 @@ void CTimer::Sublife(int nDecrease)
 
 	m_Time -= nDecrease;
 
+
 	if (m_Time <= 0)
 	{//0ˆÈ‰º‚¾‚Á‚½‚ç
 		m_Time = 0;
+		flg = false;
 
 		CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_GAME);
 
@@ -144,6 +146,8 @@ void CTimer::Sublife(int nDecrease)
 			CFade::SetFade(CApplication::MODE_RANKING);
 		}
 
+		//ˆÚ“®o—ˆ‚È‚¢‚æ‚¤‚É‚·‚é
+		CApplication::Getinstnce()->GetpMode()->GetPlayer()->Setbredycheck(flg);
 	}
 
 	aPosTexU[0] = m_Time % 100 / 10;

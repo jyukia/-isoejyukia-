@@ -26,7 +26,7 @@ class CSkyField;
 class CTitle : public CMode
 {
 public:
-	const int m_modeMax = 2;	//画面遷移の最大数	//モード数によって変更
+	const int m_modeMax = 3;	//画面遷移の最大数	//モード数によって変更
 	const int m_modeMin = 1;	//画面遷移の最小数	//変更不要
 public:
 	//-------------------------------------------------------------------------
@@ -59,6 +59,8 @@ private:
 
 	CObject2D* m_pGame;
 	CObject2D* m_pRanking;
+	CObject2D* m_ptutelial;
+
 
 	static CPlayer *m_pPlayer;				// プレイヤーのポインタ
 	static CLight *m_pLight;				// ライトのポインタ

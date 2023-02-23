@@ -26,6 +26,8 @@ class CBillboard;
 class CTimer;
 class CParticle2D;
 class CSound;
+class CPause;
+class CObject3D;
 //=============================================================================
 // クラスの定義
 //=============================================================================
@@ -48,6 +50,8 @@ public:
 	static CGame *Create();			// 生成処理
 
 	static CMeshfield *GetMeshfield() { return m_pMeshField; }
+	static CPause* GetPause() { return pPause; }
+
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
@@ -58,12 +62,13 @@ private:
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	
 	static CGoal *m_pGoal;				//ゴールポインタ
 	
+	static CPause* pPause;
+
 	//移動力アップ
 	static CItem *m_pItem;
 
 	static CItem *m_pItemTimeUp;
-
-	static CItem *m_pItemCoin;	//COIN
+	static CItem *m_pItemTimeUp1;
 
 	CTimer *m_Timer;
 
@@ -76,7 +81,7 @@ private:
 
 	CObject2D* m_pTimeUi;
 	CObject2D* m_pTime_Lope_Ui;
-
+	CObject3D* goalui;
 	CMovelife* m_Movelife;
 
 	D3DXVECTOR3 m_rot;

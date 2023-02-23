@@ -20,7 +20,7 @@
 #include"Item.h"
 #include "Preparation.h"
 #include "goal.h"
-#include"joypad.h"
+#include "inputjoypad.h"
 //=============================================================================
 // 定数定義
 //=============================================================================
@@ -125,7 +125,7 @@ void CPlayer::Update()
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 	//コントローラー
-	CJoypad *pJoy = CApplication::GetJoy();
+	CInputJoyPad *pJoy = CApplication::GetJoy();
 
 	// 向き取得
 	D3DXVECTOR3 rot = GetRot();
@@ -234,7 +234,7 @@ void CPlayer::Update()
 		if (redycheckflg)	//よーいドンで開始のためのフラグ
 		{
 			//メッシュ回収の為戻る処理
-			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(CJoypad::JOYKEY_B, 0))	//戻る処理
+			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(DirectJoypad::JOYPAD_B, 0))	//戻る処理
 			{
 					m_pMeshLine->AddVtxCount(-2);//戻る
 
@@ -326,17 +326,17 @@ void CPlayer::Update()
 					m_rotDest.y = pCameraRot.y + -D3DX_PI * 0.5f;
 				}
 
-				if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0)		//w
-					|| pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0)	//a
-					|| pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0)	//s 
-					|| pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))	//d 
+				if (pJoy->GetPress(DirectJoypad::JOYPAD_UP, 0)		//w
+					|| pJoy->GetPress(DirectJoypad::JOYPAD_LEFT, 0)	//a
+					|| pJoy->GetPress(DirectJoypad::JOYPAD_RIGHT, 0)	//s 
+					|| pJoy->GetPress(DirectJoypad::JOYPAD_DOWN, 0))	//d 
 				{// 移動キーが押された
 
 					eScaleType = TypeScaleDown;
 
-					if (pJoy->GetPress(CJoypad::JOYKEY_UP, 0))
+					if (pJoy->GetPress(DirectJoypad::JOYPAD_UP, 0))
 					{// [W]キーが押された時
-						if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+						if (pJoy->GetPress(DirectJoypad::JOYPAD_LEFT, 0))
 						{// [A]キーが押された時
 						 // 移動方向の更新
 							keyCnt++;
@@ -345,7 +345,7 @@ void CPlayer::Update()
 
 							m_rotDest.y = pCameraRot.y + D3DX_PI * 0.75f;
 						}
-						else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+						else if (pJoy->GetPress(DirectJoypad::JOYPAD_RIGHT, 0))
 						{// [D]キーが押された時
 						 // 移動方向の更新
 							keyCnt++;
@@ -364,9 +364,9 @@ void CPlayer::Update()
 							m_rotDest.y = pCameraRot.y + D3DX_PI;
 						}
 					}
-					else if (pJoy->GetPress(CJoypad::JOYKEY_DOWN, 0))
+					else if (pJoy->GetPress(DirectJoypad::JOYPAD_DOWN, 0))
 					{// [S]キーが押された時
-						if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+						if (pJoy->GetPress(DirectJoypad::JOYPAD_LEFT, 0))
 						{// [A]キーが押された時
 						 // 移動方向の更新
 							keyCnt++;
@@ -376,7 +376,7 @@ void CPlayer::Update()
 
 							m_rotDest.y = pCameraRot.y + D3DX_PI * 0.25f;
 						}
-						else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+						else if (pJoy->GetPress(DirectJoypad::JOYPAD_RIGHT, 0))
 						{// [D]キーが押された時
 						 // 移動方向の更新
 							keyCnt++;
@@ -395,7 +395,7 @@ void CPlayer::Update()
 							m_rotDest.y = pCameraRot.y + 0.0f;
 						}
 					}
-					else if (pJoy->GetPress(CJoypad::JOYKEY_LEFT, 0))
+					else if (pJoy->GetPress(DirectJoypad::JOYPAD_LEFT, 0))
 					{// [A]キーが押された時
 					 // 移動方向の更新
 						keyCnt++;
@@ -404,7 +404,7 @@ void CPlayer::Update()
 						move.z -= cosf(D3DX_PI * 0.5f + pCameraRot.y) * m_nSpeed;
 						m_rotDest.y = pCameraRot.y + D3DX_PI * 0.5f;
 					}
-					else if (pJoy->GetPress(CJoypad::JOYKEY_RIGHT, 0))
+					else if (pJoy->GetPress(DirectJoypad::JOYPAD_RIGHT, 0))
 					{// [D]キーが押された時
 					 // 移動方向の更新
 						keyCnt++;

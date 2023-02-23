@@ -16,7 +16,7 @@
 #include "ranking.h"
 #include "goal.h"
 #include "score.h"
-#include"joypad.h"
+#include "inputjoypad.h"
 
 //コンストラクタ
 CMovelife::CMovelife(int nPriority)
@@ -38,8 +38,14 @@ HRESULT CMovelife::Init()
 		pNumber[numberCnt] = CNumber::Create("NUMBER", D3DXVECTOR3(pos.x + numberCnt *45.0f, pos.y, pos.z), D3DXVECTOR3(35.0f, 40.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 3);
 	}
 
-	Setlife(10000);
-
+	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME)
+	{
+		Setlife(5002);
+	}
+	else if(CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
+	{
+		Setlife(5000);
+	}
 	return S_OK;
 }
 //-----------------------------------------
@@ -53,6 +59,7 @@ void CMovelife::Uninit()
 //-----------------------------------------
 void CMovelife::Update()
 {
+
 	D3DXVECTOR3 pos = CObject2D::GetPos();
 
 	//プレイヤー情報
@@ -61,7 +68,7 @@ void CMovelife::Update()
 	bool flg =CApplication::Getinstnce()->GetpMode()->GetMeshLine()->GetbIsLanding();
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
 	//コントローラー
-	CJoypad *pJoy = CApplication::GetJoy();
+	CInputJoyPad *pJoy = CApplication::GetJoy();
 
 	if (CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME || CApplication::Getinstnce()->GetMode() == CApplication::MODE_GAME1)
 	{
@@ -82,7 +89,7 @@ void CMovelife::Update()
 		else
 		{
 			//減る処理
-			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(CJoypad::JOYKEY_B, 0))
+			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(DirectJoypad::JOYPAD_B, 0))
 			{
 				type = RETURN;
 			}

@@ -11,7 +11,6 @@
 #include"DebugProc.h"
 #include "player.h"
 #include "mode.h"
-
 #include "sound.h"
 
 //コンストラクタ
@@ -44,6 +43,8 @@ HRESULT Cpreparation::Init()
 //-----------------------------------------
 void Cpreparation::Update()
 {
+	ChangeCount++;	//テクスチャ変更カウント
+
 	D3DXVECTOR3 pos = CObject2D::GetPos();
 	D3DXVECTOR3 size = CObject2D::GetSize();
 	D3DXVECTOR3 rot = CObject2D::GetRot();
@@ -52,42 +53,36 @@ void Cpreparation::Update()
 
 	if (pos.x <= SCREEN_WIDTH_HALF)	//画面半分まで進み止まった際
 	{
-		ChangeCount++;	//テクスチャ変更カウント
+		count++;
+		if (count >= 60)
+		{
+			BindTexture("GO");
+		}
 
 		pos.x = SCREEN_WIDTH_HALF;
-
 		rot.z = sinf(ChangeCount * -0.1f);
-		if (ChangeCount >= 30)
+
+		if (ChangeCount >= 60)
 		{
 			rot.z = 0.0f;
 		}
-		if (ChangeCount >= 120)
+		if (ChangeCount >= 150)
 		{
-			CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_REDY_SOUND);
-
-			BindTexture("GO");
-			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_START_SOUND);
-
 			CApplication::Getinstnce()->GetpMode()->GetPlayer()->Setbredycheck(true);
 		}
-		if (ChangeCount == 150)
+		if (ChangeCount == 160)
 		{
 			//SetCol(col);
-			Cpreparation::Release();
-			CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_START_SOUND);
-
+			Cpreparation::Uninit();
 		}
-
 	}
-	else		//画面半分まで進みきっていないとき
+	else	//画面半分まで進みきっていないとき
 	{
 		pos.x -= 10.0f;
 	}
 
 	CObject2D::SetRot(rot);
-
 	CObject2D::SetPos(pos);
-
 	CObject2D::Update();
 }
 

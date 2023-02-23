@@ -18,7 +18,8 @@
 #include"Number.h"
 #include"movelife.h"
 #include "Meshline.h"
-#include"joypad.h"
+#include "inputjoypad.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -74,26 +75,6 @@ HRESULT CRanking::Init(void)
 	//タイトル配置
 	//m_pObject2D[0] = CObject2D::Create("RANKING", D3DXVECTOR3(1280.0f / 2, -20.0f, 0.0f), D3DXVECTOR3(500.0f, 500.0f, 0.0f), PRIORITY_LEVEL0);
 
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ranking.png",
-		&m_pTexture[0]);
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ranking_logo.png",
-		&m_pTexture[1]);
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\ranking_rank.png",
-		&m_pTexture[2]);
-
-	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,
-		"data\\TEXTURE\\number000.png",
-		&m_pTexture[3]);
-
 	//プレイヤーの生成
 	CApplication::Getinstnce()->GetpMode()->SetPlayer(CPlayer::Create(D3DXVECTOR3(1100.0f, 610.0f, -2600.0f), CObject::PRIORITY_LEVEL3));
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
@@ -105,10 +86,13 @@ HRESULT CRanking::Init(void)
 	CObject2D* stagename = CObject2D::Create("STAGENAME1", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);	//背景
 	CObject2D* stagename1 = CObject2D::Create("STAGENAME", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 160, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);	//背景
 
-
 	CObject2D* bg = CObject2D::Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 - 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);//背景
 	CObject2D* bg1 = CObject2D::Create("RANKINGBG", D3DXVECTOR3(SCREEN_WIDTH / 2 + 300, 420, 0.0f), D3DXVECTOR3(500, 450, 0), CObject::PRIORITY_LEVEL4);//背景
-	
+	CObject2D* bg2 = CObject2D::Create("RANKING_UI_BG", D3DXVECTOR3(SCREEN_WIDTH / 2, 50, 0.0f), D3DXVECTOR3(1000, 700, 0), CObject::PRIORITY_LEVEL4);//背景
+
+	CObject2D* rankingbg = CObject2D::Create("RANKING_UI", D3DXVECTOR3(SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 + 50, 0.0f), D3DXVECTOR3(600, 550, 0), CObject::PRIORITY_LEVEL4);	//背景
+	CObject2D* rankingbg1 = CObject2D::Create("RANKING_UI", D3DXVECTOR3(SCREEN_WIDTH / 2 +100, SCREEN_HEIGHT / 2 + 50, 0.0f), D3DXVECTOR3(600, 550, 0), CObject::PRIORITY_LEVEL4);	//背景
+
 	for (int Cnt = 0; Cnt < MAX_RANKING; Cnt++)
 	{
 		m_pMovelife[Cnt] = nullptr;
@@ -143,6 +127,9 @@ HRESULT CRanking::Init(void)
 	//タイトル画像(仮)の生成
 	//CObject2D* test = CObject2D::Create("INIESUTA", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(700.0f, 500.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
+	CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_RESULT);
+
+
 	//ファイル読み込み処理
 	CLoadStage::LoadAllTest(0);
 
@@ -159,6 +146,8 @@ void CRanking::Uninit(void)
 {
 	//インスタンスの解放処理
 	CObject::Release();
+
+	CApplication::Getinstnce()->GetSound()->Stop(CSound::LABEL_RESULT);
 }
 
 //=============================================================================
@@ -169,7 +158,7 @@ void CRanking::Update(void)
 	//入力処理用のポインタ宣言
 	CInput *pInput = CApplication::Getinstnce()->GetInput();
 	//コントローラー
-	CJoypad *pJoy = CApplication::GetJoy();
+	CInputJoyPad *pJoy = CApplication::GetJoy();
 
 	if (!m_bmodeflg)
 	{
@@ -178,13 +167,14 @@ void CRanking::Update(void)
 			m_bmodeflg = true;
 		}
 	}
-	if (pInput->Trigger(DIK_RETURN) || pJoy->GetPress(CJoypad::JOYKEY_B, 0) && m_pFade->GetFade() == CFade::FADE_NONE)
+	if (pInput->Trigger(DIK_RETURN) || pJoy->GetPress(DirectJoypad::JOYPAD_B, 0) && m_pFade->GetFade() == CFade::FADE_NONE)
 	{// ENTERキーが押されたら実行
 		if (m_pFade->GetFade() == CFade::FADE_NONE)
 		{
 			//モード設定
 			CFade::SetFade(CApplication::MODE_TITLE);
 		}
+		CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_SELECT);
 	}
 }
 
@@ -307,7 +297,6 @@ void CRanking::Save1(void)
 //=============================================================================
 void CRanking::SetRankingScore()
 {
-
 	if (m_nRanking > aData[MAX_RANKINGRANK - 1])
 	{
 		aData[MAX_RANKINGRANK - 1] = m_nRanking;
@@ -325,7 +314,6 @@ void CRanking::SetRankingScore()
 			}
 		}
 	}
-
 	//for (int nCntScore = 0; nCntScore < MAX_RANKINGRANK; nCntScore++)
 	//{
 	//	aPosTexU[nCntScore][0] = aData[nCntScore] % 100000 / 10000;
@@ -351,8 +339,6 @@ void CRanking::GetRanking(int Ranking)
 {
 	m_nRanking = Ranking;
 }
-
-
 void CRanking::SetRankingScore1()
 {
 
@@ -373,7 +359,6 @@ void CRanking::SetRankingScore1()
 			}
 		}
 	}
-
 }
 void CRanking::GetRanking1(int Ranking)
 {

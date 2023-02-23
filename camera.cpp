@@ -10,7 +10,7 @@
 #include"DebugProc.h"
 #include"SelectStage.h"
 #include "goal.h"
-#include"joypad.h"
+#include "inputjoypad.h"
 
 #include <math.h>
 
@@ -149,21 +149,13 @@ void CCamera::Update(void)
 			//}
 
 			//コントローラー
-			CJoypad *pJoy = CApplication::GetJoy();
-			if (pJoy->GetTriggerPedal(CJoypad::JOYKEY_LEFT_TRIGGER, 0))
-			{
-				m_rot.y -= 0.05f;
-			}
-			if (pJoy->GetTriggerPedal(CJoypad::JOYKEY_RIGHT_TRIGGER, 0))
-			{
-				m_rot.y += 0.05f;
-			}
+			CInputJoyPad *pJoy = CApplication::GetJoy();
 			//視点の旋回
-			if (pInputKeyboard->Press(DIK_E))
+			if (pInputKeyboard->Press(DIK_E)|| pJoy->GetPress(DirectJoypad::JOYPAD_R2, 0))
 			{//左に旋回
 				m_rot.y += 0.03f;
 			}
-			else if (pInputKeyboard->Press(DIK_Q))
+			else if (pInputKeyboard->Press(DIK_Q) || pJoy->GetPress(DirectJoypad::JOYPAD_L2, 0))
 			{//右に旋回
 				m_rot.y -= 0.03f;
 			}

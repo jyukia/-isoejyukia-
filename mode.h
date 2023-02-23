@@ -23,7 +23,6 @@ class CItem;
 class Cpreparation;
 class CGoal;
 class CScore;
-class CJoypad;
 class CInputJoyPad;
 class CTimer;
 //=============================================================================
@@ -88,7 +87,7 @@ public:
 	static CScore* GetScore() { return m_GameScore; }
 	static void SetScore(CScore* score) {  m_GameScore= score; }
 
-	static CJoypad* GetJoy() { return m_joypad; }
+	static CInputJoyPad* GetJoy() { return m_joypad; }
 	static CInputJoyPad* GetInpuJoy() { return m_Inputjoypad; }
 
 	static CTimer* GetTimer() {return m_Timer;}
@@ -116,7 +115,7 @@ private:
 	static CScore *m_GameScore;
 
 	static CInputJoyPad* m_Inputjoypad;
-	static CJoypad* m_joypad;
+	static CInputJoyPad* m_joypad;
 
 	static CTimer* m_Timer;
 };

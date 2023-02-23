@@ -166,7 +166,8 @@ void CMeshLine::Update()
 		}
 		else
 		{
-			if (m_Vtxcount >= MaxLine)	//最大移動量に達した場合	プレイヤーの移動を制限
+			int a = 0;
+			if (m_Vtxcount >= 5000)	//最大移動量に達した場合	プレイヤーの移動を制限
 			{
 				CMode::GetPlayer()->SetbMoveFlg(false);
 			}

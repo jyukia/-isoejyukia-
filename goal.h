@@ -11,6 +11,7 @@
 //=============================================================================
 class CShadow;
 class CFade;
+class CObject2D;
 class CGoal : public CObjectX
 {
 public:
@@ -42,6 +43,8 @@ private:
 
 	int Cnt;
 	static bool flg;
+
+	CObject2D* Goal;
 };
 
 

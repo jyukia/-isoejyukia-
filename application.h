@@ -5,7 +5,7 @@
 // インクルードファイル
 //=============================================================================
 #include "main.h"
-
+//#include"stage_imgui.h"
 //=============================================================================
 // クラスの前方定義
 //=============================================================================
@@ -26,7 +26,7 @@ class CMeshLine;
 class CItem;
 class Cpreparation;
 class CTimer;
-class CJoypad;
+class CInputJoyPad;
 
 //=============================================================================
 // クラスの定義
@@ -143,7 +143,7 @@ public:
 	CTexture *GetTexture() { return m_pTexture; }
 	CObjectXGroup *GetObjectXGroup() { return m_pObjectXGroup; }
 	CSound *GetSound() { return m_pSound; }
-	CStageImgui *GetImgui() { return m_Imgui; }
+	//CStageImgui *GetImgui() { return m_Imgui; }
 	CMode *GetpMode() { return m_pMode; }
 	CItem* GetItem() { return m_Item; }
 
@@ -155,13 +155,13 @@ public:
 
 	CTimer *GetTimer() {return m_Timer;}
 	
-	static CJoypad *GetJoy() { return m_pJoy; }											// ジョイパッドのゲッター
+	static CInputJoyPad *GetJoy() { return m_pJoy; }											// ジョイパッドのゲッター
 
 private:
 	//-------------------------------------------------------------------------
 	// メンバー変数
 	//-------------------------------------------------------------------------
-	static CJoypad *m_pJoy;
+	static CInputJoyPad *m_pJoy;
 
 
 	HWND Hwnd;
@@ -179,12 +179,12 @@ private:
 	CSound *m_pSound;
 	CDebugProc *m_pDebugProc;			// デバック表示
 
-	CStageImgui *m_Imgui;
+	//CStageImgui *m_Imgui;
 	CLight *m_Light;
 	CItem *m_Item;
 	Cpreparation *m_preparation;
 	CTimer * m_Timer;
-};
+};//
 
 
 //--------------------------------------------------

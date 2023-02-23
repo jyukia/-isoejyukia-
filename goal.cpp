@@ -41,6 +41,9 @@ HRESULT CGoal::Init()
 	//影の生成
 	CShadow::Create(pos, size, CObject::PRIORITY_LEVEL3);
 
+	Goal = CObject2D::Create("GOALUI", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), PRIORITY_LEVEL4);
+	Goal->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+
 	return S_OK;
 }
 
@@ -79,7 +82,7 @@ void CGoal::Update()
 			{
 				CObjectX *pObjectX = (CObjectX*)pObject;
 
-				D3DXVECTOR3 size = 	D3DXVECTOR3(250,100,200);
+				D3DXVECTOR3 size = 	D3DXVECTOR3(200,100,200);
 				GoalFlg = Collision(&pPlayerPos, &pPlayerPosOld, &size, false);
 			}
 			//ポインタを次に進める
@@ -93,6 +96,8 @@ void CGoal::Update()
 	}
 	if (flg)	//ゴールとプレイヤーが触れたら
 	{
+		Goal->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 		Cnt++;
 		if (Cnt >= 480)
 		{

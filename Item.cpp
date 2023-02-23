@@ -100,8 +100,8 @@ void CItem::Update()
 			{
 				CObjectX *pObjectX = (CObjectX*)pObject;
 
-				D3DXVECTOR3 size = D3DXVECTOR3(100, 100, 100);
-				HitFlg = Collision(&pPlayerPos, &pPlayerPosOld, &size, false);
+				D3DXVECTOR3 size = D3DXVECTOR3(150, 150, 150);
+				HitFlg = Collision(&pPlayerPos, &pPlayerPosOld, &size, true);
 			}
 
 			//ポインタを次に進める
@@ -123,8 +123,7 @@ void CItem::Update()
 				break;
 			case CItem::ITEM_GAMETIME_UP:
 
-			//CApplication::Getinstnce()->GetpMode()->GetTimer()->Addlife(5);	//５秒加算
-
+			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_CLOCK);	//コイン音
 			MoveLifeUpflg = true;
 				break;
 			case CItem::ITEM_SCORE_UP:
@@ -158,6 +157,7 @@ void CItem::Update()
 			default:
 				break;
 			}
+			rot.y += 0.1f;	//コインの回転
 		}
 		SetPos(pos);
 		SetRot(rot);
@@ -271,8 +271,6 @@ bool CItem::Collision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR3 * p
 		{
 			bIsLanding = true;
 			Uninit();
-
-
 		}
 		// モデルの手前側当たり判定
 		if ((pPos->x - pSize->x / 2.0f < pos.x + Max.x) &&
@@ -284,8 +282,6 @@ bool CItem::Collision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR3 * p
 		{
 			bIsLanding = true;
 			Uninit();
-
-
 		}
 	}
 

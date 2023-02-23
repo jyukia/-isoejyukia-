@@ -66,7 +66,6 @@ private:
 	static int aData[MAX_RANKINGRANK];
 	static int bData[MAX_RANKINGRANK];
 
-
 	static CLight *m_pLight;				// ライトのポインタ
 	static CGoal *m_pGoal;				//ゴールポインタ
 	static CMeshfield *m_pMeshField;		// メッシュフィールドのポインタ	

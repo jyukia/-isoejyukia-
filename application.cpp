@@ -22,34 +22,31 @@
 #include "sound.h"
 #include"DebugProc.h"
 #include"SelectStage.h"
-#include "joypad.h"
+#include "inputjoypad.h"
 
-#include"stage_imgui.h"
+//#include"stage_imgui.h"
 
 //紅茶で移動速度を落とすギミック追加
-
 //２つ目のマップ坂を作り移動、虫の追加はねられて移動ベクトル変更
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
 CApplication *CApplication::m_pApplication = nullptr;
-CJoypad *CApplication::m_pJoy = {};
+CInputJoyPad *CApplication::m_pJoy = {};
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Imgui(nullptr), m_Item(nullptr)
+CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Item(nullptr)//, m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_GAME;//MODE_RANKING
+	CApplication::m_mode = MODE_RANKING;//MODE_RANKING
 }
-
 //=============================================================================
 // デストラクタ
 //=============================================================================
 CApplication::~CApplication()
 {
-
 }
 //=============================================================================
 // 初期化処理
@@ -68,7 +65,6 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	{ //初期化処理が失敗した場合
 		return -1;
 	}
-
 	//インプットクラスの生成
 	m_pInput = CInput::Create();
 	//インプットの初期化処理
@@ -76,8 +72,8 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	{ //初期化処理が失敗した場合
 		return -1;
 	}
-	m_pJoy = new CJoypad;
-	if (FAILED(m_pJoy->Init(1)))
+	m_pJoy = new CInputJoyPad;
+	if (FAILED(m_pJoy->Init(hInstance, hWnd)))
 	{
 		return E_FAIL;
 	}
@@ -88,24 +84,28 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pDebugProc->Init();
 
 	LPDIRECT3DDEVICE9 pDevice = m_pRenderer->GetDevice();
-	m_Imgui = new CStageImgui;
-	// 初期化
-	assert(m_Imgui != nullptr);
-	m_Imgui->Init(hWnd, pDevice);
+	//m_Imgui = new CStageImgui;
+	//// 初期化
+	//assert(m_Imgui != nullptr);
+	//m_Imgui->Init(hWnd, pDevice);
 
 	// カメラの初期化
 	m_pCamera = new CCamera;
+	assert(m_pCamera != nullptr);
 
 	// テクスチャの生成
 	m_pTexture = new CTexture;
+	assert(m_pTexture != nullptr);
 	m_pTexture->LoadAll();
 
 	// モデルの生成
 	m_pObjectXGroup = new CObjectXGroup;
+	assert(m_pObjectXGroup != nullptr);
 	m_pObjectXGroup->LoadAll();
 
 	// サウンドの生成
 	m_pSound = new CSound;
+	assert(m_pSound != nullptr);
 	m_pSound->Init(hWnd);
 
 	//モード生成
@@ -119,8 +119,6 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 //=============================================================================
 void CApplication::Uninit(void)
 {
-	//オブジェクトの全開放
-	CObject::UninitAll();
 
 	// テクスチャの削除
 	if (m_pTexture != nullptr)
@@ -172,7 +170,6 @@ void CApplication::Uninit(void)
 		delete m_pJoy;
 		m_pJoy = nullptr;
 	}
-
 	//カメラの解放・削除
 	if (m_pCamera != nullptr)
 	{
@@ -181,12 +178,15 @@ void CApplication::Uninit(void)
 		m_pCamera = nullptr;
 	}
 	//imguiの解放
-	if (m_Imgui != nullptr)
-	{
-		//m_Imgui->Uninit(Hwnd, wcex);
-		delete m_Imgui;
-		m_Imgui = nullptr;
-	}
+	//if (m_Imgui != nullptr)
+	//{
+	//	//m_Imgui->Uninit(Hwnd, wcex);
+	//	delete m_Imgui;
+	//	m_Imgui = nullptr;
+	//}
+	//オブジェクトの全開放
+	CObject::UninitAll();
+
 }
 
 //=============================================================================
@@ -220,10 +220,10 @@ void CApplication::Update(void)
 		m_pCamera->Update();
 	}
 	//imguiの更新処理
-	if (m_Imgui != nullptr)
-	{
-		m_Imgui->Update();
-	}
+	//if (m_Imgui != nullptr)
+	//{
+	//	m_Imgui->Update();
+	//}
 }
 
 //=============================================================================
@@ -237,10 +237,10 @@ void CApplication::Draw(void)
 		m_pRenderer->Draw();
 	}
 	//imguiの描画処理
-	if (m_Imgui != nullptr)
-	{
-		m_Imgui->Draw();
-	}
+	//if (m_Imgui != nullptr)
+	//{
+	//	m_Imgui->Draw();
+	//}
 }
 
 //=============================================================================

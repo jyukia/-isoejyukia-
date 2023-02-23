@@ -65,6 +65,7 @@
     <ClCompile Include="objectX_group.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="parts.cpp" />
+    <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Precompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -132,6 +133,7 @@
     <ClInclude Include="objectX.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="parts.h" />
+    <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="Precompile.h" />
     <ClInclude Include="Preparation.h" />

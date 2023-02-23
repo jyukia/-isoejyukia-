@@ -17,6 +17,8 @@
 #include "time.h"
 #include "load_stage.h"
 #include "goal.h"
+#include "inputjoypad.h"
+#include "sound.h"
 
 CPlayer *CTutorial::m_pPlayer = nullptr;
 CCamera *CTutorial::m_pCamera = nullptr;
@@ -45,8 +47,11 @@ CTutorial::~CTutorial()
 //=============================================================================
 HRESULT CTutorial::Init(void)
 {
-
-	m_pObject2D[0] = CObject2D::Create("TUTORIAL", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f), PRIORITY_LEVEL3);
+	m_pObject2D = CObject2D::Create("TUTORIAL", D3DXVECTOR3(SCREEN_WIDTH_HALF, SCREEN_HEIGHT_HALF, 0.0f), D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f), PRIORITY_LEVEL3);
+	
+	CObject2D* UI_B = CObject2D::Create("B", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 480, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_BG1 = CObject2D::Create("CHABG", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 550, 670.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), PRIORITY_LEVEL4);
+	CObject2D* UI_Modoru = CObject2D::Create("MODORU", D3DXVECTOR3((float)SCREEN_WIDTH_HALF + 550, 670.0f, 0.0f), D3DXVECTOR3(300.0f, 200.0f, 0.0f), PRIORITY_LEVEL4);
 
 	return S_OK;
 }
@@ -67,20 +72,16 @@ void CTutorial::Update(void)
 {
 	// キーボードの情報取得
 	CInput *pInputKeyboard = CApplication::Getinstnce()->GetInput();
-
-	//これがないと上手く表示されない
-	if (m_pObject2D != nullptr)
-	{
-		m_pObject2D[0]->Update();
-		m_pObject2D[0]->Draw();
-	}
+	//コントローラー
+	CInputJoyPad *pJoy = CApplication::GetJoy();
 
 	if (m_pFade->GetFade() == CFade::FADE_NONE)
 	{
-		if (pInputKeyboard->Trigger(DIK_RETURN))
+		if (pInputKeyboard->Trigger(DIK_RETURN) || pJoy->GetTrigger(DirectJoypad::JOYPAD_B, 0))
 		{
 			// 遷移
 			CFade::SetFade(CApplication::MODE_TITLE);
+			CApplication::Getinstnce()->GetSound()->Play(CSound::LABEL_SELECT);
 		}
 	}
 }

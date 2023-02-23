@@ -55,7 +55,7 @@ void CParticle2D::Update()
 	}
 	if (m_nLife <= 0.0f)
 	{
-		Uninit();
+		CObject2D::Uninit();
 		return;
 	}
 

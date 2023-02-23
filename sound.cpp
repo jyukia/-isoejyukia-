@@ -16,14 +16,21 @@
 //==================================================
 const CSound::SParam CSound::PARAM[] =
 {// 各音素材のパラメータ
-	{ "Data/SOUND/IMG_2860.wav", -1 },		// よーい
-	{ "Data/SOUND/IMG_2860_1.wav", -1 },		// ドン
+	{ "Data/SOUND/IMG_2860.wav", 0 },		// よーい
+	{ "Data/SOUND/IMG_2860_1.wav", 0 },		// ドン
 	{ "Data/SOUND/00015_heaven-and-hell.wav", -1 },		// game
-	{ "Data/SOUND/omedetou.wav", -1 },		// game
+	{ "Data/SOUND/game1.wav", -1 },		// game
+	{ "Data/SOUND/title.wav", -1 },		// 
+	{ "Data/SOUND/SelectStage.wav", -1 },		// 
+	{ "Data/SOUND/change.wav", 0 },		// 
+	{ "Data/SOUND/select.wav", 0 },		// 
+
+	
+	{ "Data/SOUND/omedetou.wav", 0 },		// game
 	{ "Data/SOUND/coin001.wav", 0 },		// コイン
 	{ "Data/SOUND/Wind.wav", 0 },		// コイン
+	{ "Data/SOUND/clock.wav", 0 }		// アイテム取得音
 	
-
 };
 
 static_assert(sizeof(CSound::PARAM) / sizeof(CSound::PARAM[0]) == CSound::LABEL_MAX, "aho");

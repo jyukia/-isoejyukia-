@@ -30,8 +30,14 @@ CObject2D::CObject2D(int nPriority) :
 //=============================================================================
 CObject2D::~CObject2D()
 {
+	if (m_pVtxBuff != nullptr)
+	{
+		m_pVtxBuff->Release();
+		m_pVtxBuff = nullptr;
+	}
+
 	////バッファが消去されてたら普通に通る(NULLチェック)
-	//assert(m_pVtxBuff == nullptr);
+	assert(m_pVtxBuff == nullptr);
 }
 
 //=============================================================================
