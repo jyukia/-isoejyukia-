@@ -40,7 +40,7 @@ CInputJoyPad *CApplication::m_pJoy = {};
 //=============================================================================
 CApplication::CApplication():m_pRenderer(nullptr), m_pInput(nullptr), m_pMode(nullptr), m_pCamera(nullptr), m_pTexture(nullptr), m_pObjectXGroup(nullptr), m_pSound(nullptr), m_pDebugProc(nullptr), m_Item(nullptr)//, m_Imgui(nullptr)
 {
-	CApplication::m_mode = MODE_RANKING;//MODE_RANKING
+	CApplication::m_mode = MODE_TITLE;//MODE_RANKING
 }
 //=============================================================================
 // デストラクタ

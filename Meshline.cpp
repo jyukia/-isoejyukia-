@@ -175,9 +175,7 @@ void CMeshLine::Update()
 			{
 				CMode::GetPlayer()->SetbMoveFlg(true);
 			}
-
 		}
-
 
 
 #ifdef _DEBUG

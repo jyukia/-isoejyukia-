@@ -91,7 +91,15 @@ void CMovelife::Update()
 			//減る処理
 			if (pInputKeyboard->Press(DIK_R) || pJoy->GetPress(DirectJoypad::JOYPAD_B, 0))
 			{
+				if (m_Life >= 5000)	//最大移動量に達した場合	プレイヤーの移動を制限
+				{
+					m_Life = 5000;
+					int a = 0;
+				}
+				else if(m_Life <= 5000)
+				{
 				type = RETURN;
+				}
 			}
 			else if (Playerpos != PlayerposOld)	//動いていたら　移動ライフを減らす
 			{
