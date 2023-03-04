@@ -75,7 +75,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 	pApplication = CApplication::Getinstnce();
 
 	// ‰Šú‰»ˆ—
-	if (FAILED(pApplication->Init(hInstance, hWnd, false)))
+	if (FAILED(pApplication->Init(hInstance, hWnd, true)))
 	{ //‰Šú‰»ˆ—‚ª¸”s‚µ‚½ê‡a
 		return -1;
 	}

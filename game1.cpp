@@ -84,7 +84,7 @@ HRESULT CGame1::Init(void)
 	CApplication::Getinstnce()->GetpMode()->GetPlayer()->LoadModel("Kedama");
 
 	//コンパス生成
-	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	//m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1150.0f, 110.0f, 0.0f), D3DXVECTOR3(220.0f, 220.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 
 
 	goalui = CObject3D::Create(D3DXVECTOR3(1100.0f, 400.0f, -600.0f), D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(350, 350.0f, 0.0f), CObject::PRIORITY_LEVEL4);
@@ -333,20 +333,20 @@ void CGame1::Update(void)
 	//}
 
 	//コンパス処理
-	{
-		m_rot = CCamera::GetRot();
-		m_rot.z = m_rot.y;
-		if (pInput->Press(DIK_Q))
-		{
-			m_rot.z += 0.05f;
-		}
-		if (pInput->Press(DIK_E))
-		{
-			m_rot.z -= 0.05f;
-		}
-		m_rot.y *= -1;
-		m_pCompass->SetRot(m_rot);
-	}
+	//{
+	//	m_rot = CCamera::GetRot();
+	//	m_rot.z = m_rot.y;
+	//	if (pInput->Press(DIK_Q))
+	//	{
+	//		m_rot.z += 0.05f;
+	//	}
+	//	if (pInput->Press(DIK_E))
+	//	{
+	//		m_rot.z -= 0.05f;
+	//	}
+	//	m_rot.y *= -1;
+	//	m_pCompass->SetRot(m_rot);
+	//}
 	//ゴールしたときのフラグ
 	bool flg = CApplication::Getinstnce()->GetpMode()->GetGoal()->GetGoalFlg();
 	if (flg)		//ゴールとプレイヤーが触れたら

@@ -109,7 +109,7 @@ HRESULT CGame::Init(void)
 	}
 
 	//コンパス生成
-	m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1140.0f, 120.0f, 0.0f), D3DXVECTOR3(200.0f, 200.0f, 0.0f), CObject::PRIORITY_LEVEL3);
+	//m_pCompass = CObject2D::Create("COMPASS", D3DXVECTOR3(1140.0f, 120.0f, 0.0f), D3DXVECTOR3(200.0f, 200.0f, 0.0f), CObject::PRIORITY_LEVEL3);
 	
 	//タイムのUI
 	m_pTime_Lope_Ui = CObject2D::Create("KEDAMA_Lope_UI", D3DXVECTOR3(SCREEN_WIDTH - 250, SCREEN_HEIGHT - 90, 0.0f), D3DXVECTOR3(900.0f, 800.0f, 0.0f), CObject::PRIORITY_LEVEL4);
@@ -315,20 +315,20 @@ void CGame::Update(void)
 		GoalCnt++;
 	}
 	//コンパス処理
-	{
-		m_rot = CCamera::GetRot();
-		m_rot.z = m_rot.y;
-		if (pInput->Press(DIK_Q))
-		{
-			m_rot.z += 0.05f;
-		}
-		if (pInput->Press(DIK_E))
-		{
-			m_rot.z -= 0.05f;
-		}
-		m_rot.y *= -1;
-		m_pCompass->SetRot(m_rot);
-	}
+	//{
+	//	m_rot = CCamera::GetRot();
+	//	m_rot.z = m_rot.y;
+	//	if (pInput->Press(DIK_Q))
+	//	{
+	//		m_rot.z += 0.05f;
+	//	}
+	//	if (pInput->Press(DIK_E))
+	//	{
+	//		m_rot.z -= 0.05f;
+	//	}
+	//	m_rot.y *= -1;
+	//	m_pCompass->SetRot(m_rot);
+	//}
 
 	//ゴールしたときのフラグ
 	bool flg = CApplication::Getinstnce()->GetpMode()->GetGoal()->GetGoalFlg();
